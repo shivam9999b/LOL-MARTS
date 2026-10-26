@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LOL Mart 🛒 — Buy Useless Stuff (MEGA EDITION)</title>
-<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+<title>LOL Mart 🛒 — MEGA + ADMIN (ULTIMATE FIXED)</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" onerror="this.remove()">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -20,46 +21,34 @@
     --red: #ff6b6b;
   }
 
-  /* DARK MODE */
   body.dark {
-    --bg: #1a1a2e;
-    --ink: #f0f0f0;
-    --yellow: #f9ca24;
-    --pink: #f0932b;
-    --blue: #7ed6df;
-    --green: #6ab04c;
-    --purple: #be2edd;
+    --bg: #1a1a2e; --ink: #f0f0f0;
+    --yellow: #f9ca24; --pink: #f0932b;
+    --blue: #7ed6df; --green: #6ab04c; --purple: #be2edd;
   }
-  body.dark nav,
-  body.dark .product-card,
-  body.dark .review-card,
-  body.dark .cart-footer,
-  body.dark .checkout-modal,
-  body.dark .order-card,
-  body.dark .cart-item,
-  body.dark .checkout-product,
-  body.dark .form-group input,
-  body.dark .form-group select,
-  body.dark .review-textarea,
-  body.dark .cart-promo input,
-  body.dark .modal-total,
-  body.dark .wheel-center,
-  body.dark .theme-switcher {
-    background: #16213e !important;
-    color: #f0f0f0 !important;
-    border-color: #f0f0f0 !important;
+  body.dark nav, body.dark .product-card, body.dark .review-card,
+  body.dark .cart-footer, body.dark .checkout-modal, body.dark .order-card,
+  body.dark .cart-item, body.dark .checkout-product, body.dark .form-group input,
+  body.dark .form-group select, body.dark .review-textarea, body.dark .cart-promo input,
+  body.dark .modal-total, body.dark .wheel-center, body.dark .theme-switcher,
+  body.dark .admin-section, body.dark .admin-table th, body.dark .admin-table td,
+  body.dark .admin-card, body.dark .admin-product-box, body.dark .admin-field input,
+  body.dark .admin-field select, body.dark .admin-field textarea,
+  body.dark .admin-emoji-picker {
+    background: #16213e !important; color: #f0f0f0 !important; border-color: #f0f0f0 !important;
   }
   body.dark .cart-header { background: #0f3460 !important; color: #f0f0f0 !important; }
   body.dark .shipping-bar { background: #0f3460 !important; }
+  body.dark .admin-header { background: #0f3460 !important; }
 
   html { scroll-behavior: smooth; }
 
   body {
     background: var(--bg);
     color: var(--ink);
-    font-family: 'Comic Neue', cursive;
+    font-family: 'Comic Neue', cursive, sans-serif;
     overflow-x: hidden;
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E😂%3C/text%3E%3C/svg%3E") 16 16, auto;
+    cursor: auto;
     transition: background 0.5s, color 0.5s;
   }
 
@@ -72,86 +61,60 @@
   }
   @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
 
-  /* ===== LOADER ===== */
   .loader {
-    position: fixed; inset: 0;
-    background: var(--bg);
-    z-index: 99999;
-    display: flex; flex-direction: column;
+    position: fixed; inset: 0; background: var(--bg);
+    z-index: 99999; display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     transition: opacity 0.5s, visibility 0.5s;
   }
   .loader.hidden { opacity: 0; visibility: hidden; }
-  .loader-emoji {
-    font-size: 5rem;
-    animation: loaderSpin 1s linear infinite;
-  }
-  @keyframes loaderSpin {
-    to { transform: rotate(360deg); }
-  }
+  .loader-emoji { font-size: 5rem; animation: loaderSpin 1s linear infinite; }
+  @keyframes loaderSpin { to { transform: rotate(360deg); } }
   .loader-text {
-    margin-top: 20px;
-    font-family: 'Bangers', cursive;
-    font-size: 1.5rem;
-    color: var(--ink);
+    margin-top: 20px; font-family: 'Bangers', cursive;
+    font-size: 1.5rem; color: var(--ink);
     animation: pulse 1s ease-in-out infinite;
   }
-  @keyframes pulse {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
-  }
+  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 
-  /* ===== THEME / DARK TOGGLE ===== */
   .theme-switcher {
-    position: fixed; top: 100px; right: 20px;
-    z-index: 998;
+    position: fixed; top: 100px; right: 20px; z-index: 998;
     display: flex; flex-direction: column; gap: 8px;
-    background: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 16px;
-    padding: 10px;
+    background: #fff; border: 3px solid var(--ink);
+    border-radius: 16px; padding: 10px;
     box-shadow: 4px 4px 0 var(--ink);
   }
   .theme-btn {
     width: 40px; height: 40px;
-    border: 3px solid var(--ink);
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 1.1rem;
+    border: 3px solid var(--ink); border-radius: 50%;
+    cursor: pointer; font-size: 1.1rem;
     transition: transform 0.2s;
     box-shadow: 2px 2px 0 var(--ink);
     display: flex; align-items: center; justify-content: center;
+    background: #fff;
   }
   .theme-btn:hover { transform: scale(1.15) rotate(-10deg); }
-  .theme-btn.active { box-shadow: 0 0 0 3px var(--yellow), 2px 2px 0 var(--ink); }
 
   .sound-toggle {
     position: fixed; top: 100px; left: 20px;
     width: 50px; height: 50px;
     background: var(--yellow);
-    border: 3px solid var(--ink);
-    border-radius: 50%;
-    font-size: 1.4rem;
-    cursor: pointer;
-    box-shadow: 4px 4px 0 var(--ink);
-    z-index: 998;
+    border: 3px solid var(--ink); border-radius: 50%;
+    font-size: 1.4rem; cursor: pointer;
+    box-shadow: 4px 4px 0 var(--ink); z-index: 998;
     transition: all 0.2s;
     display: flex; align-items: center; justify-content: center;
   }
   .sound-toggle:hover { transform: scale(1.1) rotate(-10deg); }
   .sound-toggle.muted { background: #ccc; }
 
-  /* BACK TO TOP */
   .back-top {
     position: fixed; bottom: 30px; right: 30px;
     width: 55px; height: 55px;
     background: var(--pink); color: #fff;
-    border: 4px solid var(--ink);
-    border-radius: 50%;
-    font-size: 1.5rem;
-    cursor: pointer;
-    box-shadow: 5px 5px 0 var(--ink);
-    z-index: 997;
+    border: 4px solid var(--ink); border-radius: 50%;
+    font-size: 1.5rem; cursor: pointer;
+    box-shadow: 5px 5px 0 var(--ink); z-index: 997;
     transition: all 0.3s;
     opacity: 0; visibility: hidden;
     font-family: 'Bangers', cursive;
@@ -159,17 +122,14 @@
   .back-top.show { opacity: 1; visibility: visible; }
   .back-top:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--ink); }
 
-  /* ===== NAVBAR ===== */
   nav {
     position: fixed; top: 15px; left: 50%;
     transform: translateX(-50%);
-    width: calc(100% - 30px); max-width: 1300px;
+    width: calc(100% - 30px); max-width: 1400px;
     padding: 12px 25px;
     display: flex; justify-content: space-between; align-items: center;
-    z-index: 1000;
-    background: #fff;
-    border: 4px dashed var(--ink);
-    border-radius: 20px;
+    z-index: 1000; background: #fff;
+    border: 4px dashed var(--ink); border-radius: 20px;
     box-shadow: 6px 6px 0 var(--ink);
     animation: wobble 4s ease-in-out infinite;
     gap: 10px;
@@ -191,78 +151,56 @@
     50% { transform: scale(1.1) rotate(3deg); }
   }
 
-  .search-box {
-    flex: 1; max-width: 300px;
-    position: relative;
-  }
+  .search-box { flex: 1; max-width: 300px; position: relative; }
   .search-box input {
-    width: 100%;
-    padding: 10px 40px 10px 16px;
-    border: 3px solid var(--ink);
-    border-radius: 20px;
+    width: 100%; padding: 10px 40px 10px 16px;
+    border: 3px solid var(--ink); border-radius: 20px;
     font-family: 'Comic Neue', cursive;
     font-size: 0.9rem; font-weight: 700;
-    outline: none;
-    background: #fff;
+    outline: none; background: #fff;
     transition: all 0.2s;
   }
   .search-box input:focus { background: var(--yellow); }
   .search-box::after {
-    content: '🔍';
-    position: absolute;
-    right: 14px; top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.1rem;
-    pointer-events: none;
+    content: '🔍'; position: absolute;
+    right: 14px; top: 50%; transform: translateY(-50%);
+    font-size: 1.1rem; pointer-events: none;
   }
 
   .nav-links { display: flex; gap: 3px; list-style: none; align-items: center; }
   .nav-links a, .nav-links button {
     color: var(--ink); text-decoration: none;
     font-weight: 700; padding: 8px 10px;
-    border-radius: 10px;
-    transition: all 0.2s;
-    border: 2px solid transparent;
-    background: transparent;
+    border-radius: 10px; transition: all 0.2s;
+    border: 2px solid transparent; background: transparent;
     font-family: 'Comic Neue', cursive;
-    font-size: 0.9rem;
-    cursor: pointer;
+    font-size: 0.9rem; cursor: pointer;
   }
   .nav-links a:hover, .nav-links button:hover {
-    background: var(--yellow);
-    border: 2px solid var(--ink);
+    background: var(--yellow); border: 2px solid var(--ink);
     transform: rotate(-3deg) scale(1.05);
   }
 
   .icon-btn {
     width: 44px; height: 44px;
-    border: 3px solid var(--ink);
-    border-radius: 50%;
-    background: var(--blue);
-    color: #fff;
-    font-size: 1.2rem;
-    cursor: pointer;
+    border: 3px solid var(--ink); border-radius: 50%;
+    background: var(--blue); color: #fff;
+    font-size: 1.2rem; cursor: pointer;
     box-shadow: 3px 3px 0 var(--ink);
-    transition: all 0.15s;
-    position: relative;
+    transition: all 0.15s; position: relative;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
   .icon-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
-  .icon-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--ink); }
 
   .wishlist-btn { background: var(--red); }
   .cart-btn { background: var(--pink); width: auto; padding: 0 18px; border-radius: 22px; gap: 8px; font-family: 'Bangers', cursive; font-size: 1rem; letter-spacing: 1px; }
 
   .badge {
-    position: absolute;
-    top: -8px; right: -8px;
-    background: var(--yellow);
-    color: var(--ink);
-    border: 2px solid var(--ink);
-    border-radius: 50%;
-    min-width: 24px; height: 24px;
-    padding: 0 4px;
+    position: absolute; top: -8px; right: -8px;
+    background: var(--yellow); color: var(--ink);
+    border: 2px solid var(--ink); border-radius: 50%;
+    min-width: 24px; height: 24px; padding: 0 4px;
     display: flex; align-items: center; justify-content: center;
     font-size: 0.8rem; font-weight: 800;
     animation: countPulse 1s ease-in-out infinite;
@@ -279,14 +217,10 @@
     100% { transform: scale(1); }
   }
 
-  /* ===== SHIPPING BAR ===== */
   .shipping-bar {
     position: fixed; top: 0; left: 0; right: 0;
-    z-index: 999;
-    background: var(--ink);
-    color: #fff;
-    padding: 8px 6%;
-    text-align: center;
+    z-index: 999; background: var(--ink); color: #fff;
+    padding: 8px 6%; text-align: center;
     font-family: 'Bangers', cursive;
     font-size: 1rem; letter-spacing: 1px;
     transform: translateY(-100%);
@@ -295,10 +229,8 @@
   .shipping-bar.show { transform: translateY(0); }
   .shipping-bar.free { background: var(--green); }
   .shipping-progress {
-    height: 6px;
-    background: rgba(255,255,255,0.2);
-    border-radius: 6px;
-    margin-top: 5px; overflow: hidden;
+    height: 6px; background: rgba(255,255,255,0.2);
+    border-radius: 6px; margin-top: 5px; overflow: hidden;
   }
   .shipping-fill {
     height: 100%; background: var(--yellow);
@@ -307,7 +239,6 @@
   }
   .shipping-bar.free .shipping-fill { background: #fff; width: 100% !important; }
 
-  /* ===== HERO ===== */
   .hero {
     min-height: 100vh;
     display: grid; grid-template-columns: 1.2fr 1fr;
@@ -326,10 +257,7 @@
     0%, 100% { transform: rotate(-1deg); }
     50% { transform: rotate(1deg); }
   }
-  .hero h1 .wiggle {
-    display: inline-block;
-    animation: wiggle 0.8s ease-in-out infinite;
-  }
+  .hero h1 .wiggle { display: inline-block; animation: wiggle 0.8s ease-in-out infinite; }
   .hero h1 .wiggle:nth-child(2) { animation-delay: 0.1s; }
   .hero h1 .wiggle:nth-child(3) { animation-delay: 0.2s; }
   .hero h1 .wiggle:nth-child(4) { animation-delay: 0.3s; }
@@ -342,17 +270,15 @@
     margin-bottom: 30px; max-width: 550px; font-weight: 700;
   }
   .hero p .highlight {
-    background: var(--yellow);
-    padding: 2px 8px; border-radius: 6px;
-    border: 2px solid var(--ink);
+    background: var(--yellow); padding: 2px 8px;
+    border-radius: 6px; border: 2px solid var(--ink);
     display: inline-block; transform: rotate(-2deg);
   }
   .hero-cta { display: flex; gap: 15px; flex-wrap: wrap; }
 
   .btn {
     padding: 16px 30px;
-    border: 3px solid var(--ink);
-    border-radius: 16px;
+    border: 3px solid var(--ink); border-radius: 16px;
     font-family: 'Bangers', cursive;
     font-size: 1.2rem; letter-spacing: 2px;
     cursor: pointer;
@@ -381,8 +307,7 @@
   .emoji-ring {
     position: absolute;
     width: 320px; height: 320px;
-    border: 5px dashed var(--ink);
-    border-radius: 50%;
+    border: 5px dashed var(--ink); border-radius: 50%;
     animation: spin 15s linear infinite;
   }
   .emoji-ring-2 {
@@ -393,39 +318,30 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ===== SECTIONS ===== */
   .section { padding: 80px 6%; position: relative; z-index: 2; }
   .section-title {
     text-align: center;
     font-size: clamp(2rem, 4.5vw, 3rem);
-    margin-bottom: 15px;
-    color: var(--ink);
+    margin-bottom: 15px; color: var(--ink);
     text-shadow: 3px 3px 0 var(--yellow);
     animation: titleShake 4s ease-in-out infinite;
   }
   .section-sub {
-    text-align: center;
-    font-size: 1.1rem; margin-bottom: 30px;
-    font-weight: 700; color: #888;
+    text-align: center; font-size: 1.1rem;
+    margin-bottom: 30px; font-weight: 700; color: #888;
   }
 
-  /* ===== FILTERS ===== */
   .filters {
     display: flex; gap: 10px; flex-wrap: wrap;
-    justify-content: center;
-    margin-bottom: 30px;
+    justify-content: center; margin-bottom: 30px;
   }
   .filter-btn {
-    padding: 8px 20px;
-    background: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 20px;
+    padding: 8px 20px; background: #fff;
+    border: 3px solid var(--ink); border-radius: 20px;
     font-family: 'Bangers', cursive;
-    font-size: 0.95rem;
-    cursor: pointer;
+    font-size: 0.95rem; cursor: pointer;
     box-shadow: 3px 3px 0 var(--ink);
     transition: all 0.15s;
-    letter-spacing: 1px;
   }
   .filter-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
   .filter-btn.active { background: var(--yellow); }
@@ -440,15 +356,12 @@
   }
   .sort-bar select {
     padding: 8px 14px;
-    border: 3px solid var(--ink);
-    border-radius: 10px;
+    border: 3px solid var(--ink); border-radius: 10px;
     font-family: 'Comic Neue', cursive;
     font-size: 0.9rem; font-weight: 700;
-    cursor: pointer;
-    background: #fff;
+    cursor: pointer; background: #fff;
   }
 
-  /* ===== PRODUCTS ===== */
   .product-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -456,14 +369,11 @@
   }
 
   .product-card {
-    background: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 20px;
-    padding: 25px; text-align: center;
+    background: #fff; border: 3px solid var(--ink);
+    border-radius: 20px; padding: 25px; text-align: center;
     box-shadow: 6px 6px 0 var(--ink);
     transition: all 0.3s cubic-bezier(0.68,-0.55,0.27,1.55);
-    position: relative;
-    opacity: 0; transform: translateY(40px);
+    position: relative; opacity: 0; transform: translateY(40px);
   }
   .product-card.visible { opacity: 1; transform: translateY(0); }
   .product-card:hover {
@@ -476,8 +386,7 @@
     position: absolute; top: -15px; right: -10px;
     background: var(--red); color: #fff;
     font-family: 'Bangers', cursive;
-    padding: 6px 14px;
-    border: 3px solid var(--ink);
+    padding: 6px 14px; border: 3px solid var(--ink);
     border-radius: 20px; font-size: 0.85rem;
     transform: rotate(15deg);
     box-shadow: 3px 3px 0 var(--ink);
@@ -491,24 +400,19 @@
 
   .stock-tag {
     position: absolute; top: 15px; left: 15px;
-    background: var(--orange);
-    color: #fff;
-    padding: 4px 10px;
-    border: 2px solid var(--ink);
+    background: var(--orange); color: #fff;
+    padding: 4px 10px; border: 2px solid var(--ink);
     border-radius: 12px;
     font-family: 'Bangers', cursive;
-    font-size: 0.75rem;
-    letter-spacing: 1px;
+    font-size: 0.75rem; letter-spacing: 1px;
     animation: pulse 1.5s infinite;
   }
 
   .wish-btn {
     position: absolute; top: 15px; right: 15px;
     width: 36px; height: 36px;
-    background: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 50%;
-    font-size: 1.1rem;
+    background: #fff; border: 3px solid var(--ink);
+    border-radius: 50%; font-size: 1.1rem;
     cursor: pointer;
     box-shadow: 2px 2px 0 var(--ink);
     transition: all 0.2s;
@@ -541,22 +445,17 @@
 
   .product-desc {
     font-size: 0.85rem; color: #888;
-    margin-bottom: 10px;
-    font-style: italic;
+    margin-bottom: 10px; font-style: italic;
     min-height: 35px; font-weight: 700;
   }
 
   .product-rating {
-    color: var(--yellow);
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-    letter-spacing: 2px;
+    color: var(--yellow); font-size: 0.9rem;
+    margin-bottom: 10px; letter-spacing: 2px;
   }
   .product-rating .rating-num {
-    color: var(--ink);
-    font-weight: 700;
-    font-size: 0.8rem;
-    margin-left: 4px;
+    color: var(--ink); font-weight: 700;
+    font-size: 0.8rem; margin-left: 4px;
   }
 
   .product-price {
@@ -576,8 +475,7 @@
 
   .add-btn, .buy-now-btn {
     width: 100%; padding: 11px;
-    border: 3px solid var(--ink);
-    border-radius: 12px;
+    border: 3px solid var(--ink); border-radius: 12px;
     font-family: 'Bangers', cursive;
     font-size: 1rem; cursor: pointer;
     box-shadow: 4px 4px 0 var(--ink);
@@ -592,25 +490,18 @@
   .add-btn:active, .buy-now-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
 
   .quick-view-btn {
-    width: 100%; padding: 8px;
-    margin-top: 6px;
+    width: 100%; padding: 8px; margin-top: 6px;
     background: transparent;
-    border: 2px dashed var(--ink);
-    border-radius: 10px;
+    border: 2px dashed var(--ink); border-radius: 10px;
     font-family: 'Comic Neue', cursive;
     font-size: 0.8rem; font-weight: 700;
-    cursor: pointer;
-    transition: all 0.15s;
+    cursor: pointer; transition: all 0.15s;
   }
   .quick-view-btn:hover { background: var(--blue); color: #fff; border-style: solid; }
 
-  /* ===== QUICK VIEW MODAL ===== */
-  .quick-view-content {
-    text-align: center;
-  }
+  .quick-view-content { text-align: center; }
   .quick-view-emoji {
-    font-size: 8rem;
-    margin: 10px 0 20px;
+    font-size: 8rem; margin: 10px 0 20px;
     animation: emojiDance 2s ease-in-out infinite;
   }
   .quick-view-stars { color: var(--yellow); font-size: 1.3rem; margin-bottom: 15px; }
@@ -620,21 +511,15 @@
     font-style: italic;
   }
 
-  /* ===== WHEEL ===== */
   .wheel-section {
     padding: 80px 6%; text-align: center;
     position: relative; z-index: 2;
     background: linear-gradient(135deg, rgba(177,151,252,0.15), rgba(255,107,157,0.15));
   }
-  .wheel-container {
-    position: relative;
-    width: 300px; height: 300px;
-    margin: 30px auto;
-  }
+  .wheel-container { position: relative; width: 300px; height: 300px; margin: 30px auto; }
   .wheel {
     width: 100%; height: 100%;
-    border-radius: 50%;
-    border: 8px solid var(--ink);
+    border-radius: 50%; border: 8px solid var(--ink);
     box-shadow: 8px 8px 0 var(--ink), inset 0 0 20px rgba(0,0,0,0.2);
     position: relative; overflow: hidden;
     transition: transform 4s cubic-bezier(0.17, 0.67, 0.16, 1);
@@ -648,19 +533,15 @@
   .wheel-segment-text {
     position: absolute;
     font-family: 'Bangers', cursive;
-    font-size: 0.85rem;
-    color: var(--ink);
-    font-weight: 700;
+    font-size: 0.85rem; color: var(--ink); font-weight: 700;
     text-shadow: 1px 1px 0 #fff;
     letter-spacing: 0.5px;
   }
   .wheel-center {
     position: absolute; top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    width: 60px; height: 60px;
-    background: #fff;
-    border: 5px solid var(--ink);
-    border-radius: 50%;
+    width: 60px; height: 60px; background: #fff;
+    border: 5px solid var(--ink); border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     font-family: 'Bangers', cursive;
     font-size: 1.4rem; z-index: 3;
@@ -680,8 +561,7 @@
   .spin-btn {
     margin-top: 30px; padding: 15px 45px;
     background: var(--pink); color: #fff;
-    border: 4px solid var(--ink);
-    border-radius: 16px;
+    border: 4px solid var(--ink); border-radius: 16px;
     font-family: 'Bangers', cursive;
     font-size: 1.4rem; letter-spacing: 2px;
     cursor: pointer;
@@ -689,10 +569,8 @@
     transition: all 0.15s;
   }
   .spin-btn:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ink); }
-  .spin-btn:active { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--ink); }
   .spin-btn:disabled { background: #ccc; cursor: not-allowed; opacity: 0.6; }
 
-  /* ===== SLOT MACHINE ===== */
   .slot-section {
     padding: 80px 6%; text-align: center;
     position: relative; z-index: 2;
@@ -700,27 +578,21 @@
   }
   .slot-machine {
     display: inline-flex; gap: 15px;
-    padding: 30px;
-    background: var(--ink);
-    border: 5px solid var(--ink);
-    border-radius: 20px;
+    padding: 30px; background: var(--ink);
+    border: 5px solid var(--ink); border-radius: 20px;
     box-shadow: 10px 10px 0 rgba(0,0,0,0.3);
     margin: 30px auto;
   }
   .slot-reel {
-    width: 100px; height: 120px;
-    background: #fff;
-    border: 4px solid var(--yellow);
-    border-radius: 12px;
+    width: 100px; height: 120px; background: #fff;
+    border: 4px solid var(--yellow); border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 3.5rem;
-    overflow: hidden; position: relative;
+    font-size: 3.5rem; overflow: hidden; position: relative;
   }
   .slot-spin-btn {
     padding: 15px 45px;
     background: var(--orange); color: #fff;
-    border: 4px solid var(--ink);
-    border-radius: 16px;
+    border: 4px solid var(--ink); border-radius: 16px;
     font-family: 'Bangers', cursive;
     font-size: 1.4rem; letter-spacing: 2px;
     cursor: pointer;
@@ -732,26 +604,18 @@
   .slot-result {
     margin-top: 20px;
     font-family: 'Bangers', cursive;
-    font-size: 1.2rem;
-    min-height: 30px;
-    letter-spacing: 1px;
+    font-size: 1.2rem; min-height: 30px; letter-spacing: 1px;
   }
 
-  /* ===== DAILY BONUS ===== */
   .daily-bonus {
     position: fixed; bottom: 30px; left: 30px;
     background: linear-gradient(135deg, var(--yellow), var(--orange));
-    color: var(--ink);
-    padding: 15px 25px;
-    border: 4px solid var(--ink);
-    border-radius: 20px;
+    color: var(--ink); padding: 15px 25px;
+    border: 4px solid var(--ink); border-radius: 20px;
     box-shadow: 6px 6px 0 var(--ink);
     font-family: 'Bangers', cursive;
-    font-size: 1.1rem;
-    cursor: pointer;
-    z-index: 997;
-    letter-spacing: 1px;
-    transition: all 0.3s;
+    font-size: 1.1rem; cursor: pointer; z-index: 997;
+    letter-spacing: 1px; transition: all 0.3s;
     animation: bonusBounce 2s ease-in-out infinite;
   }
   @keyframes bonusBounce {
@@ -761,29 +625,21 @@
   .daily-bonus:hover { transform: scale(1.1); }
   .daily-bonus.claimed { background: #ccc; cursor: default; animation: none; opacity: 0.5; }
 
-  /* ===== LOYALTY POINTS ===== */
   .loyalty-badge {
     position: fixed; top: 160px; left: 20px;
     background: var(--purple); color: #fff;
-    padding: 10px 16px;
-    border: 3px solid var(--ink);
+    padding: 10px 16px; border: 3px solid var(--ink);
     border-radius: 14px;
     font-family: 'Bangers', cursive;
     font-size: 0.95rem;
-    box-shadow: 3px 3px 0 var(--ink);
-    z-index: 997;
-    letter-spacing: 1px;
+    box-shadow: 3px 3px 0 var(--ink); z-index: 997;
   }
 
-  /* ===== REVIEWS ===== */
   .review-card {
-    background: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 20px;
-    padding: 25px;
+    background: #fff; border: 3px solid var(--ink);
+    border-radius: 20px; padding: 25px;
     box-shadow: 5px 5px 0 var(--ink);
-    transition: transform 0.3s;
-    position: relative;
+    transition: transform 0.3s; position: relative;
   }
   .review-card:hover { transform: rotate(-2deg) scale(1.03); }
   .review-stars { font-size: 1.2rem; margin-bottom: 15px; }
@@ -793,21 +649,17 @@
   }
   .review-author {
     font-family: 'Bangers', cursive;
-    font-size: 1rem; color: var(--pink);
-    letter-spacing: 1px;
+    font-size: 1rem; color: var(--pink); letter-spacing: 1px;
   }
   .review-verified {
     font-size: 0.75rem; color: var(--green);
     font-weight: 700; margin-left: 8px;
   }
 
-  /* ===== CAT & DOG ===== */
   .cat, .dog {
     position: fixed; bottom: 20px;
-    font-size: 2.5rem;
-    z-index: 500;
-    pointer-events: none;
-    transition: left 8s linear;
+    font-size: 2.5rem; z-index: 500;
+    pointer-events: none; transition: left 8s linear;
   }
   .cat { animation: catBob 0.5s ease-in-out infinite; }
   .dog { animation: dogBob 0.4s ease-in-out infinite; }
@@ -820,26 +672,19 @@
     50% { transform: translateY(-8px) rotate(-3deg) scale(1.1); }
   }
 
-  /* ===== CART SIDEBAR ===== */
   .cart-overlay {
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(5px);
-    z-index: 2000;
-    opacity: 0; visibility: hidden;
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
+    z-index: 2000; opacity: 0; visibility: hidden;
     transition: all 0.3s;
   }
   .cart-overlay.active { opacity: 1; visibility: visible; }
 
   .cart-sidebar {
-    position: fixed;
-    top: 0; right: 0;
-    width: 420px; max-width: 100%;
-    height: 100vh;
-    background: var(--bg);
-    border-left: 5px solid var(--ink);
-    z-index: 2001;
-    transform: translateX(100%);
+    position: fixed; top: 0; right: 0;
+    width: 420px; max-width: 100%; height: 100vh;
+    background: var(--bg); border-left: 5px solid var(--ink);
+    z-index: 2001; transform: translateX(100%);
     transition: transform 0.5s cubic-bezier(0.68,-0.55,0.27,1.55);
     display: flex; flex-direction: column;
     box-shadow: -10px 0 40px rgba(0,0,0,0.3);
@@ -847,8 +692,7 @@
   .cart-sidebar.active { transform: translateX(0); }
 
   .cart-header {
-    padding: 20px 25px;
-    background: var(--yellow);
+    padding: 20px 25px; background: var(--yellow);
     border-bottom: 4px solid var(--ink);
     display: flex; justify-content: space-between; align-items: center;
   }
@@ -859,8 +703,7 @@
   .close-cart {
     width: 40px; height: 40px;
     background: var(--red); color: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 50%;
+    border: 3px solid var(--ink); border-radius: 50%;
     font-size: 1.3rem; cursor: pointer;
     box-shadow: 3px 3px 0 var(--ink);
     transition: all 0.15s;
@@ -868,9 +711,7 @@
   }
   .close-cart:hover { transform: rotate(90deg) scale(1.1); }
 
-  .cart-body {
-    flex: 1; overflow-y: auto; padding: 20px;
-  }
+  .cart-body { flex: 1; overflow-y: auto; padding: 20px; }
   .cart-body::-webkit-scrollbar { width: 10px; }
   .cart-body::-webkit-scrollbar-track { background: #fff; }
   .cart-body::-webkit-scrollbar-thumb {
@@ -878,9 +719,7 @@
     border: 2px solid var(--ink);
   }
 
-  .cart-empty {
-    text-align: center; padding: 60px 20px; color: #888;
-  }
+  .cart-empty { text-align: center; padding: 60px 20px; color: #888; }
   .cart-empty .empty-emoji {
     font-size: 5rem; margin-bottom: 20px;
     display: inline-block;
@@ -896,11 +735,10 @@
   .cart-item {
     display: flex; gap: 15px;
     padding: 15px; background: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 16px; margin-bottom: 15px;
+    border: 3px solid var(--ink); border-radius: 16px;
+    margin-bottom: 15px;
     box-shadow: 4px 4px 0 var(--ink);
-    animation: itemSlide 0.4s ease;
-    position: relative;
+    animation: itemSlide 0.4s ease; position: relative;
   }
   @keyframes itemSlide {
     from { opacity: 0; transform: translateX(40px); }
@@ -910,8 +748,7 @@
     font-size: 2.5rem; flex-shrink: 0;
     width: 60px; height: 60px;
     display: flex; align-items: center; justify-content: center;
-    background: var(--bg);
-    border: 2px solid var(--ink);
+    background: var(--bg); border: 2px solid var(--ink);
     border-radius: 12px;
   }
   .cart-item-info { flex: 1; min-width: 0; }
@@ -929,8 +766,7 @@
   .qty-controls { display: flex; align-items: center; gap: 8px; }
   .qty-btn {
     width: 28px; height: 28px;
-    border: 2px solid var(--ink);
-    border-radius: 8px;
+    border: 2px solid var(--ink); border-radius: 8px;
     background: var(--yellow);
     font-family: 'Bangers', cursive;
     font-size: 1rem; cursor: pointer;
@@ -948,9 +784,8 @@
     position: absolute; top: 8px; right: 8px;
     width: 24px; height: 24px;
     background: var(--red); color: #fff;
-    border: 2px solid var(--ink);
-    border-radius: 50%; font-size: 0.8rem;
-    cursor: pointer;
+    border: 2px solid var(--ink); border-radius: 50%;
+    font-size: 0.8rem; cursor: pointer;
     box-shadow: 2px 2px 0 var(--ink);
     transition: all 0.15s;
     display: flex; align-items: center; justify-content: center;
@@ -965,8 +800,7 @@
   .cart-promo { display: flex; gap: 8px; margin-bottom: 15px; }
   .cart-promo input {
     flex: 1; padding: 10px 14px;
-    border: 3px solid var(--ink);
-    border-radius: 10px;
+    border: 3px solid var(--ink); border-radius: 10px;
     font-family: 'Comic Neue', cursive;
     font-size: 0.9rem; font-weight: 700;
     outline: none; text-transform: uppercase;
@@ -976,11 +810,9 @@
   .promo-apply-btn {
     padding: 10px 16px;
     background: var(--purple); color: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 10px;
+    border: 3px solid var(--ink); border-radius: 10px;
     font-family: 'Bangers', cursive;
-    font-size: 0.95rem;
-    cursor: pointer;
+    font-size: 0.95rem; cursor: pointer;
     box-shadow: 3px 3px 0 var(--ink);
     transition: all 0.15s;
   }
@@ -990,19 +822,15 @@
     display: flex; justify-content: space-between; align-items: center;
     padding: 8px 14px;
     background: var(--green); color: #fff;
-    border: 2px solid var(--ink);
-    border-radius: 10px;
+    border: 2px solid var(--ink); border-radius: 10px;
     font-family: 'Bangers', cursive;
-    font-size: 0.9rem;
-    margin-bottom: 15px;
+    font-size: 0.9rem; margin-bottom: 15px;
     letter-spacing: 0.5px;
   }
   .promo-applied button {
     background: var(--red); color: #fff;
-    border: 2px solid var(--ink);
-    border-radius: 6px;
-    padding: 2px 8px;
-    cursor: pointer;
+    border: 2px solid var(--ink); border-radius: 6px;
+    padding: 2px 8px; cursor: pointer;
     font-family: 'Bangers', cursive;
   }
 
@@ -1026,8 +854,7 @@
   .checkout-btn {
     width: 100%; padding: 15px;
     background: var(--green); color: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 14px;
+    border: 3px solid var(--ink); border-radius: 14px;
     font-family: 'Bangers', cursive;
     font-size: 1.3rem; cursor: pointer;
     box-shadow: 5px 5px 0 var(--ink);
@@ -1035,32 +862,24 @@
     letter-spacing: 2px;
   }
   .checkout-btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
-  .checkout-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
 
-  /* ===== MODAL ===== */
   .modal-overlay {
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(8px);
-    z-index: 3000;
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px;
-    opacity: 0; visibility: hidden;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+    z-index: 3000; display: flex; align-items: center; justify-content: center;
+    padding: 20px; opacity: 0; visibility: hidden;
     transition: all 0.3s;
   }
   .modal-overlay.active { opacity: 1; visibility: visible; }
 
   .checkout-modal {
     background: var(--bg);
-    border: 5px solid var(--ink);
-    border-radius: 25px;
-    padding: 35px;
-    max-width: 520px; width: 100%;
+    border: 5px solid var(--ink); border-radius: 25px;
+    padding: 35px; max-width: 520px; width: 100%;
     box-shadow: 12px 12px 0 var(--ink);
     transform: scale(0.7) rotate(-5deg);
     transition: transform 0.4s cubic-bezier(0.68,-0.55,0.27,1.55);
-    max-height: 90vh; overflow-y: auto;
-    position: relative;
+    max-height: 90vh; overflow-y: auto; position: relative;
   }
   .modal-overlay.active .checkout-modal { transform: scale(1) rotate(0); }
 
@@ -1068,13 +887,11 @@
     position: absolute; top: 15px; right: 15px;
     width: 38px; height: 38px;
     background: var(--red); color: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 50%; font-size: 1.2rem;
-    cursor: pointer;
+    border: 3px solid var(--ink); border-radius: 50%;
+    font-size: 1.2rem; cursor: pointer;
     box-shadow: 3px 3px 0 var(--ink);
     font-family: 'Bangers', cursive;
-    transition: all 0.15s;
-    z-index: 1;
+    transition: all 0.15s; z-index: 1;
   }
   .modal-close:hover { transform: rotate(90deg) scale(1.1); }
 
@@ -1091,8 +908,8 @@
   .checkout-product {
     display: flex; align-items: center; gap: 15px;
     padding: 15px; background: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 16px; margin-bottom: 12px;
+    border: 3px solid var(--ink); border-radius: 16px;
+    margin-bottom: 12px;
     box-shadow: 4px 4px 0 var(--ink);
   }
   .checkout-product .cp-emoji { font-size: 3rem; }
@@ -1115,8 +932,7 @@
   }
   .form-group input, .form-group select, .form-group textarea {
     width: 100%; padding: 12px 16px;
-    border: 3px solid var(--ink);
-    border-radius: 12px;
+    border: 3px solid var(--ink); border-radius: 12px;
     font-family: 'Comic Neue', cursive;
     font-size: 0.95rem; font-weight: 700;
     background: #fff; outline: none;
@@ -1130,13 +946,10 @@
 
   .checkbox-group {
     display: flex; align-items: center; gap: 10px;
-    margin-bottom: 15px;
-    padding: 12px;
-    background: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 12px;
-    cursor: pointer;
-    font-weight: 700;
+    margin-bottom: 15px; padding: 12px;
+    background: #fff; border: 3px solid var(--ink);
+    border-radius: 12px; cursor: pointer;
+    font-weight: 700; font-size: 0.9rem;
   }
   .checkbox-group input {
     width: 24px; height: 24px;
@@ -1148,8 +961,8 @@
     font-family: 'Bangers', cursive;
     font-size: 1.3rem; padding: 15px;
     background: var(--yellow);
-    border: 3px solid var(--ink);
-    border-radius: 12px; margin: 20px 0;
+    border: 3px solid var(--ink); border-radius: 12px;
+    margin: 20px 0;
     box-shadow: 4px 4px 0 var(--ink);
     color: var(--ink);
   }
@@ -1161,8 +974,7 @@
   .place-order-btn {
     width: 100%; padding: 16px;
     background: var(--green); color: #fff;
-    border: 4px solid var(--ink);
-    border-radius: 16px;
+    border: 4px solid var(--ink); border-radius: 16px;
     font-family: 'Bangers', cursive;
     font-size: 1.4rem; letter-spacing: 2px;
     cursor: pointer;
@@ -1170,7 +982,6 @@
     transition: all 0.15s;
   }
   .place-order-btn:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ink); }
-  .place-order-btn:active { transform: translate(2px, 2px); box-shadow: 3px 3px 0 var(--ink); }
 
   .success-screen { text-align: center; padding: 20px 0; }
   .success-emoji {
@@ -1194,8 +1005,7 @@
   }
   .order-id {
     display: inline-block; padding: 10px 20px;
-    background: #fff;
-    border: 3px dashed var(--ink);
+    background: #fff; border: 3px dashed var(--ink);
     border-radius: 12px;
     font-family: 'Bangers', cursive;
     font-size: 1rem; margin-bottom: 25px;
@@ -1207,22 +1017,17 @@
     margin: 15px 0; font-size: 2.5rem;
   }
   .star-rating span {
-    cursor: pointer;
-    transition: transform 0.2s;
-    filter: grayscale(1);
-    opacity: 0.4;
+    cursor: pointer; transition: transform 0.2s;
+    filter: grayscale(1); opacity: 0.4;
   }
-  .star-rating span:hover,
-  .star-rating span.active {
-    filter: grayscale(0);
-    opacity: 1;
+  .star-rating span:hover, .star-rating span.active {
+    filter: grayscale(0); opacity: 1;
     transform: scale(1.2);
   }
 
   .review-textarea {
     width: 100%; padding: 12px 16px;
-    border: 3px solid var(--ink);
-    border-radius: 12px;
+    border: 3px solid var(--ink); border-radius: 12px;
     font-family: 'Comic Neue', cursive;
     font-size: 0.95rem; font-weight: 700;
     background: #fff; outline: none;
@@ -1237,10 +1042,8 @@
 
   .orders-list { max-width: 900px; margin: 0 auto; }
   .order-card {
-    background: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 16px;
-    padding: 20px;
+    background: #fff; border: 3px solid var(--ink);
+    border-radius: 16px; padding: 20px;
     margin-bottom: 15px;
     box-shadow: 5px 5px 0 var(--ink);
     transition: transform 0.3s;
@@ -1258,10 +1061,8 @@
   .order-date { font-size: 0.85rem; color: #888; font-weight: 700; }
   .order-items { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
   .order-item-tag {
-    background: var(--bg);
-    border: 2px solid var(--ink);
-    border-radius: 10px;
-    padding: 4px 10px;
+    background: var(--bg); border: 2px solid var(--ink);
+    border-radius: 10px; padding: 4px 10px;
     font-size: 0.85rem; font-weight: 700;
   }
   .order-total {
@@ -1271,30 +1072,19 @@
   }
 
   .order-tracker {
-    display: flex; gap: 4px; margin-top: 12px;
-    flex-wrap: wrap;
+    display: flex; gap: 4px; margin-top: 12px; flex-wrap: wrap;
   }
   .track-step {
-    flex: 1; min-width: 80px;
-    padding: 6px;
-    background: #eee;
-    border: 2px solid var(--ink);
-    border-radius: 8px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-align: center;
+    flex: 1; min-width: 80px; padding: 6px;
+    background: #eee; border: 2px solid var(--ink);
+    border-radius: 8px; font-size: 0.7rem;
+    font-weight: 700; text-align: center;
   }
-  .track-step.done {
-    background: var(--green);
-    color: #fff;
-  }
+  .track-step.done { background: var(--green); color: #fff; }
 
-  .empty-orders {
-    text-align: center; padding: 60px 20px; color: #888;
-  }
+  .empty-orders { text-align: center; padding: 60px 20px; color: #888; }
   .empty-orders .empty-emoji {
-    font-size: 5rem;
-    display: inline-block;
+    font-size: 5rem; display: inline-block;
     animation: emptyBounce 2s ease-in-out infinite;
     margin-bottom: 20px;
   }
@@ -1304,8 +1094,7 @@
     transform: translate(-50%, 200px);
     padding: 16px 30px;
     background: var(--green); color: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 16px;
+    border: 3px solid var(--ink); border-radius: 16px;
     font-family: 'Bangers', cursive;
     font-size: 1.2rem; letter-spacing: 1px;
     box-shadow: 6px 6px 0 var(--ink);
@@ -1332,25 +1121,18 @@
   }
   .reveal.active { opacity: 1; transform: translateY(0); }
 
-  /* ===== MOBILE BOTTOM NAV ===== */
   .mobile-nav {
-    display: none;
-    position: fixed; bottom: 0; left: 0; right: 0;
-    background: #fff;
-    border-top: 4px solid var(--ink);
-    z-index: 996;
-    padding: 8px;
+    display: none; position: fixed; bottom: 0; left: 0; right: 0;
+    background: #fff; border-top: 4px solid var(--ink);
+    z-index: 996; padding: 8px;
     justify-content: space-around;
     box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
   }
   .mobile-nav button {
-    flex: 1;
-    padding: 10px;
-    background: transparent;
-    border: none;
+    flex: 1; padding: 10px;
+    background: transparent; border: none;
     font-family: 'Bangers', cursive;
-    font-size: 0.85rem;
-    cursor: pointer;
+    font-size: 0.85rem; cursor: pointer;
     color: var(--ink);
     display: flex; flex-direction: column;
     align-items: center; gap: 2px;
@@ -1358,24 +1140,18 @@
   .mobile-nav button:active { background: var(--yellow); border-radius: 8px; }
   .mobile-nav button .mn-icon { font-size: 1.3rem; }
 
-  /* ===== WELCOME POPUP ===== */
   .welcome-popup {
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 9999;
+    background: rgba(0,0,0,0.7); z-index: 9999;
     display: flex; align-items: center; justify-content: center;
-    padding: 20px;
-    opacity: 0; visibility: hidden;
+    padding: 20px; opacity: 0; visibility: hidden;
     transition: all 0.4s;
   }
   .welcome-popup.show { opacity: 1; visibility: visible; }
   .welcome-content {
     background: var(--bg);
-    border: 5px solid var(--ink);
-    border-radius: 25px;
-    padding: 40px 30px;
-    max-width: 400px;
-    text-align: center;
+    border: 5px solid var(--ink); border-radius: 25px;
+    padding: 40px 30px; max-width: 400px; text-align: center;
     box-shadow: 12px 12px 0 var(--ink);
     transform: scale(0.7) rotate(-5deg);
     transition: transform 0.5s cubic-bezier(0.68,-0.55,0.27,1.55);
@@ -1387,33 +1163,22 @@
     margin-bottom: 10px;
     text-shadow: 2px 2px 0 var(--yellow);
   }
-  .welcome-content p {
-    font-weight: 700; margin-bottom: 20px;
-    font-size: 1rem;
-  }
+  .welcome-content p { font-weight: 700; margin-bottom: 20px; font-size: 1rem; }
   .welcome-code {
-    background: var(--yellow);
-    padding: 12px;
-    border: 3px dashed var(--ink);
-    border-radius: 12px;
+    background: var(--yellow); padding: 12px;
+    border: 3px dashed var(--ink); border-radius: 12px;
     font-family: 'Bangers', cursive;
-    font-size: 1.3rem;
-    margin-bottom: 20px;
+    font-size: 1.3rem; margin-bottom: 20px;
     letter-spacing: 2px;
   }
 
-  /* ===== LIVE CHAT ===== */
   .chat-btn {
     position: fixed; bottom: 100px; right: 30px;
     width: 60px; height: 60px;
-    background: var(--purple);
-    color: #fff;
-    border: 4px solid var(--ink);
-    border-radius: 50%;
-    font-size: 1.8rem;
-    cursor: pointer;
-    box-shadow: 5px 5px 0 var(--ink);
-    z-index: 997;
+    background: var(--purple); color: #fff;
+    border: 4px solid var(--ink); border-radius: 50%;
+    font-size: 1.8rem; cursor: pointer;
+    box-shadow: 5px 5px 0 var(--ink); z-index: 997;
     transition: all 0.3s;
     display: flex; align-items: center; justify-content: center;
     animation: chatBounce 3s ease-in-out infinite;
@@ -1427,36 +1192,27 @@
   .chat-panel {
     position: fixed; bottom: 100px; right: 30px;
     width: 320px; max-width: calc(100vw - 60px);
-    height: 450px;
-    background: var(--bg);
-    border: 4px solid var(--ink);
-    border-radius: 20px;
+    height: 450px; background: var(--bg);
+    border: 4px solid var(--ink); border-radius: 20px;
     box-shadow: 8px 8px 0 var(--ink);
-    z-index: 2000;
-    display: flex; flex-direction: column;
+    z-index: 2000; display: flex; flex-direction: column;
     transform: translateY(50px) scale(0.8);
     opacity: 0; visibility: hidden;
     transition: all 0.3s;
   }
   .chat-panel.active { transform: translateY(0) scale(1); opacity: 1; visibility: visible; }
   .chat-header {
-    padding: 15px;
-    background: var(--purple);
-    color: #fff;
+    padding: 15px; background: var(--purple); color: #fff;
     border-bottom: 3px solid var(--ink);
     border-radius: 16px 16px 0 0;
     display: flex; justify-content: space-between; align-items: center;
     font-family: 'Bangers', cursive;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
+    font-size: 1.1rem; letter-spacing: 1px;
   }
   .chat-header button {
-    background: var(--red);
-    color: #fff;
-    border: 2px solid var(--ink);
-    border-radius: 50%;
-    width: 28px; height: 28px;
-    cursor: pointer;
+    background: var(--red); color: #fff;
+    border: 2px solid var(--ink); border-radius: 50%;
+    width: 28px; height: 28px; cursor: pointer;
     font-family: 'Bangers', cursive;
   }
   .chat-body {
@@ -1465,11 +1221,8 @@
     background: #fff;
   }
   .chat-msg {
-    padding: 10px 14px;
-    border-radius: 16px;
-    max-width: 80%;
-    font-size: 0.85rem;
-    font-weight: 700;
+    padding: 10px 14px; border-radius: 16px;
+    max-width: 80%; font-size: 0.85rem; font-weight: 700;
     border: 2px solid var(--ink);
     animation: msgIn 0.3s ease;
   }
@@ -1477,102 +1230,302 @@
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  .chat-msg.bot {
-    background: var(--yellow);
-    align-self: flex-start;
-    border-bottom-left-radius: 4px;
-  }
-  .chat-msg.user {
-    background: var(--blue);
-    color: #fff;
-    align-self: flex-end;
-    border-bottom-right-radius: 4px;
-  }
+  .chat-msg.bot { background: var(--yellow); align-self: flex-start; border-bottom-left-radius: 4px; }
+  .chat-msg.user { background: var(--blue); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
   .chat-input {
-    display: flex; gap: 6px;
-    padding: 10px;
-    background: #fff;
-    border-top: 3px solid var(--ink);
+    display: flex; gap: 6px; padding: 10px;
+    background: #fff; border-top: 3px solid var(--ink);
     border-radius: 0 0 16px 16px;
   }
   .chat-input input {
-    flex: 1;
-    padding: 8px 12px;
-    border: 2px solid var(--ink);
-    border-radius: 10px;
+    flex: 1; padding: 8px 12px;
+    border: 2px solid var(--ink); border-radius: 10px;
     font-family: 'Comic Neue', cursive;
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: 0.85rem; font-weight: 700;
     outline: none;
   }
   .chat-input button {
     padding: 8px 14px;
-    background: var(--green);
-    color: #fff;
-    border: 2px solid var(--ink);
-    border-radius: 10px;
+    background: var(--green); color: #fff;
+    border: 2px solid var(--ink); border-radius: 10px;
     font-family: 'Bangers', cursive;
     cursor: pointer;
     box-shadow: 2px 2px 0 var(--ink);
   }
 
-  /* ===== COUPON WALLET ===== */
-  .coupon-list {
-    display: grid; gap: 12px;
-  }
+  .coupon-list { display: grid; gap: 12px; }
   .coupon-card {
     background: linear-gradient(135deg, var(--yellow), var(--orange));
-    border: 3px solid var(--ink);
-    border-radius: 12px;
+    border: 3px solid var(--ink); border-radius: 12px;
     padding: 15px;
     display: flex; justify-content: space-between; align-items: center;
-    box-shadow: 4px 4px 0 var(--ink);
-    gap: 10px;
+    box-shadow: 4px 4px 0 var(--ink); gap: 10px;
   }
   .coupon-info .coupon-code {
     font-family: 'Bangers', cursive;
-    font-size: 1.3rem;
-    letter-spacing: 2px;
-    color: var(--ink);
+    font-size: 1.3rem; letter-spacing: 2px; color: var(--ink);
   }
   .coupon-info .coupon-desc {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--ink);
-    opacity: 0.8;
+    font-size: 0.8rem; font-weight: 700;
+    color: var(--ink); opacity: 0.8;
   }
   .coupon-use-btn {
     padding: 8px 16px;
-    background: var(--green);
-    color: #fff;
-    border: 3px solid var(--ink);
-    border-radius: 10px;
+    background: var(--green); color: #fff;
+    border: 3px solid var(--ink); border-radius: 10px;
     font-family: 'Bangers', cursive;
-    font-size: 0.9rem;
-    cursor: pointer;
+    font-size: 0.9rem; cursor: pointer;
     box-shadow: 3px 3px 0 var(--ink);
     transition: all 0.15s;
     white-space: nowrap;
   }
   .coupon-use-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
 
-  /* ===== LOGIN MODAL ===== */
-  .login-tabs {
-    display: flex; gap: 8px;
-    margin-bottom: 20px;
+  .admin-panel {
+    position: fixed; inset: 0;
+    background: var(--bg); z-index: 5000;
+    transform: translateY(100%);
+    transition: transform 0.5s cubic-bezier(0.68,-0.55,0.27,1.55);
+    overflow-y: auto;
+    display: flex; flex-direction: column;
   }
-  .login-tab {
-    flex: 1;
-    padding: 10px;
-    background: transparent;
-    border: 3px solid var(--ink);
-    border-radius: 12px;
+  .admin-panel.active { transform: translateY(0); }
+
+  .admin-header {
+    background: var(--purple); color: #fff;
+    padding: 20px 30px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 4px solid var(--ink);
+    position: sticky; top: 0; z-index: 10;
+    flex-wrap: wrap; gap: 10px;
+  }
+  .admin-header h1 {
+    font-size: 2rem;
+    text-shadow: 3px 3px 0 var(--ink);
+  }
+  .admin-close {
+    padding: 10px 20px;
+    background: var(--red); color: #fff;
+    border: 3px solid var(--ink); border-radius: 12px;
     font-family: 'Bangers', cursive;
-    font-size: 1rem;
-    cursor: pointer;
+    font-size: 1rem; cursor: pointer;
+    box-shadow: 3px 3px 0 var(--ink);
     letter-spacing: 1px;
   }
-  .login-tab.active { background: var(--yellow); }
+  .admin-close:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+
+  .admin-tabs {
+    display: flex; gap: 5px; flex-wrap: wrap;
+    padding: 15px 30px; background: #fff;
+    border-bottom: 3px solid var(--ink);
+    position: sticky; top: 90px; z-index: 9;
+  }
+  .admin-tab {
+    padding: 10px 18px; background: transparent;
+    border: 3px solid var(--ink); border-radius: 12px;
+    font-family: 'Bangers', cursive;
+    font-size: 0.95rem; cursor: pointer;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: all 0.15s;
+    letter-spacing: 1px; color: var(--ink);
+  }
+  .admin-tab:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+  .admin-tab.active { background: var(--yellow); }
+
+  .admin-body { flex: 1; padding: 30px; }
+
+  .admin-section { display: none; }
+  .admin-section.active { display: block; }
+
+  .admin-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px; margin-bottom: 30px;
+  }
+  .admin-stat {
+    background: #fff; border: 3px solid var(--ink);
+    border-radius: 16px; padding: 20px; text-align: center;
+    box-shadow: 5px 5px 0 var(--ink);
+    transition: transform 0.3s;
+  }
+  .admin-stat:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
+  .admin-stat-icon { font-size: 2.5rem; margin-bottom: 10px; }
+  .admin-stat-value {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem; color: var(--pink);
+    text-shadow: 2px 2px 0 var(--yellow);
+    letter-spacing: 1px;
+  }
+  .admin-stat-label {
+    font-size: 0.85rem; font-weight: 700;
+    color: #888; letter-spacing: 1px; margin-top: 5px;
+  }
+
+  .admin-card {
+    background: #fff; border: 3px solid var(--ink);
+    border-radius: 16px; padding: 25px;
+    box-shadow: 5px 5px 0 var(--ink); margin-bottom: 25px;
+  }
+  .admin-card h2 {
+    font-size: 1.5rem; margin-bottom: 20px;
+    color: var(--pink);
+    text-shadow: 2px 2px 0 var(--yellow);
+  }
+
+  .admin-table {
+    width: 100%; border-collapse: collapse; font-size: 0.9rem;
+  }
+  .admin-table th {
+    background: var(--yellow); padding: 12px;
+    text-align: left; border: 2px solid var(--ink);
+    font-family: 'Bangers', cursive;
+    letter-spacing: 1px; font-size: 0.95rem;
+  }
+  .admin-table td {
+    padding: 10px 12px; border: 2px solid var(--ink);
+    font-weight: 700; background: #fff;
+  }
+  .admin-table tr:hover td { background: rgba(255,217,61,0.15); }
+
+  .admin-action-btn {
+    padding: 5px 10px;
+    border: 2px solid var(--ink); border-radius: 8px;
+    font-family: 'Bangers', cursive;
+    font-size: 0.8rem; cursor: pointer;
+    box-shadow: 2px 2px 0 var(--ink);
+    transition: all 0.1s;
+    letter-spacing: 0.5px; margin: 2px;
+    white-space: nowrap;
+  }
+  .admin-action-btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink); }
+  .aab-edit { background: var(--blue); color: #fff; }
+  .aab-delete { background: var(--red); color: #fff; }
+  .aab-add { background: var(--green); color: #fff; padding: 10px 20px; font-size: 0.95rem; margin-bottom: 15px; }
+  .aab-reset { background: var(--orange); color: #fff; padding: 10px 20px; font-size: 0.95rem; }
+
+  .admin-input {
+    width: 100%; padding: 10px 14px;
+    border: 3px solid var(--ink); border-radius: 10px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 0.9rem; font-weight: 700;
+    background: #fff; outline: none;
+    margin-bottom: 10px;
+    transition: all 0.15s;
+  }
+  .admin-input:focus { background: var(--yellow); box-shadow: 3px 3px 0 var(--ink); }
+
+  .admin-empty {
+    text-align: center; padding: 40px 20px;
+    color: #888; font-weight: 700;
+  }
+
+  .admin-login-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.9); z-index: 6000;
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .admin-login-overlay.active { display: flex; }
+  .admin-login-box {
+    background: var(--bg);
+    border: 5px solid var(--ink); border-radius: 25px;
+    padding: 40px 30px; max-width: 400px; width: 100%;
+    text-align: center;
+    box-shadow: 12px 12px 0 var(--ink);
+    animation: adminLoginIn 0.5s ease;
+  }
+  @keyframes adminLoginIn {
+    from { transform: scale(0.7) rotate(-5deg); opacity: 0; }
+    to { transform: scale(1) rotate(0); opacity: 1; }
+  }
+  .admin-login-box h2 {
+    font-size: 2rem; color: var(--pink);
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 0 var(--yellow);
+  }
+  .admin-login-box .lock-icon {
+    font-size: 4rem; margin-bottom: 15px;
+    animation: wiggle 1s ease-in-out infinite;
+  }
+  .admin-login-box p {
+    font-weight: 700; margin-bottom: 20px;
+    color: #888; font-size: 0.9rem;
+  }
+
+  .admin-product-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85); z-index: 7000;
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; overflow-y: auto;
+  }
+  .admin-product-modal.active { display: flex; }
+  .admin-product-box {
+    background: var(--bg);
+    border: 5px solid var(--ink); border-radius: 25px;
+    padding: 30px; max-width: 550px; width: 100%;
+    box-shadow: 12px 12px 0 var(--ink);
+    animation: adminLoginIn 0.5s ease;
+    max-height: 90vh; overflow-y: auto;
+    position: relative;
+  }
+  .admin-product-box h2 {
+    font-size: 1.8rem; color: var(--pink);
+    margin-bottom: 20px; text-align: center;
+    text-shadow: 2px 2px 0 var(--yellow);
+  }
+  .admin-product-box .modal-close {
+    position: absolute; top: 15px; right: 15px;
+  }
+  .admin-field { margin-bottom: 15px; }
+  .admin-field label {
+    display: block;
+    font-family: 'Bangers', cursive;
+    font-size: 0.95rem; margin-bottom: 6px;
+    letter-spacing: 1px; color: var(--ink);
+  }
+  .admin-field input,
+  .admin-field select,
+  .admin-field textarea {
+    width: 100%; padding: 12px 16px;
+    border: 3px solid var(--ink); border-radius: 12px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 0.95rem; font-weight: 700;
+    background: #fff; outline: none;
+    transition: all 0.15s;
+  }
+  .admin-field input:focus,
+  .admin-field select:focus,
+  .admin-field textarea:focus {
+    background: var(--yellow);
+    box-shadow: 4px 4px 0 var(--ink);
+    transform: translate(-2px, -2px);
+  }
+  .admin-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .admin-emoji-picker {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    margin-top: 8px; max-height: 120px;
+    overflow-y: auto; padding: 8px;
+    border: 3px solid var(--ink); border-radius: 12px;
+    background: #fff;
+  }
+  .admin-emoji-btn {
+    width: 40px; height: 40px;
+    border: 2px solid var(--ink); border-radius: 8px;
+    background: #fff; font-size: 1.4rem;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .admin-emoji-btn:hover {
+    background: var(--yellow);
+    transform: scale(1.15);
+  }
+  .admin-emoji-btn.selected {
+    background: var(--green);
+    box-shadow: 0 0 0 3px var(--green);
+  }
 
   @media (max-width: 900px) {
     .hero { grid-template-columns: 1fr; text-align: center; padding-top: 180px; }
@@ -1582,7 +1535,6 @@
     .big-emoji { font-size: 9rem; }
     .emoji-ring { width: 240px; height: 240px; }
     .emoji-ring-2 { width: 290px; height: 290px; }
-    body { cursor: auto; }
     .cart-sidebar { width: 100%; }
     .checkout-modal { padding: 25px; }
     .wheel-container { width: 260px; height: 260px; }
@@ -1597,43 +1549,434 @@
     .chat-btn { bottom: 140px; right: 20px; width: 55px; height: 55px; font-size: 1.4rem; }
     .chat-panel { bottom: 140px; right: 20px; width: calc(100vw - 40px); }
     body { padding-bottom: 70px; }
+    .admin-header h1 { font-size: 1.4rem; }
+    .admin-body { padding: 15px; }
+    .admin-tabs { padding: 10px 15px; top: 80px; }
+    .admin-field-row { grid-template-columns: 1fr; }
+    .admin-table { font-size: 0.75rem; }
+    .admin-table th, .admin-table td { padding: 6px 8px; }
+  }
+    /* ===== GHOST MODE ===== */
+  .ghost-counter {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #2b2b2b, #4a4a4a);
+    color: #fff;
+    padding: 12px 24px;
+    border: 3px solid #fff;
+    border-radius: 30px;
+    font-family: 'Bangers', cursive;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    box-shadow: 0 0 30px rgba(255,255,255,0.4), 4px 4px 0 var(--ink);
+    z-index: 995;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    animation: ghostPulse 3s ease-in-out infinite;
+  }
+  @keyframes ghostPulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(255,255,255,0.4), 4px 4px 0 var(--ink); }
+    50% { box-shadow: 0 0 50px rgba(255,255,255,0.8), 4px 4px 0 var(--ink); }
+  }
+  .ghost-counter:hover {
+    transform: translateX(-50%) scale(1.1);
+    background: linear-gradient(135deg, #fff, #ddd);
+    color: var(--ink);
+  }
+  .ghost-counter .ghost-emoji {
+    font-size: 1.4rem;
+    animation: ghostFloat 2s ease-in-out infinite;
+  }
+  @keyframes ghostFloat {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-5px) rotate(5deg); }
+  }
+  .ghost-counter .ghost-num {
+    background: #fff;
+    color: var(--ink);
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-weight: 900;
+    min-width: 35px;
+    text-align: center;
+    animation: numBounce 1s ease-in-out infinite;
+  }
+  @keyframes numBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  /* Floating ghosts background */
+  .floating-ghost {
+    position: fixed;
+    font-size: 3rem;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    animation: ghostDrift linear forwards;
+    filter: drop-shadow(0 0 15px rgba(255,255,255,0.6));
+  }
+  @keyframes ghostDrift {
+    0% { opacity: 0; transform: translateY(0) translateX(0) scale(0.5); }
+    10% { opacity: 0.6; }
+    50% { opacity: 0.4; transform: translateY(-100px) translateX(50px) scale(1); }
+    90% { opacity: 0.3; }
+    100% { opacity: 0; transform: translateY(-300px) translateX(-30px) scale(0.8); }
+  }
+
+  /* Ghost toast notification */
+  .ghost-toast {
+    position: fixed;
+    top: 120px;
+    right: 30px;
+    background: linear-gradient(135deg, #1a1a2e, #2d2d44);
+    color: #fff;
+    padding: 16px 24px;
+    border: 3px solid #fff;
+    border-radius: 16px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 0.95rem;
+    font-weight: 700;
+    box-shadow: 0 0 30px rgba(255,255,255,0.5), 5px 5px 0 var(--ink);
+    z-index: 9998;
+    transform: translateX(500px);
+    transition: transform 0.6s cubic-bezier(0.68,-0.55,0.27,1.55);
+    max-width: 320px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .ghost-toast.show { transform: translateX(0) rotate(-2deg); }
+  .ghost-toast .gt-emoji {
+    font-size: 2rem;
+    animation: ghostFloat 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  .ghost-toast .gt-text {
+    flex: 1;
+    line-height: 1.3;
+  }
+  .ghost-toast .gt-name {
+    color: #a29bfe;
+    font-family: 'Bangers', cursive;
+    letter-spacing: 1px;
+    font-size: 1rem;
+  }
+  .ghost-toast .gt-time {
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 4px;
+  }
+
+  /* Product ghost viewers */
+  .ghost-viewers {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(26,26,46,0.95);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-family: 'Comic Neue', cursive;
+    font-size: 0.7rem;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+    animation: viewerPulse 2s ease-in-out infinite;
+    z-index: 3;
+  }
+  @keyframes viewerPulse {
+    0%, 100% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.05); }
+  }
+
+  /* Spooky mode */
+  body.spooky {
+    --bg: #0a0a0f;
+    --ink: #e0e0e0;
+    --yellow: #7a7aff;
+    --pink: #a29bfe;
+    --blue: #6c5ce7;
+    --green: #00b894;
+    --purple: #8e44ad;
+    --red: #d63031;
+  }
+  body.spooky::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(122,122,255,0.1), transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    animation: spookyGlow 4s ease-in-out infinite;
+  }
+  @keyframes spookyGlow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+  }
+  body.spooky nav,
+  body.spooky .product-card,
+  body.spooky .review-card,
+  body.spooky .cart-footer,
+  body.spooky .checkout-modal,
+  body.spooky .order-card,
+  body.spooky .cart-item,
+  body.spooky .checkout-product,
+  body.spooky .form-group input,
+  body.spooky .form-group select,
+  body.spooky .review-textarea,
+  body.spooky .cart-promo input,
+  body.spooky .modal-total,
+  body.spooky .wheel-center,
+  body.spooky .theme-switcher,
+  body.spooky .admin-section,
+  body.spooky .admin-table th,
+  body.spooky .admin-table td,
+  body.spooky .admin-card,
+  body.spooky .admin-product-box,
+  body.spooky .admin-field input,
+  body.spooky .admin-field select,
+  body.spooky .admin-field textarea,
+  body.spooky .admin-emoji-picker,
+  body.spooky .shipping-bar {
+    background: #1a1a2e !important;
+    color: #e0e0e0 !important;
+    border-color: #a29bfe !important;
+  }
+  body.spooky .cart-header,
+  body.spooky .admin-header {
+    background: #6c5ce7 !important;
+    color: #fff !important;
+  }
+
+  /* Spooky button */
+  .spooky-toggle {
+    position: fixed;
+    top: 300px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background: #2d2d44;
+    color: #fff;
+    border: 3px solid #a29bfe;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(162,155,254,0.5), 4px 4px 0 var(--ink);
+    z-index: 998;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spookyBtnGlow 2s ease-in-out infinite;
+  }
+  @keyframes spookyBtnGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(162,155,254,0.5), 4px 4px 0 var(--ink); }
+    50% { box-shadow: 0 0 40px rgba(162,155,254,1), 4px 4px 0 var(--ink); }
+  }
+  .spooky-toggle:hover { transform: scale(1.15) rotate(-15deg); }
+  .spooky-toggle.active { background: #a29bfe; color: #1a1a2e; }
+
+  /* Screen shake for jump scare */
+  @keyframes screenShake {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5px, 5px); }
+    20% { transform: translate(5px, -5px); }
+    30% { transform: translate(-5px, -5px); }
+    40% { transform: translate(5px, 5px); }
+    50% { transform: translate(-5px, 5px); }
+    60% { transform: translate(5px, -5px); }
+    70% { transform: translate(-5px, -5px); }
+    80% { transform: translate(5px, 5px); }
+    90% { transform: translate(-5px, 5px); }
+  }
+  body.jumpscare {
+    animation: screenShake 0.5s ease;
+  }
+
+  /* Big ghost scare */
+  .ghost-scare {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .ghost-scare.show {
+    opacity: 1;
+    visibility: visible;
+    animation: screenShake 0.6s ease;
+  }
+  .ghost-scare .scare-emoji {
+    font-size: 15rem;
+    animation: scareZoom 1s ease;
+    filter: drop-shadow(0 0 50px rgba(162,155,254,0.8));
+  }
+  @keyframes scareZoom {
+    0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+    60% { transform: scale(1.5) rotate(20deg); }
+    100% { transform: scale(1) rotate(0); opacity: 1; }
+  }
+  .ghost-scare .scare-text {
+    color: #fff;
+    font-family: 'Bangers', cursive;
+    font-size: 3rem;
+    letter-spacing: 3px;
+    text-shadow: 0 0 30px #a29bfe;
+    margin-top: 20px;
+    animation: scareText 1s ease;
+  }
+  @keyframes scareText {
+    from { opacity: 0; transform: translateY(50px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ghost-scare .scare-sub {
+    color: #888;
+    font-family: 'Comic Neue', cursive;
+    font-size: 1.2rem;
+    margin-top: 10px;
+    font-weight: 700;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 900px) {
+    .ghost-counter {
+      bottom: 80px;
+      font-size: 0.85rem;
+      padding: 10px 18px;
+    }
+    .ghost-toast {
+      top: 80px;
+      right: 15px;
+      left: 15px;
+      max-width: none;
+    }
+    .spooky-toggle {
+      top: auto;
+      bottom: 140px;
+      left: 20px;
+    }
+    .ghost-scare .scare-emoji { font-size: 8rem; }
+    .ghost-scare .scare-text { font-size: 2rem; }
+  }
+    /* ============================================
+     🖥️ DESKTOP FIX — Size SAME, Layout CENTER
+     Sab desktop screens pe same size, bas center
+     ============================================ */
+
+  /* ===== 1. Global: No horizontal scroll ===== */
+  html, body {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* ===== 2. Content center + max-width (desktop only) ===== */
+  @media (min-width: 1200px) {
+    nav {
+      max-width: 1200px;
+      width: calc(100% - 40px);
+    }
+    
+    .hero {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .section,
+    .wheel-section,
+    .slot-section {
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .product-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+  }
+
+  /* ===== 3. Big screens pe bas center karo, size same ===== */
+  @media (min-width: 1400px) {
+    nav { max-width: 1280px; }
+    .hero { max-width: 1280px; }
+    .section,
+    .wheel-section,
+    .slot-section { max-width: 1280px; }
+    .product-grid { max-width: 1280px; }
+  }
+
+  /* ===== 4. Full HD (1920px) pe bas thoda bada ===== */
+  @media (min-width: 1700px) {
+    nav { max-width: 1400px; }
+    .hero { max-width: 1400px; }
+    .section,
+    .wheel-section,
+    .slot-section { max-width: 1400px; }
+    .product-grid { max-width: 1400px; }
+  }
+
+  /* ===== 5. 2K/4K pe center, size same ===== */
+  @media (min-width: 2200px) {
+    nav { max-width: 1600px; }
+    .hero { max-width: 1600px; }
+    .section,
+    .wheel-section,
+    .slot-section { max-width: 1600px; }
+    .product-grid {
+      max-width: 1600px;
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* ===== 6. Chhoti desktop (1024-1200px) ===== */
+  @media (min-width: 993px) and (max-width: 1199px) {
+    nav { max-width: 960px; }
+    .hero { max-width: 960px; }
+    .section { max-width: 960px; }
+    .product-grid {
+      max-width: 960px;
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
 <div class="loader" id="loader">
   <div class="loader-emoji">🛒</div>
   <div class="loader-text">Loading LOL Mart...</div>
 </div>
 
-<!-- SOUND TOGGLE -->
-<button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Toggle sound">🔊</button>
+<button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Sound">🔊</button>
 
-<!-- THEME SWITCHER -->
 <div class="theme-switcher">
-  <button class="theme-btn" id="darkBtn" onclick="toggleDark()" title="Dark mode">🌙</button>
+  <button class="theme-btn" id="darkBtn" onclick="toggleDark()" title="Dark">🌙</button>
   <button class="theme-btn" onclick="openLogin()" title="Login">👤</button>
   <button class="theme-btn" onclick="openWallet()" title="Coupons">🎫</button>
+  <button class="theme-btn" onclick="openAdmin()" title="Admin">⚙️</button>
 </div>
 
-<!-- LOYALTY BADGE -->
 <div class="loyalty-badge" id="loyaltyBadge">⭐ 0 pts</div>
-
-<!-- DAILY BONUS -->
 <button class="daily-bonus" id="dailyBonus" onclick="claimDailyBonus()">🎁 Daily Bonus</button>
-
-<!-- BACK TO TOP -->
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆</button>
 
-<!-- CHAT -->
 <button class="chat-btn" id="chatBtn" onclick="toggleChat()">💬</button>
 <div class="chat-panel" id="chatPanel">
-  <div class="chat-header">
-    🤖 Support Bot
-    <button onclick="toggleChat()">✕</button>
-  </div>
+  <div class="chat-header">🤖 Support Bot <button onclick="toggleChat()">✕</button></div>
   <div class="chat-body" id="chatBody">
     <div class="chat-msg bot">Hi! I'm LOL Bot 🤖 How can I help you waste money today?</div>
   </div>
@@ -1643,7 +1986,6 @@
   </div>
 </div>
 
-<!-- WELCOME POPUP -->
 <div class="welcome-popup" id="welcomePopup">
   <div class="welcome-content">
     <div class="welcome-emoji">🎉</div>
@@ -1655,13 +1997,11 @@
   </div>
 </div>
 
-<!-- FREE SHIPPING BAR -->
 <div class="shipping-bar" id="shippingBar">
   <div id="shippingText">Add $50 more for FREE shipping! 🚚</div>
   <div class="shipping-progress"><div class="shipping-fill" id="shippingFill"></div></div>
 </div>
 
-<!-- NAVBAR -->
 <nav>
   <div class="logo" onclick="location.reload()">LOL Mart</div>
   <div class="search-box">
@@ -1682,7 +2022,6 @@
   </button>
 </nav>
 
-<!-- HERO -->
 <section class="hero" id="home">
   <div>
     <h1>
@@ -1704,7 +2043,6 @@
   </div>
 </section>
 
-<!-- PRODUCTS -->
 <section class="section" id="shop">
   <h2 class="section-title">🔥 TRENDING (USELESS) PRODUCTS 🔥</h2>
   <p class="section-sub">Handpicked by our CEO's cat 🐱</p>
@@ -1722,7 +2060,6 @@
   <div class="product-grid" id="productGrid"></div>
 </section>
 
-<!-- WHEEL -->
 <section class="wheel-section" id="wheel">
   <h2 class="section-title">🎡 SPIN THE WHEEL 🎡</h2>
   <p class="section-sub">Win fake discounts that might actually work!</p>
@@ -1734,7 +2071,6 @@
   <button class="spin-btn" id="spinBtn" onclick="spinWheel()">SPIN THE WHEEL! 🎰</button>
 </section>
 
-<!-- SLOTS -->
 <section class="slot-section" id="slots">
   <h2 class="section-title">🎰 LUCKY SLOTS 🎰</h2>
   <p class="section-sub">Match 3 emojis to win... something?</p>
@@ -1749,36 +2085,21 @@
   <div class="slot-result" id="slotResult">Press SPIN to play (free spins, real disappointment)</div>
 </section>
 
-<!-- REVIEWS -->
 <section class="section" id="reviews">
   <h2 class="section-title">💬 REAL(ish) REVIEWS 💬</h2>
   <p class="section-sub">100% verified by a guy named Dave</p>
   <div class="product-grid" id="reviewGrid"></div>
 </section>
 
-<!-- MOBILE NAV -->
 <div class="mobile-nav">
-  <button onclick="document.getElementById('home').scrollIntoView()">
-    <span class="mn-icon">🏠</span>Home
-  </button>
-  <button onclick="document.getElementById('shop').scrollIntoView()">
-    <span class="mn-icon">🛍️</span>Shop
-  </button>
-  <button onclick="openCart()">
-    <span class="mn-icon">🛒</span>Cart
-  </button>
-  <button onclick="openWishlist()">
-    <span class="mn-icon">❤️</span>Wish
-  </button>
-  <button onclick="openHistory()">
-    <span class="mn-icon">📦</span>Orders
-  </button>
+  <button onclick="document.getElementById('home').scrollIntoView()"><span class="mn-icon">🏠</span>Home</button>
+  <button onclick="document.getElementById('shop').scrollIntoView()"><span class="mn-icon">🛍️</span>Shop</button>
+  <button onclick="openCart()"><span class="mn-icon">🛒</span>Cart</button>
+  <button onclick="openWishlist()"><span class="mn-icon">❤️</span>Wish</button>
+  <button onclick="openHistory()"><span class="mn-icon">📦</span>Orders</button>
 </div>
 
-<!-- CART OVERLAY -->
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
-
-<!-- CART SIDEBAR -->
 <aside class="cart-sidebar" id="cartSidebar">
   <div class="cart-header">
     <h2>🛒 YOUR CART</h2>
@@ -1803,7 +2124,6 @@
   </div>
 </aside>
 
-<!-- MODALS -->
 <div class="modal-overlay" id="checkoutOverlay">
   <div class="checkout-modal">
     <button class="modal-close" onclick="closeCheckout()">✕</button>
@@ -1853,11 +2173,178 @@
   </div>
 </div>
 
-<!-- TOAST -->
+<div class="admin-login-overlay" id="adminLoginOverlay">
+  <div class="admin-login-box">
+    <div class="lock-icon">🔐</div>
+    <h2>ADMIN LOGIN</h2>
+    <p>Only admins can enter! (Password: 1234)</p>
+    <input type="password" id="adminPassword" class="admin-input" placeholder="Enter password..." onkeydown="if(event.key==='Enter')verifyAdmin()">
+    <button class="place-order-btn" onclick="verifyAdmin()">UNLOCK 🔓</button>
+    <button class="admin-close" style="width:100%;margin-top:10px;" onclick="closeAdminLogin()">CANCEL</button>
+  </div>
+</div>
+
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-header">
+    <h1>⚙️ ADMIN DASHBOARD</h1>
+    <button class="admin-close" onclick="closeAdmin()">✕ CLOSE</button>
+  </div>
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="showAdminTab('overview', this)">📊 Overview</button>
+    <button class="admin-tab" onclick="showAdminTab('products', this)">🛍️ Products</button>
+    <button class="admin-tab" onclick="showAdminTab('orders', this)">📦 Orders</button>
+    <button class="admin-tab" onclick="showAdminTab('reviews', this)">💬 Reviews</button>
+    <button class="admin-tab" onclick="showAdminTab('users', this)">👤 Users</button>
+    <button class="admin-tab" onclick="showAdminTab('settings', this)">⚙️ Settings</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-section active" id="adminOverview"></div>
+    <div class="admin-section" id="adminProducts"></div>
+    <div class="admin-section" id="adminOrders"></div>
+    <div class="admin-section" id="adminReviews"></div>
+    <div class="admin-section" id="adminUsers"></div>
+    <div class="admin-section" id="adminSettings"></div>
+  </div>
+</div>
+
+<div class="admin-product-modal" id="adminProductModal">
+  <div class="admin-product-box">
+    <button class="modal-close" onclick="closeAdminProductModal()">✕</button>
+    <h2 id="adminProductModalTitle">➕ ADD PRODUCT</h2>
+
+    <input type="hidden" id="adminEditId">
+
+    <div class="admin-field">
+      <label>📝 Product Name *</label>
+      <input type="text" id="adminPName" placeholder="e.g. Magical Brick">
+    </div>
+
+    <div class="admin-field">
+      <label>💬 Description</label>
+      <textarea id="adminPDesc" placeholder="What does it do?" rows="2" style="resize:vertical;min-height:60px;"></textarea>
+    </div>
+
+    <div class="admin-field">
+      <label>😀 Choose Emoji *</label>
+      <input type="text" id="adminPEmoji" placeholder="Type or pick below" maxlength="10" style="text-align:center;font-size:1.5rem;">
+      <div class="admin-emoji-picker" id="adminEmojiPicker"></div>
+    </div>
+
+    <div class="admin-field-row">
+      <div class="admin-field">
+        <label>💵 Price ($) *</label>
+        <input type="number" id="adminPPrice" placeholder="49.99" step="0.01" min="0">
+      </div>
+      <div class="admin-field">
+        <label>🏷️ Old Price ($)</label>
+        <input type="number" id="adminPOld" placeholder="999" step="0.01" min="0">
+      </div>
+    </div>
+
+    <div class="admin-field-row">
+      <div class="admin-field">
+        <label>📦 Stock *</label>
+        <input type="number" id="adminPStock" placeholder="10" min="0" value="10">
+      </div>
+      <div class="admin-field">
+        <label>📂 Category *</label>
+        <select id="adminPCat">
+          <option value="Misc">Misc</option>
+          <option value="Food">Food</option>
+          <option value="Fashion">Fashion</option>
+          <option value="Gaming">Gaming</option>
+          <option value="Audio">Audio</option>
+          <option value="Tech">Tech</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="admin-field-row">
+      <div class="admin-field">
+        <label>🔥 Tag *</label>
+        <select id="adminPTag">
+          <option value="NEW">NEW</option>
+          <option value="HOT 🔥">HOT 🔥</option>
+          <option value="SALE">SALE</option>
+          <option value="RARE">RARE</option>
+          <option value="POPULAR">POPULAR</option>
+          <option value="CLEARANCE">CLEARANCE</option>
+          <option value="BESTSELLER">BESTSELLER</option>
+          <option value="SAD">SAD</option>
+        </select>
+      </div>
+      <div class="admin-field">
+        <label>⭐ Rating (0-5)</label>
+        <input type="number" id="adminPRating" placeholder="4.5" step="0.1" min="0" max="5" value="4.5">
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button class="place-order-btn" style="flex:2;" onclick="saveAdminProduct()">💾 SAVE PRODUCT</button>
+      <button class="place-order-btn" style="flex:1;background:var(--red);" onclick="closeAdminProductModal()">CANCEL</button>
+    </div>
+  </div>
+</div>
+<!-- 👻 GHOST FEATURES -->
+<button class="spooky-toggle" id="spookyToggle" onclick="toggleSpooky()" title="Spooky Mode">👻</button>
+
+<div class="ghost-counter" id="ghostCounter" onclick="showGhostInfo()">
+  <span class="ghost-emoji">👻</span>
+  <span>HAUNTING NOW:</span>
+  <span class="ghost-num" id="ghostNum">5</span>
+</div>
+
+<div class="ghost-toast" id="ghostToast">
+  <span class="gt-emoji" id="gtEmoji">👻</span>
+  <div class="gt-text">
+    <div id="gtMsg">Someone is watching...</div>
+    <div class="gt-name" id="gtName"></div>
+    <div class="gt-time" id="gtTime"></div>
+  </div>
+</div>
+
+<div class="ghost-scare" id="ghostScare" onclick="closeGhostScare()">
+  <div class="scare-emoji">👻</div>
+  <div class="scare-text" id="scareText">BOO!</div>
+  <div class="scare-sub" id="scareSub">Just kidding 😂 Click to close</div>
+</div>
+
 <div class="toast" id="toast">✅ Added to cart!</div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
+  // ===== DEFAULT DATA =====
+  const DEFAULT_PRODUCTS = [
+    { id: 1, emoji: '🧱', name: 'A Brick',              desc: "It's a brick. That's it.",         price: 49.99, old: 999, tag: 'HOT 🔥', cat: 'Misc', rating: 4.5, stock: 3 },
+    { id: 2, emoji: '🪨', name: 'Emotional Support Rock', desc: 'For when therapy is expensive.', price: 79.99, old: 199, tag: 'SALE', cat: 'Misc', rating: 4.8, stock: 7 },
+    { id: 3, emoji: '🥒', name: 'Invisible Pickle',       desc: "Trust me, it's there.",            price: 29.99, old: 59,  tag: 'RARE', cat: 'Food', rating: 3.2, stock: 2 },
+    { id: 4, emoji: '💨', name: 'Bottled Air',           desc: 'Fresh from the Himalayas. Maybe.', price: 19.99, old: 49,  tag: 'NEW', cat: 'Food', rating: 4.1, stock: 15 },
+    { id: 5, emoji: '🧦', name: 'Single Sock',           desc: 'The other one escaped.',           price: 9.99,  old: 15,  tag: 'POPULAR', cat: 'Fashion', rating: 4.7, stock: 20 },
+    { id: 6, emoji: '🍌', name: 'Banana (Used)',         desc: 'Slightly bruised. Adds character.',price: 4.99,  old: 10,  tag: 'CLEARANCE', cat: 'Food', rating: 2.5, stock: 5 },
+    { id: 7, emoji: '🎈', name: 'Deflated Balloon',      desc: "It was a balloon. Now it's sad.",  price: 2.99,  old: 8,   tag: 'SAD', cat: 'Misc', rating: 1.8, stock: 10 },
+    { id: 8, emoji: '📦', name: 'Empty Box',             desc: 'Perfect for storing your regrets.',price: 14.99, old: 29,  tag: 'BESTSELLER', cat: 'Misc', rating: 4.9, stock: 8 },
+  ];
+
+  const DEFAULT_REVIEWS = [
+    { id: 'r1', name: 'Dave', text: "Bought a brick for $49.99. It's a brick. Does brick stuff. 5 stars.", stars: 5 },
+    { id: 'r2', name: 'Karen', text: "Ordered air. Delivery took 2 weeks but WOW. Best air I've ever breathed.", stars: 5 },
+    { id: 'r3', name: 'Sleepy Steve', text: "I don't remember buying this but I'm sure it was worth it.", stars: 5 },
+    { id: 'r4', name: 'Confused Carl', text: "One star because it doesn't fit my cat. But I don't have a cat.", stars: 1 },
+    { id: 'r5', name: 'Broke Brian', text: "10/10 would accidentally subscribe again.", stars: 5 },
+    { id: 'r6', name: 'Laughing Lisa', text: "This website is a masterpiece of chaos.", stars: 5 },
+  ];
+
+  const promoCodes = {
+    'LOL50': { type: 'percent', value: 50, desc: '50% OFF' },
+    'FREESTUFF': { type: 'free', value: 100, desc: 'Everything FREE' },
+    'BROKE': { type: 'percent', value: 25, desc: '25% OFF' },
+    'MEME': { type: 'flat', value: 10, desc: '$10 off' },
+    'NICE': { type: 'percent', value: 69, desc: '69% OFF' },
+    'GG': { type: 'percent', value: 100, desc: 'GG WP free' },
+    'SLOT': { type: 'percent', value: 30, desc: '30% off (slots)' },
+    'WHEEL': { type: 'percent', value: 40, desc: '40% off (wheel)' },
+    'DAILY': { type: 'flat', value: 15, desc: '$15 off daily' },
+  };
+
   // ===== SOUND =====
   let soundEnabled = true;
   let audioCtx = null;
@@ -1893,92 +2380,18 @@
     if (soundEnabled) sounds.pop();
   }
 
-  // ===== DARK MODE =====
   function toggleDark() {
     document.body.classList.toggle('dark');
     const isDark = document.body.classList.contains('dark');
     document.getElementById('darkBtn').textContent = isDark ? '☀️' : '🌙';
     localStorage.setItem('lolmart_dark', isDark ? '1' : '0');
     sounds.click();
-    showToast(isDark ? '🌙 Dark mode ON' : '☀️ Light mode ON');
+    showToast(isDark ? '🌙 Dark ON' : '☀️ Light ON');
   }
-  
-// ===== SUPABASE CONNECTION =====
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
-
-const supabaseConfigured =
-  SUPABASE_URL.startsWith("https://") &&
-  !SUPABASE_URL.includes("YOUR_") &&
-  !SUPABASE_ANON_KEY.includes("YOUR_");
-
-const supabaseClient = supabaseConfigured
-  ? window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_ANON_KEY
-    )
-  : null;
-
-// Test Supabase connection
-async function testSupabaseConnection() {
-  if (!supabaseClient) {
-    console.warn(
-      "Supabase URL aur publishable key add karein."
-    );
-    return;
-  }
-
-  const { data, error } = await supabaseClient
-    .from("products")
-    .select("*")
-    .limit(1);
-
-  if (error) {
-    console.error(
-      "Supabase error:",
-      error.message
-    );
-    return;
-  }
-
-  console.log("Supabase connected successfully!", data);
-}
-
-testSupabaseConnection();
-  // ===== DATA =====
-  const products = [
-    { id: 1, emoji: '🧱', name: 'A Brick',              desc: "It's a brick. That's it.",         price: 49.99, old: 999, tag: 'HOT 🔥', cat: 'Misc', rating: 4.5, stock: 3 },
-    { id: 2, emoji: '🪨', name: 'Emotional Support Rock', desc: 'For when therapy is expensive.', price: 79.99, old: 199, tag: 'SALE', cat: 'Misc', rating: 4.8, stock: 7 },
-    { id: 3, emoji: '🥒', name: 'Invisible Pickle',       desc: "Trust me, it's there.",            price: 29.99, old: 59,  tag: 'RARE', cat: 'Food', rating: 3.2, stock: 2 },
-    { id: 4, emoji: '💨', name: 'Bottled Air',           desc: 'Fresh from the Himalayas. Maybe.', price: 19.99, old: 49,  tag: 'NEW', cat: 'Food', rating: 4.1, stock: 15 },
-    { id: 5, emoji: '🧦', name: 'Single Sock',           desc: 'The other one escaped.',           price: 9.99,  old: 15,  tag: 'POPULAR', cat: 'Fashion', rating: 4.7, stock: 20 },
-    { id: 6, emoji: '🍌', name: 'Banana (Used)',         desc: 'Slightly bruised. Adds character.',price: 4.99,  old: 10,  tag: 'CLEARANCE', cat: 'Food', rating: 2.5, stock: 5 },
-    { id: 7, emoji: '🎈', name: 'Deflated Balloon',      desc: "It was a balloon. Now it's sad.",  price: 2.99,  old: 8,   tag: 'SAD', cat: 'Misc', rating: 1.8, stock: 10 },
-    { id: 8, emoji: '📦', name: 'Empty Box',             desc: 'Perfect for storing your regrets.',price: 14.99, old: 29,  tag: 'BESTSELLER', cat: 'Misc', rating: 4.9, stock: 8 },
-  ];
-
-  const promoCodes = {
-    'LOL50': { type: 'percent', value: 50, desc: '50% OFF (why not?)' },
-    'FREESTUFF': { type: 'free', value: 100, desc: 'Everything FREE?!' },
-    'BROKE': { type: 'percent', value: 25, desc: '25% OFF for broke people' },
-    'MEME': { type: 'flat', value: 10, desc: '$10 off (big whoop)' },
-    'NICE': { type: 'percent', value: 69, desc: '69% OFF (nice)' },
-    'GG': { type: 'percent', value: 100, desc: 'GG WP free stuff' },
-    'SLOT': { type: 'percent', value: 30, desc: '30% OFF from slots' },
-    'WHEEL': { type: 'percent', value: 40, desc: '40% OFF from wheel' },
-    'DAILY': { type: 'flat', value: 15, desc: '$15 off daily bonus' },
-  };
-
-  let reviews = [
-    { id: 'r1', name: 'Dave', text: "Bought a brick for $49.99. It's a brick. Does brick stuff. 5 stars.", stars: 5 },
-    { id: 'r2', name: 'Karen', text: "Ordered air. Delivery took 2 weeks but WOW. Best air I've ever breathed.", stars: 5 },
-    { id: 'r3', name: 'Sleepy Steve', text: "I don't remember buying this but I'm sure it was worth it.", stars: 5 },
-    { id: 'r4', name: 'Confused Carl', text: "One star because it doesn't fit my cat. But I don't have a cat.", stars: 1 },
-    { id: 'r5', name: 'Broke Brian', text: "10/10 would accidentally subscribe again. Where's my money?", stars: 5 },
-    { id: 'r6', name: 'Laughing Lisa', text: "This website is a masterpiece of chaos. I bought nothing. I'm still here.", stars: 5 },
-  ];
 
   // ===== STATE =====
+  let products = [...DEFAULT_PRODUCTS];
+  let reviews = [...DEFAULT_REVIEWS];
   let cart = [];
   let wishlist = [];
   let buyNowItem = null;
@@ -1995,6 +2408,8 @@ testSupabaseConnection();
   let loyaltyPoints = 0;
   let dailyClaimed = false;
   let savedCoupons = [];
+  let allUsers = [];
+  let adminUnlocked = false;
 
   // ===== SAVE/LOAD =====
   function saveAll() {
@@ -2009,31 +2424,51 @@ testSupabaseConnection();
       localStorage.setItem('lolmart_points', loyaltyPoints.toString());
       localStorage.setItem('lolmart_daily', dailyClaimed ? '1' : '0');
       localStorage.setItem('lolmart_coupons', JSON.stringify(savedCoupons));
-    } catch (e) {}
+      localStorage.setItem('lolmart_products', JSON.stringify(products));
+      localStorage.setItem('lolmart_users', JSON.stringify(allUsers));
+    } catch (e) { console.error('Save error:', e); }
   }
 
   function loadAll() {
     try {
       const c = localStorage.getItem('lolmart_cart');
-      if (c) cart = JSON.parse(c);
+      if (c) { try { cart = JSON.parse(c) || []; } catch(e) { cart = []; } }
       const w = localStorage.getItem('lolmart_wishlist');
-      if (w) wishlist = JSON.parse(w);
+      if (w) { try { wishlist = JSON.parse(w) || []; } catch(e) { wishlist = []; } }
       const o = localStorage.getItem('lolmart_orders');
-      if (o) orders = JSON.parse(o);
+      if (o) { try { orders = JSON.parse(o) || []; } catch(e) { orders = []; } }
       const r = localStorage.getItem('lolmart_reviews');
-      if (r) reviews = JSON.parse(r);
+      if (r) {
+        try {
+          const parsed = JSON.parse(r);
+          reviews = Array.isArray(parsed) && parsed.length > 0 ? parsed : [...DEFAULT_REVIEWS];
+        } catch(e) { reviews = [...DEFAULT_REVIEWS]; }
+      } else { reviews = [...DEFAULT_REVIEWS]; }
       const p = localStorage.getItem('lolmart_promo');
-      if (p) appliedPromo = JSON.parse(p);
+      if (p && p !== 'null') { try { appliedPromo = JSON.parse(p); } catch(e) { appliedPromo = null; } }
       wheelSpun = localStorage.getItem('lolmart_wheel') === '1';
       const u = localStorage.getItem('lolmart_user');
-      if (u) user = JSON.parse(u);
-      loyaltyPoints = parseInt(localStorage.getItem('lolmart_points') || '0');
+      if (u && u !== 'null') { try { user = JSON.parse(u); } catch(e) { user = null; } }
+      loyaltyPoints = parseInt(localStorage.getItem('lolmart_points') || '0') || 0;
       dailyClaimed = localStorage.getItem('lolmart_daily') === '1';
       const cp = localStorage.getItem('lolmart_coupons');
-      if (cp) savedCoupons = JSON.parse(cp);
+      if (cp) { try { savedCoupons = JSON.parse(cp) || []; } catch(e) { savedCoupons = []; } }
+      const pr = localStorage.getItem('lolmart_products');
+      if (pr) {
+        try {
+          const parsed = JSON.parse(pr);
+          products = Array.isArray(parsed) && parsed.length > 0 ? parsed : [...DEFAULT_PRODUCTS];
+        } catch(e) { products = [...DEFAULT_PRODUCTS]; }
+      } else { products = [...DEFAULT_PRODUCTS]; }
+      const us = localStorage.getItem('lolmart_users');
+      if (us) { try { allUsers = JSON.parse(us) || []; } catch(e) { allUsers = []; } }
       const d = localStorage.getItem('lolmart_dark');
       if (d === '1') { document.body.classList.add('dark'); document.getElementById('darkBtn').textContent = '☀️'; }
-    } catch (e) {}
+    } catch (e) {
+      console.error('Load error:', e);
+      products = [...DEFAULT_PRODUCTS];
+      reviews = [...DEFAULT_REVIEWS];
+    }
   }
 
   // ===== FILTER BAR =====
@@ -2043,7 +2478,6 @@ testSupabaseConnection();
       `<button class="filter-btn ${c === currentFilter ? 'active' : ''}" onclick="setFilter('${c}')">${c}</button>`
     ).join('');
   }
-
   function setFilter(cat) {
     currentFilter = cat;
     buildFilterBar();
@@ -2051,12 +2485,9 @@ testSupabaseConnection();
     sounds.click();
   }
 
-  // ===== RENDER PRODUCTS =====
   function renderProducts() {
     let list = [...products];
-
     if (currentFilter !== 'All') list = list.filter(p => p.cat === currentFilter);
-
     if (currentSearch) {
       const q = currentSearch.toLowerCase();
       list = list.filter(p =>
@@ -2065,23 +2496,21 @@ testSupabaseConnection();
         p.cat.toLowerCase().includes(q)
       );
     }
-
     if (currentSort === 'price-low') list.sort((a, b) => a.price - b.price);
     else if (currentSort === 'price-high') list.sort((a, b) => b.price - a.price);
     else if (currentSort === 'rating') list.sort((a, b) => b.rating - a.rating);
     else if (currentSort === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
 
     const grid = document.getElementById('productGrid');
-
     if (list.length === 0) {
       grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#888;">
         <div style="font-size:4rem;animation:emptyBounce 2s infinite;">🔍</div>
         <h3 style="font-family:'Bangers';margin-top:15px;">No products found!</h3>
-        <p>Try a different search or filter 😅</p>
+        <p>Try clearing search or filter</p>
+        <button onclick="resetFilters()" style="margin-top:15px;padding:10px 25px;background:var(--yellow);border:3px solid var(--ink);border-radius:12px;font-family:'Bangers';font-size:1rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink);">🔄 RESET FILTERS</button>
       </div>`;
       return;
     }
-
     grid.innerHTML = list.map(p => `
       <div class="product-card visible">
         ${p.stock <= 5 ? `<div class="stock-tag">Only ${p.stock} left!</div>` : ''}
@@ -2103,28 +2532,29 @@ testSupabaseConnection();
     `).join('');
   }
 
+  function resetFilters() {
+    currentFilter = 'All';
+    currentSearch = '';
+    currentSort = 'default';
+    document.getElementById('searchInput').value = '';
+    document.getElementById('sortSelect').value = 'default';
+    buildFilterBar();
+    renderProducts();
+    showToast('🔄 Filters reset!');
+  }
+
   function filterProducts() {
     currentSearch = document.getElementById('searchInput').value;
     currentSort = document.getElementById('sortSelect').value;
     renderProducts();
   }
 
-  // ===== WISHLIST =====
   function toggleWishlist(id, e) {
     if (e) e.stopPropagation();
     const idx = wishlist.indexOf(id);
-    if (idx > -1) {
-      wishlist.splice(idx, 1);
-      sounds.error();
-      showToast('💔 Removed from wishlist');
-    } else {
-      wishlist.push(id);
-      sounds.pop();
-      showToast('❤️ Added to wishlist!');
-    }
-    saveAll();
-    updateBadges();
-    renderProducts();
+    if (idx > -1) { wishlist.splice(idx, 1); sounds.error(); showToast('💔 Removed'); }
+    else { wishlist.push(id); sounds.pop(); showToast('❤️ Wishlisted!'); }
+    saveAll(); updateBadges(); renderProducts();
   }
 
   function updateBadges() {
@@ -2141,14 +2571,13 @@ testSupabaseConnection();
         <div class="empty-orders">
           <div class="empty-emoji">💔</div>
           <p style="font-size:1.2rem;font-weight:700;">Nothing here yet!</p>
-          <p>Tap hearts on products you love 😍</p>
         </div>
       `;
     } else {
       const items = wishlist.map(id => products.find(p => p.id === id)).filter(Boolean);
       content.innerHTML = `
         <h2>❤️ WISHLIST</h2>
-        <p class="modal-sub">${items.length} thing${items.length > 1 ? 's' : ''} you want (but don't need)</p>
+        <p class="modal-sub">${items.length} thing${items.length > 1 ? 's' : ''}</p>
         ${items.map(p => `
           <div class="checkout-product">
             <div class="cp-emoji">${p.emoji}</div>
@@ -2173,7 +2602,6 @@ testSupabaseConnection();
     document.body.style.overflow = '';
   }
 
-  // ===== QUICK VIEW =====
   function openQuickView(id) {
     const p = products.find(x => x.id === id);
     if (!p) return;
@@ -2185,7 +2613,7 @@ testSupabaseConnection();
         <div class="quick-view-desc">${p.desc}</div>
         <div class="product-price" style="font-size:2rem;margin-bottom:15px;"><span class="old">$${p.old}</span>$${p.price}</div>
         <div style="background:var(--yellow);padding:8px;border:2px solid var(--ink);border-radius:8px;margin-bottom:15px;font-weight:700;font-size:0.85rem;">
-          📦 ${p.stock} in stock · Category: ${p.cat}
+          📦 ${p.stock} in stock · ${p.cat}
         </div>
         <div style="display:flex;gap:8px;flex-direction:column;">
           <button class="add-btn" onclick="addToCart(${p.id});closeQuickView();">ADD TO CART 🛒</button>
@@ -2204,7 +2632,6 @@ testSupabaseConnection();
     document.body.style.overflow = '';
   }
 
-  // ===== RENDER REVIEWS =====
   function renderReviews() {
     document.getElementById('reviewGrid').innerHTML = reviews.map(r => `
       <div class="review-card">
@@ -2215,41 +2642,38 @@ testSupabaseConnection();
     `).join('');
   }
 
-  // ===== CART =====
   function addToCart(id) {
     const existing = cart.find(item => item.id === id);
     if (existing) existing.qty++;
     else cart.push({ id, qty: 1 });
     const product = products.find(p => p.id === id);
+    if (!product) return;
     const jokes = [
-      `😂 ${product.name} added! (You'll regret this)`,
-      `💸 Cha-ching! ${product.name} is yours!`,
-      `🤡 Excellent choice, fellow clown!`,
-      `🎉 ${product.name} added! Your wallet is crying.`,
-      `😎 ${product.name} in cart! No refunds!`,
-      `🦆 ${product.name} added! Quack!`,
+      `😂 ${product.name} added!`,
+      `💸 Cha-ching! ${product.name}!`,
+      `🤡 Great choice!`,
+      `🎉 ${product.name} added!`,
+      `😎 No refunds!`,
     ];
     showToast(jokes[Math.floor(Math.random() * jokes.length)]);
     sounds.pop();
     updateAll();
     bumpCartButton();
   }
-
   function buyNow(id) {
     const product = products.find(p => p.id === id);
+    if (!product) return;
     buyNowItem = { ...product, qty: 1 };
     sounds.cash();
     openCheckout(true);
-    showToast(`⚡ Buying ${product.name} instantly!`);
+    showToast(`⚡ Buying ${product.name}!`);
   }
-
   function removeFromCart(id) {
     cart = cart.filter(item => item.id !== id);
     sounds.error();
     updateAll();
-    showToast('🗑️ Removed! Wise choice.');
+    showToast('🗑️ Removed!');
   }
-
   function changeQty(id, delta) {
     const item = cart.find(i => i.id === id);
     if (!item) return;
@@ -2261,7 +2685,7 @@ testSupabaseConnection();
   function calculateTotals() {
     const subtotal = cart.reduce((sum, item) => {
       const p = products.find(x => x.id === item.id);
-      return sum + p.price * item.qty;
+      return p ? sum + p.price * item.qty : sum;
     }, 0);
     let discount = 0;
     if (appliedPromo) {
@@ -2272,30 +2696,19 @@ testSupabaseConnection();
     return { subtotal, discount, total: Math.max(0, subtotal - discount) };
   }
 
-  function updateAll() {
-    updateCartUI();
-    updateShippingBar();
-    updateBadges();
-    saveAll();
-  }
+  function updateAll() { updateCartUI(); updateShippingBar(); updateBadges(); saveAll(); }
 
   function updateCartUI() {
     const cartBody = document.getElementById('cartBody');
     const cartFooter = document.getElementById('cartFooter');
     if (cart.length === 0) {
-      cartBody.innerHTML = `
-        <div class="cart-empty">
-          <div class="empty-emoji">🛒</div>
-          <h3>Your cart is empty</h3>
-          <p>Go buy some useless stuff! 😂</p>
-        </div>
-      `;
+      cartBody.innerHTML = `<div class="cart-empty"><div class="empty-emoji">🛒</div><h3>Cart is empty</h3><p>Go buy stuff! 😂</p></div>`;
       cartFooter.style.display = 'none';
       return;
     }
-
     cartBody.innerHTML = cart.map(item => {
       const p = products.find(x => x.id === item.id);
+      if (!p) return '';
       return `
         <div class="cart-item">
           <div class="cart-item-emoji">${p.emoji}</div>
@@ -2312,16 +2725,10 @@ testSupabaseConnection();
         </div>
       `;
     }).join('');
-
     const { subtotal, discount, total } = calculateTotals();
     if (appliedPromo) {
       document.getElementById('promoBox').style.display = 'none';
-      document.getElementById('promoApplied').innerHTML = `
-        <div class="promo-applied">
-          <span>🎟️ ${appliedPromo.desc}</span>
-          <button onclick="removePromo()">✕</button>
-        </div>
-      `;
+      document.getElementById('promoApplied').innerHTML = `<div class="promo-applied"><span>🎟️ ${appliedPromo.desc}</span><button onclick="removePromo()">✕</button></div>`;
       document.getElementById('cartDiscount').style.display = 'flex';
       document.getElementById('discountValue').textContent = '-$' + discount.toFixed(2);
     } else {
@@ -2358,15 +2765,14 @@ testSupabaseConnection();
     if (promoCodes[code]) {
       appliedPromo = { code, ...promoCodes[code] };
       input.value = '';
-      showToast(`🎟️ Promo "${code}" applied!`);
+      showToast(`🎟️ "${code}" applied!`);
       sounds.win();
       updateAll();
     } else {
-      showToast('❌ Invalid! Try LOL50, FREESTUFF, BROKE, MEME, NICE, GG, SLOT, WHEEL, DAILY');
+      showToast('❌ Invalid! Try LOL50, FREESTUFF, DAILY...');
       sounds.error();
     }
   }
-
   function removePromo() {
     appliedPromo = null;
     showToast('🎟️ Promo removed');
@@ -2392,21 +2798,18 @@ testSupabaseConnection();
     btn.classList.add('bump');
   }
 
-  // ===== CHECKOUT =====
   function openCheckout(isBuyNow = false) {
     const content = document.getElementById('checkoutContent');
     let items, total, discount = 0;
     if (isBuyNow && buyNowItem) {
-      items = [{ ...buyNowItem }];
-      total = buyNowItem.price;
+      items = [{ ...buyNowItem }]; total = buyNowItem.price;
     } else {
       items = cart.map(item => {
         const p = products.find(x => x.id === item.id);
-        return { ...p, qty: item.qty };
-      });
+        return p ? { ...p, qty: item.qty } : null;
+      }).filter(Boolean);
       const totals = calculateTotals();
-      total = totals.total;
-      discount = totals.discount;
+      total = totals.total; discount = totals.discount;
     }
     if (items.length === 0) return;
 
@@ -2422,7 +2825,7 @@ testSupabaseConnection();
 
     content.innerHTML = `
       <h2>💳 CHECKOUT</h2>
-      <p class="modal-sub">${isBuyNow ? '⚡ Instant Buy!' : '🎉 Questionable choices ahead!'}</p>
+      <p class="modal-sub">${isBuyNow ? '⚡ Instant!' : '🎉 Questionable choices!'}</p>
       ${itemsHTML}
       <form onsubmit="placeOrder(event, ${isBuyNow})">
         <div class="form-group">
@@ -2434,36 +2837,32 @@ testSupabaseConnection();
           <input type="email" placeholder="your@email.com" required value="${user ? user.email : ''}">
         </div>
         <div class="form-group">
-          <label>🏠 Address (for delivery)</label>
-          <textarea placeholder="Where should we send your regrets?" rows="2" required style="min-height:60px;"></textarea>
+          <label>🏠 Address</label>
+          <textarea placeholder="Where should we send regrets?" rows="2" required style="min-height:60px;"></textarea>
         </div>
         <div class="form-group">
-          <label>📅 Delivery Date</label>
+          <label>📅 Delivery</label>
           <select required>
-            <option value="">Choose when</option>
+            <option value="">Choose</option>
             <option value="now">Now (impossible)</option>
             <option value="tomorrow">Tomorrow (maybe)</option>
             <option value="week">Next week (probably)</option>
-            <option value="never">Never (most likely)</option>
+            <option value="never">Never (likely)</option>
           </select>
         </div>
         <div class="form-group">
           <label>💳 Payment</label>
           <select required>
             <option value="">-- Choose --</option>
-            <option>💳 Credit Card (Won't Work)</option>
+            <option>💳 Credit Card</option>
             <option>💵 Cash (LOL)</option>
             <option>🎲 Monopoly Money</option>
-            <option>🫘 Your Kidney</option>
-            <option>👻 Your Soul</option>
+            <option>🫘 Kidney</option>
+            <option>👻 Soul</option>
           </select>
         </div>
-        <label class="checkbox-group">
-          <input type="checkbox" id="giftWrap"> 🎁 Gift Wrap (+$5) — someone special deserves this garbage
-        </label>
-        <label class="checkbox-group">
-          <input type="checkbox" id="tipDriver"> 💰 Tip Delivery Guy (+$3) — he's seen things
-        </label>
+        <label class="checkbox-group"><input type="checkbox" id="giftWrap"> 🎁 Gift Wrap (+$5)</label>
+        <label class="checkbox-group"><input type="checkbox" id="tipDriver"> 💰 Tip Driver (+$3)</label>
         ${discount > 0 ? `<div class="cart-discount" style="margin-bottom:10px;"><span>DISCOUNT:</span><span>-$' + discount.toFixed(2) + '</span></div>` : ''}
         <div class="modal-total">
           <span>TOTAL:</span>
@@ -2477,7 +2876,6 @@ testSupabaseConnection();
     document.body.style.overflow = 'hidden';
     sounds.click();
 
-    // Gift wrap / tip handlers
     setTimeout(() => {
       const gw = document.getElementById('giftWrap');
       const td = document.getElementById('tipDriver');
@@ -2513,12 +2911,16 @@ testSupabaseConnection();
     } else {
       items = cart.map(item => {
         const p = products.find(x => x.id === item.id);
-        return { id: p.id, name: p.name, emoji: p.emoji, qty: item.qty, price: p.price };
-      });
+        return p ? { id: p.id, name: p.name, emoji: p.emoji, qty: item.qty, price: p.price } : null;
+      }).filter(Boolean);
       total = calculateTotals().total + giftWrap + tip;
     }
 
-    // Add loyalty points (1 per $10)
+    items.forEach(it => {
+      const p = products.find(x => x.id === it.id);
+      if (p) p.stock = Math.max(0, p.stock - it.qty);
+    });
+
     const pointsEarned = Math.floor(total / 10);
     loyaltyPoints += pointsEarned;
 
@@ -2530,10 +2932,9 @@ testSupabaseConnection();
 
     const messages = [
       "Your money is gone. Item is... somewhere.",
-      "Order placed! We'll ship whenever. 😴",
+      "Order placed! Ship whenever. 😴",
       "Success! Wallet emptied. 🤑",
       "Congrats! You bought garbage. 🗑️",
-      "We're as surprised as you are. 😲",
     ];
 
     document.getElementById('checkoutContent').innerHTML = `
@@ -2542,26 +2943,23 @@ testSupabaseConnection();
         <h2>ORDER PLACED!</h2>
         <p>${messages[Math.floor(Math.random() * messages.length)]}</p>
         <div class="order-id">ORDER ID: ${orderId}</div>
-        <p style="color:var(--purple);font-weight:800;font-size:1rem;">⭐ +${pointsEarned} loyalty points!</p>
+        <p style="color:var(--purple);font-weight:800;">⭐ +${pointsEarned} points!</p>
         <button class="place-order-btn" onclick="finishOrder(${isBuyNow})">AWESOME! 🎊</button>
       </div>
     `;
     updateBadges();
+    renderProducts();
   }
 
   function finishOrder(isBuyNow) {
-    if (!isBuyNow) {
-      cart = [];
-      appliedPromo = null;
-    }
+    if (!isBuyNow) { cart = []; appliedPromo = null; }
     buyNowItem = null;
     updateAll();
     closeCheckout();
     closeCart();
-    showToast('✅ Thanks for shopping! 😂');
+    showToast('✅ Thanks! 😂');
   }
 
-  // ===== REVIEW SYSTEM =====
   function openReview(productId) {
     currentReviewProduct = products.find(p => p.id === productId);
     currentRating = 0;
@@ -2575,11 +2973,11 @@ testSupabaseConnection();
         </div>
       </div>
       <div class="form-group">
-        <label>👤 Your Name</label>
+        <label>👤 Name</label>
         <input type="text" id="reviewName" placeholder="Honest Hank" required>
       </div>
       <div class="form-group">
-        <label>💬 Your Review</label>
+        <label>💬 Review</label>
         <textarea class="review-textarea" id="reviewText" placeholder="Be brutally honest" required></textarea>
       </div>
       <button class="place-order-btn" onclick="submitReview()">SUBMIT 📝</button>
@@ -2606,9 +3004,7 @@ testSupabaseConnection();
       return;
     }
     reviews.unshift({ id: 'r' + Date.now(), name, text, stars: currentRating });
-    saveAll();
-    renderReviews();
-    closeReview();
+    saveAll(); renderReviews(); closeReview();
     showToast('📝 Review submitted!');
     sounds.win();
     for (let i = 0; i < 30; i++) setTimeout(spawnConfetti, i * 15);
@@ -2619,22 +3015,14 @@ testSupabaseConnection();
     document.body.style.overflow = '';
   }
 
-  // ===== HISTORY =====
   function openHistory() {
     const content = document.getElementById('historyContent');
     if (orders.length === 0) {
-      content.innerHTML = `
-        <h2>📦 ORDER HISTORY</h2>
-        <div class="empty-orders">
-          <div class="empty-emoji">📭</div>
-          <p style="font-size:1.2rem;font-weight:700;">No orders yet!</p>
-          <p style="margin-top:8px;">Go waste some money! 😂</p>
-        </div>
-      `;
+      content.innerHTML = `<h2>📦 ORDER HISTORY</h2><div class="empty-orders"><div class="empty-emoji">📭</div><p style="font-size:1.2rem;font-weight:700;">No orders yet!</p></div>`;
     } else {
       content.innerHTML = `
         <h2>📦 ORDER HISTORY</h2>
-        <p class="modal-sub">${orders.length} order${orders.length > 1 ? 's' : ''} of regrets</p>
+        <p class="modal-sub">${orders.length} order${orders.length > 1 ? 's' : ''}</p>
         <div class="orders-list">
           ${orders.map(o => `
             <div class="order-card">
@@ -2645,8 +3033,6 @@ testSupabaseConnection();
               <div class="order-items">
                 ${o.items.map(it => `<span class="order-item-tag">${it.emoji} ${it.name} × ${it.qty}</span>`).join('')}
               </div>
-              ${o.giftWrap ? '<p style="font-size:0.85rem;font-weight:700;color:var(--purple);">🎁 Gift wrapped (+$5)</p>' : ''}
-              ${o.tip ? '<p style="font-size:0.85rem;font-weight:700;color:var(--green);">💰 Delivery guy tipped (+$3)</p>' : ''}
               <div class="order-tracker">
                 <div class="track-step done">✓ Placed</div>
                 <div class="track-step done">📦 Packed</div>
@@ -2670,15 +3056,12 @@ testSupabaseConnection();
   }
   function clearHistory() {
     if (confirm('Delete all regrets? 😢')) {
-      orders = [];
-      saveAll();
-      closeHistory();
-      showToast('🗑️ History cleared!');
+      orders = []; saveAll(); closeHistory();
+      showToast('🗑️ Cleared!');
       sounds.error();
     }
   }
 
-  // ===== WHEEL =====
   function buildWheel() {
     const wheel = document.getElementById('wheelEl');
     const segments = ['50%', '$10', '10%', '$5', 'FREE', '$20', '25%', 'NOPE'];
@@ -2701,7 +3084,7 @@ testSupabaseConnection();
 
   function spinWheel() {
     if (wheelSpun) {
-      showToast('🎡 Already spun! Refresh to reset 😜');
+      showToast('🎡 Already spun! Refresh 😜');
       sounds.error();
       return;
     }
@@ -2710,81 +3093,66 @@ testSupabaseConnection();
     const prizeIdx = Math.floor(Math.random() * segments.length);
     wheel.style.transform = `rotate(${360 * 5 + (360 - (prizeIdx * 45 + 22.5))}deg)`;
     document.getElementById('spinBtn').disabled = true;
-    wheelSpun = true;
-    saveAll();
-    sounds.spin();
+    wheelSpun = true; saveAll(); sounds.spin();
     setTimeout(() => {
       const prize = segments[prizeIdx];
       if (prize === 'NOPE') { showToast('😂 NOPE!'); sounds.error(); }
-      else if (prize === 'FREE') { showToast('🎉 FREE STUFF! Use FREESTUFF'); sounds.win(); }
+      else if (prize === 'FREE') { showToast('🎉 FREE! Use FREESTUFF'); sounds.win(); }
       else if (prize.startsWith('$')) { showToast(`🎉 ${prize} off! Use MEME!`); sounds.win(); }
       else { showToast(`🎉 ${prize} OFF! Use LOL50!`); sounds.win(); }
       for (let i = 0; i < 50; i++) setTimeout(spawnConfetti, i * 15);
     }, 4100);
   }
 
-  // ===== SLOTS =====
   const slotEmojis = ['🍒', '🍋', '⭐', '💎', '🔔', '🍀', '💰', '🎁'];
   function randomEmoji() { return slotEmojis[Math.floor(Math.random() * slotEmojis.length)]; }
 
   function spinSlots() {
     const btn = document.getElementById('slotSpinBtn');
     const result = document.getElementById('slotResult');
-    btn.disabled = true;
-    slotSpins++;
+    btn.disabled = true; slotSpins++;
     const reels = [document.getElementById('reel1'), document.getElementById('reel2'), document.getElementById('reel3')];
     sounds.spin();
-
     const intervals = reels.map((reel, idx) => setInterval(() => { reel.textContent = randomEmoji(); }, 50 + idx * 20));
     const final = [randomEmoji(), randomEmoji(), randomEmoji()];
-
     setTimeout(() => { clearInterval(intervals[0]); reels[0].textContent = final[0]; playTone(500, 0.1, 'square'); }, 1000);
     setTimeout(() => { clearInterval(intervals[1]); reels[1].textContent = final[1]; playTone(600, 0.1, 'square'); }, 1500);
     setTimeout(() => {
       clearInterval(intervals[2]); reels[2].textContent = final[2]; playTone(700, 0.1, 'square');
       const [a, b, c] = final;
       if (a === b && b === c) {
-        result.innerHTML = `🎉 <span style="color:var(--green);font-size:1.4rem;">JACKPOT!</span> Use <b>SLOT</b> for 30% off!`;
-        sounds.win();
-        for (let i = 0; i < 80; i++) setTimeout(spawnConfetti, i * 12);
-        showToast('🎰 JACKPOT! Use SLOT!');
+        result.innerHTML = `🎉 <span style="color:var(--green);font-size:1.4rem;">JACKPOT!</span> Use SLOT for 30% off!`;
+        sounds.win(); for (let i = 0; i < 80; i++) setTimeout(spawnConfetti, i * 12);
+        showToast('🎰 JACKPOT!');
       } else if (a === b || b === c || a === c) {
-        result.innerHTML = `😊 Two match! Use <b>WHEEL</b> for 40% off!`;
-        sounds.cash();
-        for (let i = 0; i < 30; i++) setTimeout(spawnConfetti, i * 20);
+        result.innerHTML = `😊 Two match! Use WHEEL for 40% off!`;
+        sounds.cash(); for (let i = 0; i < 30; i++) setTimeout(spawnConfetti, i * 20);
       } else {
-        result.innerHTML = `😢 No match. Try again! (${slotSpins} spin${slotSpins > 1 ? 's' : ''})`;
+        result.innerHTML = `😢 No match. (${slotSpins} spin${slotSpins > 1 ? 's' : ''})`;
         sounds.error();
       }
       btn.disabled = false;
     }, 2000);
   }
 
-  // ===== DAILY BONUS =====
   function claimDailyBonus() {
-    if (dailyClaimed) {
-      showToast('🎁 Already claimed today! Come back tomorrow 😴');
-      sounds.error();
-      return;
-    }
+    if (dailyClaimed) { showToast('🎁 Already claimed!'); sounds.error(); return; }
     dailyClaimed = true;
     loyaltyPoints += 10;
     savedCoupons.push({ code: 'DAILY', desc: '$15 off — daily bonus' });
-    saveAll();
-    updateBadges();
+    saveAll(); updateBadges();
     document.getElementById('dailyBonus').classList.add('claimed');
     document.getElementById('dailyBonus').textContent = '✅ Claimed!';
-    showToast('🎁 +10 pts & DAILY coupon saved!');
+    showToast('🎁 +10 pts & DAILY coupon!');
     sounds.win();
     for (let i = 0; i < 50; i++) setTimeout(spawnConfetti, i * 12);
   }
 
-  // ===== LOGIN =====
   function openLogin() {
     document.getElementById('loginContent').innerHTML = `
       <h2>👤 ${user ? 'ACCOUNT' : 'LOGIN'}</h2>
       ${user ? `
-        <p class="modal-sub">Welcome back, ${user.name}!</p>
+        <p class="modal-sub">Welcome, ${user.name}!</p>
         <div style="text-align:center;padding:20px;">
           <div style="font-size:4rem;">😎</div>
           <h3 style="font-family:'Bangers';margin:10px 0;">${user.name}</h3>
@@ -2793,15 +3161,9 @@ testSupabaseConnection();
         </div>
         <button class="place-order-btn" style="background:var(--red);" onclick="logout()">LOGOUT 👋</button>
       ` : `
-        <p class="modal-sub">Sign in to save your progress (fake but works!)</p>
-        <div class="form-group">
-          <label>👤 Name</label>
-          <input type="text" id="loginName" placeholder="Your name (or fake one)" required>
-        </div>
-        <div class="form-group">
-          <label>📧 Email</label>
-          <input type="email" id="loginEmail" placeholder="your@email.com" required>
-        </div>
+        <p class="modal-sub">Sign in (fake but works!)</p>
+        <div class="form-group"><label>👤 Name</label><input type="text" id="loginName" placeholder="Your name" required></div>
+        <div class="form-group"><label>📧 Email</label><input type="email" id="loginEmail" placeholder="your@email.com" required></div>
         <button class="place-order-btn" onclick="doLogin()">LOGIN 🚀</button>
       `}
     `;
@@ -2812,32 +3174,29 @@ testSupabaseConnection();
   function doLogin() {
     const name = document.getElementById('loginName').value.trim();
     const email = document.getElementById('loginEmail').value.trim();
-    if (!name || !email) { showToast('⚠️ Fill both fields!'); sounds.error(); return; }
+    if (!name || !email) { showToast('⚠️ Fill both!'); sounds.error(); return; }
     user = { name, email };
-    saveAll();
-    closeLogin();
+    if (!allUsers.find(u => u.email === email)) {
+      allUsers.push({ name, email, joined: new Date().toLocaleDateString(), orders: orders.length });
+    }
+    saveAll(); closeLogin();
     showToast(`👋 Welcome, ${name}!`);
     sounds.win();
   }
   function logout() {
-    user = null;
-    saveAll();
-    closeLogin();
-    showToast('👋 Logged out!');
-    sounds.click();
+    user = null; saveAll(); closeLogin();
+    showToast('👋 Logged out!'); sounds.click();
   }
   function closeLogin() {
     document.getElementById('loginOverlay').classList.remove('active');
     document.body.style.overflow = '';
   }
 
-  // ===== COUPON WALLET =====
   function openWallet() {
     const content = document.getElementById('walletContent');
     const allCoupons = Object.entries(promoCodes).map(([code, info]) => ({ code, ...info }));
     content.innerHTML = `
-      <h2>🎫 COUPON WALLET</h2>
-      <p class="modal-sub">Your saved coupons + available codes</p>
+      <h2>🎫 WALLET</h2>
       ${savedCoupons.length > 0 ? `
         <h3 style="font-family:'Bangers';font-size:1.1rem;margin:10px 0;color:var(--green);">✨ YOUR SAVED</h3>
         <div class="coupon-list" style="margin-bottom:20px;">
@@ -2852,7 +3211,7 @@ testSupabaseConnection();
           `).join('')}
         </div>
       ` : ''}
-      <h3 style="font-family:'Bangers';font-size:1.1rem;margin:10px 0;">🎁 AVAILABLE CODES</h3>
+      <h3 style="font-family:'Bangers';font-size:1.1rem;margin:10px 0;">🎁 ALL CODES</h3>
       <div class="coupon-list">
         ${allCoupons.map(c => `
           <div class="coupon-card" style="background:linear-gradient(135deg,var(--blue),var(--purple));">
@@ -2872,9 +3231,7 @@ testSupabaseConnection();
   function useCoupon(code) {
     if (promoCodes[code]) {
       appliedPromo = { code, ...promoCodes[code] };
-      saveAll();
-      updateAll();
-      closeWallet();
+      saveAll(); updateAll(); closeWallet();
       showToast(`🎟️ ${code} applied!`);
       sounds.win();
     }
@@ -2884,7 +3241,6 @@ testSupabaseConnection();
     document.body.style.overflow = '';
   }
 
-  // ===== CHAT BOT =====
   let chatOpen = false;
   function toggleChat() {
     chatOpen = !chatOpen;
@@ -2899,14 +3255,13 @@ testSupabaseConnection();
     input.value = '';
     const replies = [
       "That's a great question! I have no idea. 😅",
-      "Have you tried buying something? That usually helps. 💸",
+      "Have you tried buying something? That helps. 💸",
       "Our CEO (a cat) says: meow. 🐱",
-      "Try code LOL50 for 50% off. You're welcome! 🎟️",
-      "Refunds? Hahahaha. No. 😂",
-      "Sir, this is a website. 🏪",
-      "Buy the brick. It's worth it. Trust me. 🧱",
-      "I'm just a bot. I don't get paid enough for this. 🤖",
-      "Check out the slot machine! You might win nothing! 🎰",
+      "Try LOL50 for 50% off! 🎟️",
+      "Refunds? Hahaha. No. 😂",
+      "Buy the brick. Trust me. 🧱",
+      "I'm just a bot. I don't get paid enough. 🤖",
+      "Check out the slots! 🎰",
       "Your cart is judging you. 👀",
     ];
     setTimeout(() => {
@@ -2916,14 +3271,13 @@ testSupabaseConnection();
   }
   function addChatMsg(text, type) {
     const body = document.getElementById('chatBody');
-    const msg = document.createElement('div');
-    msg.className = 'chat-msg ' + type;
-    msg.textContent = text;
-    body.appendChild(msg);
+    const m = document.createElement('div');
+    m.className = 'chat-msg ' + type;
+    m.textContent = text;
+    body.appendChild(m);
     body.scrollTop = body.scrollHeight;
   }
 
-  // ===== WELCOME POPUP =====
   function closeWelcome() {
     document.getElementById('welcomePopup').classList.remove('show');
     localStorage.setItem('lolmart_welcomed', '1');
@@ -2931,23 +3285,19 @@ testSupabaseConnection();
   }
   function showWelcome() {
     if (!localStorage.getItem('lolmart_welcomed')) {
-      setTimeout(() => {
-        document.getElementById('welcomePopup').classList.add('show');
-      }, 1500);
+      setTimeout(() => document.getElementById('welcomePopup').classList.add('show'), 1500);
     }
   }
 
-  // ===== TOAST =====
   let toastTimer;
   function showToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.classList.add('show');
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
   }
 
-  // ===== SCROLL REVEAL =====
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add('active', 'visible');
@@ -2955,12 +3305,10 @@ testSupabaseConnection();
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal, .product-card').forEach(el => observer.observe(el));
 
-  // ===== BACK TO TOP =====
   window.addEventListener('scroll', () => {
     document.getElementById('backTop').classList.toggle('show', window.scrollY > 500);
   });
 
-  // ===== SPARKLE =====
   let lastSparkle = 0;
   document.addEventListener('mousemove', (e) => {
     const now = Date.now();
@@ -2975,7 +3323,6 @@ testSupabaseConnection();
     setTimeout(() => s.remove(), 600);
   });
 
-  // ===== CONFETTI =====
   function spawnConfetti() {
     const c = document.createElement('div');
     c.className = 'confetti';
@@ -2992,7 +3339,6 @@ testSupabaseConnection();
   }
   setInterval(spawnConfetti, 500);
 
-  // ===== EMOJI BURST =====
   document.addEventListener('click', (e) => {
     if (e.target.closest('.add-btn') || e.target.closest('.buy-now-btn')) {
       for (let i = 0; i < 8; i++) {
@@ -3010,15 +3356,14 @@ testSupabaseConnection();
     }
   });
 
-  // ===== ESC =====
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeCheckout(); closeCart(); closeReview(); closeHistory();
       closeWishlist(); closeQuickView(); closeLogin(); closeWallet();
+      closeAdminLogin(); closeAdminProductModal();
     }
   });
 
-  // ===== CAT & DOG =====
   function spawnCatAndDog() {
     const chase = Math.random() > 0.5;
     const cat = document.createElement('div');
@@ -3046,8 +3391,606 @@ testSupabaseConnection();
   setInterval(() => { if (Math.random() > 0.5) spawnCatAndDog(); }, 15000);
   setTimeout(spawnCatAndDog, 6000);
 
-  // ===== INIT =====
+  function openAdmin() {
+    if (adminUnlocked) {
+      document.getElementById('adminPanel').classList.add('active');
+      renderAdmin();
+      document.body.style.overflow = 'hidden';
+      return;
+    }
+    document.getElementById('adminLoginOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('adminPassword').focus(), 100);
+    sounds.click();
+  }
+  function closeAdminLogin() {
+    document.getElementById('adminLoginOverlay').classList.remove('active');
+    document.getElementById('adminPassword').value = '';
+  }
+  function verifyAdmin() {
+    const pw = document.getElementById('adminPassword').value;
+    if (pw === '9984') {
+      adminUnlocked = true;
+      closeAdminLogin();
+      document.getElementById('adminPanel').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      renderAdmin();
+      sounds.win();
+      showToast('🔓 Admin unlocked!');
+    } else {
+      sounds.error();
+      showToast('❌ Wrong password! Hint: 1234');
+      document.getElementById('adminPassword').value = '';
+    }
+  }
+  function closeAdmin() {
+    document.getElementById('adminPanel').classList.remove('active');
+    document.body.style.overflow = '';
+    sounds.click();
+  }
+
+  function showAdminTab(tab, btn) {
+    document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('admin' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+    sounds.click();
+    renderAdmin();
+  }
+
+  function renderAdmin() {
+    const totalRevenue = orders.reduce((s, o) => s + o.total, 0);
+    const totalOrders = orders.length;
+    const totalProducts = products.length;
+    const totalReviews = reviews.length;
+    const totalUsers = allUsers.length;
+    const avgOrder = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+
+    document.getElementById('adminOverview').innerHTML = `
+      <div class="admin-stats">
+        <div class="admin-stat"><div class="admin-stat-icon">💰</div><div class="admin-stat-value">$${totalRevenue.toFixed(2)}</div><div class="admin-stat-label">REVENUE</div></div>
+        <div class="admin-stat"><div class="admin-stat-icon">📦</div><div class="admin-stat-value">${totalOrders}</div><div class="admin-stat-label">ORDERS</div></div>
+        <div class="admin-stat"><div class="admin-stat-icon">🛍️</div><div class="admin-stat-value">${totalProducts}</div><div class="admin-stat-label">PRODUCTS</div></div>
+        <div class="admin-stat"><div class="admin-stat-icon">💬</div><div class="admin-stat-value">${totalReviews}</div><div class="admin-stat-label">REVIEWS</div></div>
+        <div class="admin-stat"><div class="admin-stat-icon">👤</div><div class="admin-stat-value">${totalUsers}</div><div class="admin-stat-label">USERS</div></div>
+        <div class="admin-stat"><div class="admin-stat-icon">📊</div><div class="admin-stat-value">$${avgOrder.toFixed(0)}</div><div class="admin-stat-label">AVG ORDER</div></div>
+      </div>
+      <div class="admin-card">
+        <h2>📊 Quick Actions</h2>
+        <button class="admin-action-btn aab-reset" onclick="exportData()">💾 EXPORT DATA</button>
+        <button class="admin-action-btn" style="background:var(--red);color:#fff;padding:10px 20px;font-size:0.95rem;" onclick="resetAdminData()">🔄 RESET ALL</button>
+      </div>
+    `;
+
+    document.getElementById('adminProducts').innerHTML = `
+      <div class="admin-card">
+        <h2>🛍️ Manage Products</h2>
+        <button class="admin-action-btn aab-add" onclick="openAdminProductModal()">+ ADD NEW PRODUCT</button>
+        <div style="overflow-x:auto;">
+          <table class="admin-table">
+            <thead><tr><th>Emoji</th><th>Name</th><th>Price</th><th>Stock</th><th>Category</th><th>Actions</th></tr></thead>
+            <tbody>
+              ${products.map(p => `
+                <tr>
+                  <td style="font-size:1.5rem;">${p.emoji}</td>
+                  <td>${p.name}</td>
+                  <td>$${p.price}</td>
+                  <td>${p.stock}</td>
+                  <td>${p.cat}</td>
+                  <td>
+                    <button class="admin-action-btn aab-edit" onclick="openAdminProductModal(${p.id})">✏️ Edit</button>
+                    <button class="admin-action-btn aab-delete" onclick="adminDeleteProduct(${p.id})">🗑️ Del</button>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('adminOrders').innerHTML = `
+      <div class="admin-card">
+        <h2>📦 All Orders (${orders.length})</h2>
+        ${orders.length === 0 ? '<div class="admin-empty">No orders yet 📭</div>' : `
+          <div style="overflow-x:auto;">
+            <table class="admin-table">
+              <thead><tr><th>Order ID</th><th>Date</th><th>Items</th><th>Total</th><th>Actions</th></tr></thead>
+              <tbody>
+                ${orders.map(o => `
+                  <tr>
+                    <td>${o.id}</td>
+                    <td>${o.date}</td>
+                    <td>${o.items.map(i => `${i.emoji}×${i.qty}`).join(' ')}</td>
+                    <td>$${o.total.toFixed(2)}</td>
+                    <td><button class="admin-action-btn aab-delete" onclick="adminDeleteOrder('${o.id}')">🗑️</button></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `}
+      </div>
+    `;
+
+    document.getElementById('adminReviews').innerHTML = `
+      <div class="admin-card">
+        <h2>💬 All Reviews (${reviews.length})</h2>
+        ${reviews.length === 0 ? '<div class="admin-empty">No reviews yet</div>' : `
+          ${reviews.map(r => `
+            <div style="border:3px solid var(--ink);border-radius:12px;padding:15px;margin-bottom:10px;background:#fff;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+                <strong>${r.name}</strong>
+                <div><span>${'⭐'.repeat(r.stars)}</span> <button class="admin-action-btn aab-delete" onclick="adminDeleteReview('${r.id}')">🗑️</button></div>
+              </div>
+              <p style="font-weight:700;">${r.text}</p>
+            </div>
+          `).join('')}
+        `}
+      </div>
+    `;
+
+    document.getElementById('adminUsers').innerHTML = `
+      <div class="admin-card">
+        <h2>👤 Users (${allUsers.length})</h2>
+        ${user ? `<div style="padding:10px;background:var(--yellow);border:3px solid var(--ink);border-radius:12px;margin-bottom:15px;"><strong>Current:</strong> ${user.name} (${user.email}) — ⭐${loyaltyPoints} pts</div>` : ''}
+        ${allUsers.length === 0 ? '<div class="admin-empty">No users registered</div>' : `
+          <div style="overflow-x:auto;">
+            <table class="admin-table">
+              <thead><tr><th>Name</th><th>Email</th><th>Joined</th></tr></thead>
+              <tbody>
+                ${allUsers.map(u => `<tr><td>${u.name}</td><td>${u.email}</td><td>${u.joined || 'N/A'}</td></tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        `}
+      </div>
+    `;
+
+    document.getElementById('adminSettings').innerHTML = `
+      <div class="admin-card">
+        <h2>⚙️ Site Settings</h2>
+        <ul style="font-weight:700;line-height:2;list-style:none;">
+          <li>🎨 Dark Mode: ${document.body.classList.contains('dark') ? 'ON' : 'OFF'}</li>
+          <li>🔊 Sound: ${soundEnabled ? 'ON' : 'OFF'}</li>
+          <li>🎡 Wheel Spun: ${wheelSpun ? 'YES' : 'NO'}</li>
+          <li>🎁 Daily Claimed: ${dailyClaimed ? 'YES' : 'NO'}</li>
+          <li>❤️ Wishlist: ${wishlist.length}</li>
+          <li>🛒 Cart: ${cart.length}</li>
+        </ul>
+        <hr style="border:2px dashed var(--ink);margin:20px 0;">
+        <button class="admin-action-btn aab-reset" onclick="resetAdminData()">🔄 RESET EVERYTHING (KEEPS PRODUCTS)</button>
+        <button class="admin-action-btn aab-edit" onclick="exportData()" style="margin-left:10px;">💾 EXPORT</button>
+      </div>
+    `;
+  }
+
+  const EMOJI_OPTIONS = ['🍕', '🍔', '🍟', '🌮', '🍣', '🍩', '🍪', '🎂', '☕', '🍺',
+    '👕', '👖', '👟', '🧢', '🕶️', '⌚', '💍', '🎒', '💼', '👑',
+    '📱', '💻', '🎮', '🎧', '📷', '📺', '🖥️', '⌨️', '🖱️', '🎤',
+    '🧱', '🪨', '🥒', '💨', '🧦', '🍌', '🎈', '📦', '🗿', '🎪',
+    '🦄', '🐉', '👽', '🤖', '💎', '🔮', '⭐', '✨', '🎁', '🏆'];
+
+  function buildEmojiPicker() {
+    const picker = document.getElementById('adminEmojiPicker');
+    if (!picker) return;
+    picker.innerHTML = EMOJI_OPTIONS.map(e =>
+      `<button type="button" class="admin-emoji-btn" onclick="selectEmoji('${e}')">${e}</button>`
+    ).join('');
+  }
+
+  function selectEmoji(e) {
+    document.getElementById('adminPEmoji').value = e;
+    document.querySelectorAll('.admin-emoji-btn').forEach(b => {
+      b.classList.toggle('selected', b.textContent === e);
+    });
+    sounds.click();
+  }
+
+  function openAdminProductModal(productId = null) {
+    const modal = document.getElementById('adminProductModal');
+    const title = document.getElementById('adminProductModalTitle');
+
+    document.getElementById('adminEditId').value = '';
+    document.getElementById('adminPName').value = '';
+    document.getElementById('adminPDesc').value = '';
+    document.getElementById('adminPEmoji').value = '';
+    document.getElementById('adminPPrice').value = '';
+    document.getElementById('adminPOld').value = '';
+    document.getElementById('adminPStock').value = '10';
+    document.getElementById('adminPCat').value = 'Misc';
+    document.getElementById('adminPTag').value = 'NEW';
+    document.getElementById('adminPRating').value = '4.5';
+
+    if (productId) {
+      const p = products.find(x => x.id === productId);
+      if (!p) return;
+      title.textContent = '✏️ EDIT PRODUCT';
+      document.getElementById('adminEditId').value = p.id;
+      document.getElementById('adminPName').value = p.name;
+      document.getElementById('adminPDesc').value = p.desc;
+      document.getElementById('adminPEmoji').value = p.emoji;
+      document.getElementById('adminPPrice').value = p.price;
+      document.getElementById('adminPOld').value = p.old;
+      document.getElementById('adminPStock').value = p.stock;
+      document.getElementById('adminPCat').value = p.cat;
+      document.getElementById('adminPTag').value = p.tag;
+      document.getElementById('adminPRating').value = p.rating;
+    } else {
+      title.textContent = '➕ ADD PRODUCT';
+    }
+
+    buildEmojiPicker();
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    sounds.click();
+
+    setTimeout(() => {
+      const current = document.getElementById('adminPEmoji').value;
+      document.querySelectorAll('.admin-emoji-btn').forEach(b => {
+        b.classList.toggle('selected', b.textContent === current);
+      });
+    }, 50);
+  }
+
+  function closeAdminProductModal() {
+    document.getElementById('adminProductModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function saveAdminProduct() {
+    const editId = document.getElementById('adminEditId').value;
+    const name = document.getElementById('adminPName').value.trim();
+    const desc = document.getElementById('adminPDesc').value.trim() || 'No description';
+    const emoji = document.getElementById('adminPEmoji').value.trim();
+    const price = parseFloat(document.getElementById('adminPPrice').value);
+    const old = parseFloat(document.getElementById('adminPOld').value) || (price * 2);
+    const stock = parseInt(document.getElementById('adminPStock').value);
+    const cat = document.getElementById('adminPCat').value;
+    const tag = document.getElementById('adminPTag').value;
+    const rating = parseFloat(document.getElementById('adminPRating').value) || 4.5;
+
+    if (!name) { showToast('⚠️ Name required!'); sounds.error(); return; }
+    if (!emoji) { showToast('⚠️ Emoji required!'); sounds.error(); return; }
+    if (isNaN(price) || price < 0) { showToast('⚠️ Valid price required!'); sounds.error(); return; }
+    if (isNaN(stock) || stock < 0) { showToast('⚠️ Valid stock required!'); sounds.error(); return; }
+
+    if (editId) {
+      const p = products.find(x => x.id === parseInt(editId));
+      if (p) {
+        p.name = name; p.desc = desc; p.emoji = emoji;
+        p.price = price; p.old = old; p.stock = stock;
+        p.cat = cat; p.tag = tag; p.rating = rating;
+      }
+      showToast('✅ Product updated!');
+    } else {
+      const newId = products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1;
+      products.push({ id: newId, emoji, name, desc, price, old, tag, cat, rating, stock });
+      showToast('✅ Product added!');
+    }
+
+    saveAll();
+    renderAdmin();
+    renderProducts();
+    buildFilterBar();
+    closeAdminProductModal();
+    sounds.win();
+    for (let i = 0; i < 30; i++) setTimeout(spawnConfetti, i * 15);
+  }
+
+  function adminDeleteProduct(id) {
+    if (!confirm('Delete this product? 😱')) return;
+    products = products.filter(p => p.id !== id);
+    saveAll(); renderAdmin(); renderProducts(); buildFilterBar();
+    showToast('🗑️ Product deleted!');
+    sounds.error();
+  }
+
+  function adminDeleteOrder(id) {
+    if (!confirm('Delete this order?')) return;
+    orders = orders.filter(o => o.id !== id);
+    saveAll(); renderAdmin();
+    showToast('🗑️ Order deleted!');
+    sounds.error();
+  }
+
+  function adminDeleteReview(id) {
+    if (!confirm('Delete this review?')) return;
+    reviews = reviews.filter(r => r.id !== id);
+    saveAll(); renderAdmin(); renderReviews();
+    showToast('🗑️ Review deleted!');
+    sounds.error();
+  }
+
+  function resetAdminData() {
+    if (!confirm('⚠️ RESET? Cart, orders, reviews sab delete, but default products wapas aa jayenge!')) return;
+    if (!confirm('⚠️ Are you SURE?')) return;
+
+    const keys = ['lolmart_cart', 'lolmart_wishlist', 'lolmart_orders',
+                   'lolmart_reviews', 'lolmart_promo', 'lolmart_wheel',
+                   'lolmart_user', 'lolmart_points', 'lolmart_daily',
+                   'lolmart_coupons', 'lolmart_users', 'lolmart_products'];
+    keys.forEach(k => localStorage.removeItem(k));
+
+    localStorage.setItem('lolmart_products', JSON.stringify(DEFAULT_PRODUCTS));
+    localStorage.setItem('lolmart_reviews', JSON.stringify(DEFAULT_REVIEWS));
+
+    showToast('🔄 Reset complete! Reloading...');
+    setTimeout(() => location.reload(), 800);
+  }
+
+  function exportData() {
+    const data = { products, orders, reviews, cart, wishlist, user, loyaltyPoints, allUsers };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `lolmart-data-${Date.now()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('💾 Data exported!');
+    sounds.win();
+  }
+  // ===== 👻 GHOST FEATURES =====
+  
+  // Ghost visitor state
+  let ghostCount = Math.floor(Math.random() * 20) + 5;
+  let spookyMode = false;
+  
+  // Funny ghost names
+  const GHOST_NAMES = [
+    'Casper', 'Bhootnath', 'Chudail', 'Friendly Ghost', 'Scooby Doo Ghost',
+    'Pizza Ghost', 'Lonely Spirit', 'Meme Ghost', 'Broke Banshee',
+    'Grandma\'s Ghost', 'Tinder Ghost', 'DJ Bhoot', 'Sharma Ji\'s Ghost',
+    'Drama Queen', 'Netflix & Chill Ghost', 'Sleepy Spook'
+  ];
+  
+  // Funny ghost messages
+  const GHOST_MESSAGES = [
+    { emoji: '👻', msg: 'A ghost is looking at this product!', sub: 'You\'re not alone...' },
+    { emoji: '🕷️', msg: 'A ghost added this to wishlist!', sub: 'Wait, can ghosts shop?' },
+    { emoji: '🕯️', msg: 'Ghost is browsing from heaven...', sub: 'Free shipping to afterlife?' },
+    { emoji: '💀', msg: 'A ghost just checked out!', sub: 'They paid in souls 💸' },
+    { emoji: '🎃', msg: 'Spooktacular deal spotted by ghost!', sub: 'Boo-tiful choice!' },
+    { emoji: '👻', msg: 'Your cart is being haunted!', sub: 'Ghosts love useless stuff too' },
+    { emoji: '🕸️', msg: 'A ghost is watching you scroll...', sub: 'Intensely 👀' },
+    { emoji: '😱', msg: 'Ghost found a better deal somewhere', sub: 'JK, they bought it 😂' },
+    { emoji: '🦇', msg: 'Bat just flew by with your order', sub: 'Air delivery by bats 🦇' },
+    { emoji: '⚰️', msg: 'This product is dying to be bought', sub: 'Literally 💀' },
+    { emoji: '🧟', msg: 'A zombie revived to buy this!', sub: 'Braaains... and bargains' },
+    { emoji: '👽', msg: 'An alien is watching this page', sub: 'They come in peace, buy in pieces' },
+    { emoji: '🔮', msg: 'The spirits say: BUY NOW', sub: 'They also say: RIP wallet' },
+    { emoji: '🌙', msg: 'Ghost shopping at 3 AM', sub: 'Spooky hours only' },
+    { emoji: '💀', msg: 'Someone\'s dead grandma loves this', sub: 'Blessed by bhoot 👻' },
+  ];
+  
+  // Product viewer counts storage
+  const productViewers = {};
+  
+  // Update ghost counter with random fluctuation
+  function updateGhostCount() {
+    ghostCount += Math.floor(Math.random() * 5) - 2;
+    if (ghostCount < 3) ghostCount = 3 + Math.floor(Math.random() * 5);
+    if (ghostCount > 50) ghostCount = 30 + Math.floor(Math.random() * 10);
+    
+    const numEl = document.getElementById('ghostNum');
+    if (numEl) {
+      numEl.textContent = ghostCount;
+      numEl.style.transform = 'scale(1.3)';
+      setTimeout(() => numEl.style.transform = 'scale(1)', 200);
+    }
+  }
+  
+  // Show ghost info popup
+  function showGhostInfo() {
+    const info = [
+      '👻 These are REAL ghost visitors (probably)',
+      '🕯️ They came from the afterlife (or the server)',
+      '💀 They can\'t buy, but they love to watch',
+      '😱 They get bored easily, so numbers change',
+      '🎃 Fun fact: Ghosts love discounts too!',
+      '🕸️ Tip: Refresh page to see different ghosts',
+      '⚰️ Warning: Too many ghosts = haunted cart',
+    ];
+    showToast(info[Math.floor(Math.random() * info.length)]);
+    sounds.boing();
+    spawnGhostNearCursor();
+  }
+  
+  // Spawn ghost near cursor
+  function spawnGhostNearCursor() {
+    const ghost = document.createElement('div');
+    ghost.className = 'floating-ghost';
+    ghost.textContent = ['👻', '🎃', '💀', '🕷️', '🕸️', '🦇', '⚰️'][Math.floor(Math.random() * 7)];
+    ghost.style.left = (Math.random() * 80 + 10) + 'vw';
+    ghost.style.top = (Math.random() * 60 + 20) + 'vh';
+    ghost.style.animationDuration = (Math.random() * 3 + 3) + 's';
+    document.body.appendChild(ghost);
+    setTimeout(() => ghost.remove(), 6000);
+  }
+  
+  // Show ghost toast notification
+  let ghostToastTimer;
+  function showGhostToast() {
+    const toast = document.getElementById('ghostToast');
+    const emoji = document.getElementById('gtEmoji');
+    const msg = document.getElementById('gtMsg');
+    const name = document.getElementById('gtName');
+    const time = document.getElementById('gtTime');
+    
+    const randomMsg = GHOST_MESSAGES[Math.floor(Math.random() * GHOST_MESSAGES.length)];
+    const randomName = GHOST_NAMES[Math.floor(Math.random() * GHOST_NAMES.length)];
+    const times = ['just now', '2 seconds ago', 'a moment ago', 'just now', 'seconds ago'];
+    const randomTime = times[Math.floor(Math.random() * times.length)];
+    
+    emoji.textContent = randomMsg.emoji;
+    msg.textContent = randomMsg.msg;
+    name.textContent = `— ${randomName}`;
+    time.textContent = randomTime;
+    
+    toast.classList.add('show');
+    clearTimeout(ghostToastTimer);
+    ghostToastTimer = setTimeout(() => toast.classList.remove('show'), 5000);
+    
+    sounds.pop();
+  }
+  
+  // Trigger random jump scare
+  function triggerJumpScare() {
+    const scare = document.getElementById('ghostScare');
+    const scareText = document.getElementById('scareText');
+    const scareSub = document.getElementById('scareSub');
+    
+    const scares = [
+      { text: 'BOO!', sub: 'Just kidding 😂 Click to close' },
+      { text: 'SURPRISE!', sub: 'Ghost wanted to say hi 👋' },
+      { text: 'GOTCHA!', sub: 'Spooky but harmless 😜' },
+      { text: 'HELLO!', sub: 'Ghost is friendly, promise 👻' },
+      { text: 'HAUNTED!', sub: 'Just your regular ghost visit 🎃' },
+      { text: 'PEEKABOO!', sub: 'Ghost loves hide and seek 🙈' },
+    ];
+    
+    const randomScare = scares[Math.floor(Math.random() * scares.length)];
+    scareText.textContent = randomScare.text;
+    scareSub.textContent = randomScare.sub;
+    
+    scare.classList.add('show');
+    document.body.classList.add('jumpscare');
+    sounds.roar();
+    
+    setTimeout(() => document.body.classList.remove('jumpscare'), 600);
+  }
+  
+  function closeGhostScare() {
+    document.getElementById('ghostScare').classList.remove('show');
+    sounds.pop();
+    showToast('😂 You survived the ghost!');
+  }
+  
+  // Toggle spooky mode
+  function toggleSpooky() {
+    spookyMode = !spookyMode;
+    document.body.classList.toggle('spooky', spookyMode);
+    document.getElementById('spookyToggle').classList.toggle('active', spookyMode);
+    
+    if (spookyMode) {
+      showToast('👻 SPOOKY MODE ON! The ghosts are happy');
+      for (let i = 0; i < 10; i++) {
+        setTimeout(() => spawnGhostNearCursor(), i * 200);
+      }
+    } else {
+      showToast('☀️ Normal mode back. Ghosts are sad');
+    }
+    sounds.boing();
+  }
+  
+  // Add ghost viewers to product cards
+  function addGhostViewersToProducts() {
+    setTimeout(() => {
+      const cards = document.querySelectorAll('.product-card');
+      cards.forEach((card, idx) => {
+        // Remove existing ghost viewers
+        const existing = card.querySelector('.ghost-viewers');
+        if (existing) existing.remove();
+        
+        const viewers = Math.floor(Math.random() * 15) + 2;
+        const ghostEl = document.createElement('div');
+        ghostEl.className = 'ghost-viewers';
+        ghostEl.textContent = `👻 ${viewers} ghost${viewers > 1 ? 's' : ''} viewing`;
+        card.appendChild(ghostEl);
+        
+        // Make it fluctuate
+        setInterval(() => {
+          const current = parseInt(ghostEl.textContent.match(/\d+/)[0]);
+          const newNum = Math.max(1, current + Math.floor(Math.random() * 5) - 2);
+          ghostEl.textContent = `👻 ${newNum} ghost${newNum > 1 ? 's' : ''} viewing`;
+        }, 5000 + idx * 500);
+      });
+    }, 1500);
+  }
+  
+  // Init ghost features
+  function initGhostFeatures() {
+    // Initial ghost count
+    updateGhostCount();
+    
+    // Update count every 3-6 seconds
+    setInterval(updateGhostCount, 3000 + Math.random() * 3000);
+    
+    // Random ghost toast every 15-30 seconds
+    setInterval(() => {
+      if (Math.random() > 0.4) showGhostToast();
+    }, 15000);
+    
+    // Random floating ghost every 8-15 seconds
+    setInterval(() => {
+      if (Math.random() > 0.5) spawnGhostNearCursor();
+    }, 8000);
+    
+    // Rare jump scare (every 45-90 seconds, 20% chance)
+    setInterval(() => {
+      if (Math.random() > 0.8) triggerJumpScare();
+    }, 45000);
+    
+    // Add viewers to products
+    addGhostViewersToProducts();
+    
+    // Welcome ghost message
+    setTimeout(() => {
+      showGhostToast();
+    }, 4000);
+    
+    console.log('👻 Ghost mode activated!');
+  }
+  
+  // Add fake "someone just bought" notification
+  function triggerFakePurchase() {
+    const fakeProducts = ['🧱 A Brick', '🪨 Rock', '🥒 Pickle', '💨 Air', '🧦 Sock', '🍌 Banana', '🎈 Balloon', '📦 Box'];
+    const fakeNames = ['Rahul', 'Priya', 'Amit', 'Sneha', 'Vikram', 'Pooja', 'Ravi', 'Neha'];
+    
+    const product = fakeProducts[Math.floor(Math.random() * fakeProducts.length)];
+    const name = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+    const city = ['Mumbai', 'Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Pune'][Math.floor(Math.random() * 6)];
+    
+    showToast(`🎉 ${name} from ${city} just bought ${product}!`);
+  }
+  
+  // Random fake purchases every 20-40 seconds
+  setInterval(() => {
+    if (Math.random() > 0.5) triggerFakePurchase();
+  }, 20000);
+  
+  // Update ghost viewer counts on cart changes
+  const originalUpdateCartUI = updateCartUI;
+  updateCartUI = function() {
+    originalUpdateCartUI();
+    // Update ghost counter when cart changes
+    if (cart.length > 0) {
+      ghostCount += cart.length;
+      document.getElementById('ghostNum').textContent = ghostCount;
+    }
+  };
+  
+  // Refresh ghost viewers when products re-render
+  const originalRenderProducts = renderProducts;
+  renderProducts = function() {
+    originalRenderProducts();
+    addGhostViewersToProducts();
+  };
+  
+  // Initialize on load
+  setTimeout(initGhostFeatures, 2000);
+  // ===== INIT (with SAFETY NET) =====
   loadAll();
+
+  if (!products || !Array.isArray(products) || products.length === 0) {
+    products = [...DEFAULT_PRODUCTS];
+    localStorage.setItem('lolmart_products', JSON.stringify(products));
+  }
+  if (!reviews || !Array.isArray(reviews) || reviews.length === 0) {
+    reviews = [...DEFAULT_REVIEWS];
+    localStorage.setItem('lolmart_reviews', JSON.stringify(reviews));
+  }
+
   buildFilterBar();
   renderProducts();
   buildWheel();
@@ -3058,20 +4001,7 @@ testSupabaseConnection();
     document.getElementById('dailyBonus').textContent = '✅ Claimed!';
   }
   showWelcome();
-  
-// Hide loader (SAFE VERSION)
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    const loader = document.getElementById('loader');
-    if (loader) loader.classList.add('hidden');
-  }, 800);
-});
-
-// Safety net: force hide after 3 seconds max
-setTimeout(() => {
-  const loader = document.getElementById('loader');
-  if (loader) loader.classList.add('hidden');
-}, 3000);
+  setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1200);
 </script>
 
 </body>
