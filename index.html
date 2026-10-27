@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LOL Mart 🛒 — Supabase Edition</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet" onerror="this.remove()">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg: #fff5e1; --ink: #2b2b2b; --yellow: #ffd93d; --pink: #ff6b9d; --blue: #4dabf7; --green: #51cf66; --orange: #ff922b; --purple: #b197fc; --red: #ff6b6b; }
+  body.dark { --bg: #1a1a2e; --ink: #f0f0f0; --yellow: #f9ca24; --pink: #f0932b; --blue: #7ed6df; --green: #6ab04c; --purple: #be2edd; }
+  body.dark nav, body.dark .product-card, body.dark .review-card, body.dark .cart-footer, body.dark .checkout-modal, body.dark .order-card, body.dark .cart-item, body.dark .checkout-product, body.dark .form-group input, body.dark .form-group select, body.dark .review-textarea, body.dark .cart-promo input, body.dark .modal-total, body.dark .wheel-center, body.dark .theme-switcher, body.dark .admin-section, body.dark .admin-table th, body.dark .admin-table td, body.dark .admin-card, body.dark .admin-product-box, body.dark .admin-field input, body.dark .admin-field select, body.dark .admin-field textarea, body.dark .admin-emoji-picker { background: #16213e !important; color: #f0f0f0 !important; border-color: #f0f0f0 !important; }
+  body.dark .cart-header { background: #0f3460 !important; color: #f0f0f0 !important; }
+  body.dark .shipping-bar { background: #0f3460 !important; }
+  body.dark .admin-header { background: #0f3460 !important; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--ink); font-family: 'Comic Neue', cursive, sans-serif; overflow-x: hidden; cursor: auto; transition: background 0.5s, color 0.5s; }
+  h1, h2, h3, .logo { font-family: 'Bangers', cursive; letter-spacing: 2px; }
+  .confetti { position: fixed; width: 10px; height: 10px; pointer-events: none; z-index: 0; animation: fall linear infinite; }
+  @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
+  .loader { position: fixed; inset: 0; background: var(--bg); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s, visibility 0.5s; }
+  .loader.hidden { opacity: 0; visibility: hidden; }
+  .loader-emoji { font-size: 5rem; animation: loaderSpin 1s linear infinite; }
+  @keyframes loaderSpin { to { transform: rotate(360deg); } }
+  .loader-text { margin-top: 20px; font-family: 'Bangers', cursive; font-size: 1.5rem; color: var(--ink); animation: pulse 1s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+  .theme-switcher { position: fixed; top: 100px; right: 20px; z-index: 998; display: flex; flex-direction: column; gap: 8px; background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 10px; box-shadow: 4px 4px 0 var(--ink); }
+  .theme-btn { width: 40px; height: 40px; border: 3px solid var(--ink); border-radius: 50%; cursor: pointer; font-size: 1.1rem; transition: transform 0.2s; box-shadow: 2px 2px 0 var(--ink); display: flex; align-items: center; justify-content: center; background: #fff; }
+  .theme-btn:hover { transform: scale(1.15) rotate(-10deg); }
+  .sound-toggle { position: fixed; top: 100px; left: 20px; width: 50px; height: 50px; background: var(--yellow); border: 3px solid var(--ink); border-radius: 50%; font-size: 1.4rem; cursor: pointer; box-shadow: 4px 4px 0 var(--ink); z-index: 998; transition: all 0.2s; display: flex; align-items: center; justify-content: center; }
+  .sound-toggle:hover { transform: scale(1.1) rotate(-10deg); }
+  .sound-toggle.muted { background: #ccc; }
+  .back-top { position: fixed; bottom: 30px; right: 30px; width: 55px; height: 55px; background: var(--pink); color: #fff; border: 4px solid var(--ink); border-radius: 50%; font-size: 1.5rem; cursor: pointer; box-shadow: 5px 5px 0 var(--ink); z-index: 997; transition: all 0.3s; opacity: 0; visibility: hidden; font-family: 'Bangers', cursive; }
+  .back-top.show { opacity: 1; visibility: visible; }
+  .back-top:hover { transform: translate(-3px, -3px); box-shadow: 8px 8px 0 var(--ink); }
+  nav { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); width: calc(100% - 30px); max-width: 1400px; padding: 12px 25px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: #fff; border: 4px dashed var(--ink); border-radius: 20px; box-shadow: 6px 6px 0 var(--ink); animation: wobble 4s ease-in-out infinite; gap: 10px; }
+  @keyframes wobble { 0%, 100% { transform: translateX(-50%) rotate(-0.5deg); } 50% { transform: translateX(-50%) rotate(0.5deg); } }
+  .logo { font-size: 1.6rem; color: var(--pink); text-shadow: 3px 3px 0 var(--yellow), 6px 6px 0 var(--ink); cursor: pointer; animation: logoBounce 2s ease-in-out infinite; flex-shrink: 0; }
+  @keyframes logoBounce { 0%, 100% { transform: scale(1) rotate(-3deg); } 50% { transform: scale(1.1) rotate(3deg); } }
+  .search-box { flex: 1; max-width: 300px; position: relative; }
+  .search-box input { width: 100%; padding: 10px 40px 10px 16px; border: 3px solid var(--ink); border-radius: 20px; font-family: 'Comic Neue', cursive; font-size: 0.9rem; font-weight: 700; outline: none; background: #fff; transition: all 0.2s; }
+  .search-box input:focus { background: var(--yellow); }
+  .search-box::after { content: '🔍'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 1.1rem; pointer-events: none; }
+  .nav-links { display: flex; gap: 3px; list-style: none; align-items: center; }
+  .nav-links a, .nav-links button { color: var(--ink); text-decoration: none; font-weight: 700; padding: 8px 10px; border-radius: 10px; transition: all 0.2s; border: 2px solid transparent; background: transparent; font-family: 'Comic Neue', cursive; font-size: 0.9rem; cursor: pointer; }
+  .nav-links a:hover, .nav-links button:hover { background: var(--yellow); border: 2px solid var(--ink); transform: rotate(-3deg) scale(1.05); }
+  .icon-btn { width: 44px; height: 44px; border: 3px solid var(--ink); border-radius: 50%; background: var(--blue); color: #fff; font-size: 1.2rem; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: all 0.15s; position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .icon-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+  .wishlist-btn { background: var(--red); }
+  .cart-btn { background: var(--pink); width: auto; padding: 0 18px; border-radius: 22px; gap: 8px; font-family: 'Bangers', cursive; font-size: 1rem; letter-spacing: 1px; }
+  .badge { position: absolute; top: -8px; right: -8px; background: var(--yellow); color: var(--ink); border: 2px solid var(--ink); border-radius: 50%; min-width: 24px; height: 24px; padding: 0 4px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 800; animation: countPulse 1s ease-in-out infinite; font-family: 'Bangers', cursive; }
+  @keyframes countPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+  .cart-btn.bump { animation: cartBump 0.4s ease; }
+  @keyframes cartBump { 0%, 40% { transform: scale(1.2) rotate(-5deg); } 70% { transform: scale(0.95) rotate(3deg); } 100% { transform: scale(1); } }
+  .shipping-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 999; background: var(--ink); color: #fff; padding: 8px 6%; text-align: center; font-family: 'Bangers', cursive; font-size: 1rem; letter-spacing: 1px; transform: translateY(-100%); transition: transform 0.4s ease; }
+  .shipping-bar.show { transform: translateY(0); }
+  .shipping-bar.free { background: var(--green); }
+  .shipping-progress { height: 6px; background: rgba(255,255,255,0.2); border-radius: 6px; margin-top: 5px; overflow: hidden; }
+  .shipping-fill { height: 100%; background: var(--yellow); width: 0%; transition: width 0.5s ease; border-radius: 6px; }
+  .shipping-bar.free .shipping-fill { background: #fff; width: 100% !important; }
+  .hero { min-height: 100vh; display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; padding: 140px 6% 60px; gap: 40px; position: relative; z-index: 2; }
+  .hero h1 { font-size: clamp(2.5rem, 7vw, 5rem); line-height: 1; margin-bottom: 20px; color: var(--ink); text-shadow: 4px 4px 0 var(--yellow), 8px 8px 0 var(--pink), 12px 12px 0 var(--ink); animation: titleShake 3s ease-in-out infinite; }
+  @keyframes titleShake { 0%, 100% { transform: rotate(-1deg); } 50% { transform: rotate(1deg); } }
+  .hero h1 .wiggle { display: inline-block; animation: wiggle 0.8s ease-in-out infinite; }
+  .hero h1 .wiggle:nth-child(2) { animation-delay: 0.1s; }
+  .hero h1 .wiggle:nth-child(3) { animation-delay: 0.2s; }
+  .hero h1 .wiggle:nth-child(4) { animation-delay: 0.3s; }
+  @keyframes wiggle { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(5deg); } }
+  .hero p { font-size: 1.2rem; line-height: 1.6; margin-bottom: 30px; max-width: 550px; font-weight: 700; }
+  .hero p .highlight { background: var(--yellow); padding: 2px 8px; border-radius: 6px; border: 2px solid var(--ink); display: inline-block; transform: rotate(-2deg); }
+  .hero-cta { display: flex; gap: 15px; flex-wrap: wrap; }
+  .btn { padding: 16px 30px; border: 3px solid var(--ink); border-radius: 16px; font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 2px; cursor: pointer; box-shadow: 5px 5px 0 var(--ink); transition: all 0.15s; }
+  .btn:hover { transform: translate(-3px, -3px) rotate(-2deg); box-shadow: 8px 8px 0 var(--ink); }
+  .btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+  .btn-yellow { background: var(--yellow); color: var(--ink); }
+  .btn-pink { background: var(--pink); color: #fff; }
+  .hero-emoji { position: relative; display: flex; align-items: center; justify-content: center; height: 450px; }
+  .big-emoji { font-size: 13rem; animation: emojiDance 2s ease-in-out infinite; filter: drop-shadow(10px 10px 0 var(--ink)); position: relative; z-index: 2; }
+  @keyframes emojiDance { 0%, 100% { transform: rotate(-10deg) scale(1); } 50% { transform: rotate(10deg) scale(1.15); } }
+  .emoji-ring { position: absolute; width: 320px; height: 320px; border: 5px dashed var(--ink); border-radius: 50%; animation: spin 15s linear infinite; }
+  .emoji-ring-2 { width: 390px; height: 390px; border-color: var(--pink); animation-direction: reverse; animation-duration: 20s; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .section { padding: 80px 6%; position: relative; z-index: 2; }
+  .section-title { text-align: center; font-size: clamp(2rem, 4.5vw, 3rem); margin-bottom: 15px; color: var(--ink); text-shadow: 3px 3px 0 var(--yellow); animation: titleShake 4s ease-in-out infinite; }
+  .section-sub { text-align: center; font-size: 1.1rem; margin-bottom: 30px; font-weight: 700; color: #888; }
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 30px; }
+  .filter-btn { padding: 8px 20px; background: #fff; border: 3px solid var(--ink); border-radius: 20px; font-family: 'Bangers', cursive; font-size: 0.95rem; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: all 0.15s; }
+  .filter-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+  .filter-btn.active { background: var(--yellow); }
+  .sort-bar { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+  .sort-bar label { font-family: 'Bangers', cursive; font-size: 1rem; letter-spacing: 1px; }
+  .sort-bar select { padding: 8px 14px; border: 3px solid var(--ink); border-radius: 10px; font-family: 'Comic Neue', cursive; font-size: 0.9rem; font-weight: 700; cursor: pointer; background: #fff; }
+  .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; max-width: 1300px; margin: 0 auto; }
+  .product-card { background: #fff; border: 3px solid var(--ink); border-radius: 20px; padding: 25px; text-align: center; box-shadow: 6px 6px 0 var(--ink); transition: all 0.3s cubic-bezier(0.68,-0.55,0.27,1.55); position: relative; opacity: 0; transform: translateY(40px); }
+  .product-card.visible { opacity: 1; transform: translateY(0); }
+  .product-card:hover { transform: translateY(-10px) rotate(-3deg) scale(1.03); box-shadow: 10px 10px 0 var(--ink); }
+  .product-card:nth-child(2n):hover { transform: translateY(-10px) rotate(3deg) scale(1.03); }
+  .sale-tag { position: absolute; top: -15px; right: -10px; background: var(--red); color: #fff; font-family: 'Bangers', cursive; padding: 6px 14px; border: 3px solid var(--ink); border-radius: 20px; font-size: 0.85rem; transform: rotate(15deg); box-shadow: 3px 3px 0 var(--ink); letter-spacing: 1px; animation: tagPop 1.5s ease-in-out infinite; }
+  @keyframes tagPop { 0%, 100% { transform: rotate(15deg) scale(1); } 50% { transform: rotate(15deg) scale(1.15); } }
+  .stock-tag { position: absolute; top: 15px; left: 15px; background: var(--orange); color: #fff; padding: 4px 10px; border: 2px solid var(--ink); border-radius: 12px; font-family: 'Bangers', cursive; font-size: 0.75rem; letter-spacing: 1px; animation: pulse 1.5s infinite; }
+  .wish-btn { position: absolute; top: 15px; right: 15px; width: 36px; height: 36px; background: #fff; border: 3px solid var(--ink); border-radius: 50%; font-size: 1.1rem; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: all 0.2s; display: flex; align-items: center; justify-content: center; z-index: 2; }
+  .wish-btn:hover { transform: scale(1.15); }
+  .wish-btn.active { background: var(--red); color: #fff; animation: heartBeat 0.6s ease; }
+  @keyframes heartBeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.3); } }
+  .product-emoji { font-size: 4.5rem; margin: 10px 0 15px; display: inline-block; cursor: pointer; transition: transform 0.3s; }
+  .product-card:hover .product-emoji { animation: emojiJump 0.6s ease; }
+  @keyframes emojiJump { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-20px) rotate(20deg); } }
+  .product-name { font-size: 1.3rem; margin-bottom: 8px; color: var(--ink); cursor: pointer; }
+  .product-name:hover { text-decoration: underline; }
+  .product-desc { font-size: 0.85rem; color: #888; margin-bottom: 10px; font-style: italic; min-height: 35px; font-weight: 700; }
+  .product-rating { color: var(--yellow); font-size: 0.9rem; margin-bottom: 10px; letter-spacing: 2px; }
+  .product-rating .rating-num { color: var(--ink); font-weight: 700; font-size: 0.8rem; margin-left: 4px; }
+  .product-price { font-family: 'Bangers', cursive; font-size: 1.7rem; color: var(--pink); margin-bottom: 15px; text-shadow: 2px 2px 0 var(--yellow); letter-spacing: 1px; }
+  .product-price .old { font-size: 1rem; color: #aaa; text-decoration: line-through; text-shadow: none; margin-right: 8px; }
+  .product-actions { display: flex; gap: 8px; flex-direction: column; position: relative; }
+  .add-btn, .buy-now-btn { width: 100%; padding: 11px; border: 3px solid var(--ink); border-radius: 12px; font-family: 'Bangers', cursive; font-size: 1rem; cursor: pointer; box-shadow: 4px 4px 0 var(--ink); transition: all 0.15s; letter-spacing: 1px; }
+  .add-btn { background: var(--yellow); color: var(--ink); }
+  .buy-now-btn { background: var(--green); color: #fff; }
+  .add-btn:hover, .buy-now-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--ink); }
+  .add-btn:hover { background: var(--orange); color: #fff; }
+  .buy-now-btn:hover { background: var(--blue); }
+  .add-btn:active, .buy-now-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+  .quick-view-btn { width: 100%; padding: 8px; margin-top: 6px; background: transparent; border: 2px dashed var(--ink); border-radius: 10px; font-family: 'Comic Neue', cursive; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.15s; }
+  .quick-view-btn:hover { background: var(--blue); color: #fff; border-style: solid; }
+  .quick-view-content { text-align: center; }
+  .quick-view-emoji { font-size: 8rem; margin: 10px 0 20px; animation: emojiDance 2s ease-in-out infinite; }
+  .quick-view-stars { color: var(--yellow); font-size: 1.3rem; margin-bottom: 15px; }
+  .quick-view-desc { font-size: 1rem; font-weight: 700; color: #666; margin-bottom: 20px; font-style: italic; }
+  .wheel-section { padding: 80px 6%; text-align: center; position: relative; z-index: 2; background: linear-gradient(135deg, rgba(177,151,252,0.15), rgba(255,107,157,0.15)); }
+  .wheel-container { position: relative; width: 300px; height: 300px; margin: 30px auto; }
+  .wheel { width: 100%; height: 100%; border-radius: 50%; border: 8px solid var(--ink); box-shadow: 8px 8px 0 var(--ink), inset 0 0 20px rgba(0,0,0,0.2); position: relative; overflow: hidden; transition: transform 4s cubic-bezier(0.17, 0.67, 0.16, 1); background: conic-gradient(var(--yellow) 0deg 45deg, var(--pink) 45deg 90deg, var(--blue) 90deg 135deg, var(--green) 135deg 180deg, var(--orange) 180deg 225deg, var(--purple) 225deg 270deg, var(--red) 270deg 315deg, var(--yellow) 315deg 360deg); }
+  .wheel-segment-text { position: absolute; font-family: 'Bangers', cursive; font-size: 0.85rem; color: var(--ink); font-weight: 700; text-shadow: 1px 1px 0 #fff; letter-spacing: 0.5px; }
+  .wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; background: #fff; border: 5px solid var(--ink); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Bangers', cursive; font-size: 1.4rem; z-index: 3; box-shadow: 3px 3px 0 var(--ink); }
+  .wheel-pointer { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 2.5rem; z-index: 4; filter: drop-shadow(2px 2px 0 var(--ink)); animation: pointerBob 1s ease-in-out infinite; }
+  @keyframes pointerBob { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
+  .spin-btn { margin-top: 30px; padding: 15px 45px; background: var(--pink); color: #fff; border: 4px solid var(--ink); border-radius: 16px; font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 2px; cursor: pointer; box-shadow: 6px 6px 0 var(--ink); transition: all 0.15s; }
+  .spin-btn:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ink); }
+  .spin-btn:disabled { background: #ccc; cursor: not-allowed; opacity: 0.6; }
+  .slot-section { padding: 80px 6%; text-align: center; position: relative; z-index: 2; background: linear-gradient(135deg, rgba(255,217,61,0.2), rgba(255,146,43,0.2)); }
+  .slot-machine { display: inline-flex; gap: 15px; padding: 30px; background: var(--ink); border: 5px solid var(--ink); border-radius: 20px; box-shadow: 10px 10px 0 rgba(0,0,0,0.3); margin: 30px auto; }
+  .slot-reel { width: 100px; height: 120px; background: #fff; border: 4px solid var(--yellow); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; overflow: hidden; position: relative; }
+  .slot-spin-btn { padding: 15px 45px; background: var(--orange); color: #fff; border: 4px solid var(--ink); border-radius: 16px; font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 2px; cursor: pointer; box-shadow: 6px 6px 0 var(--ink); transition: all 0.15s; }
+  .slot-spin-btn:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ink); }
+  .slot-spin-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .slot-result { margin-top: 20px; font-family: 'Bangers', cursive; font-size: 1.2rem; min-height: 30px; letter-spacing: 1px; }
+  .daily-bonus { position: fixed; bottom: 30px; left: 30px; background: linear-gradient(135deg, var(--yellow), var(--orange)); color: var(--ink); padding: 15px 25px; border: 4px solid var(--ink); border-radius: 20px; box-shadow: 6px 6px 0 var(--ink); font-family: 'Bangers', cursive; font-size: 1.1rem; cursor: pointer; z-index: 997; letter-spacing: 1px; transition: all 0.3s; animation: bonusBounce 2s ease-in-out infinite; }
+  @keyframes bonusBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .daily-bonus:hover { transform: scale(1.1); }
+  .daily-bonus.claimed { background: #ccc; cursor: default; animation: none; opacity: 0.5; }
+  .loyalty-badge { position: fixed; top: 160px; left: 20px; background: var(--purple); color: #fff; padding: 10px 16px; border: 3px solid var(--ink); border-radius: 14px; font-family: 'Bangers', cursive; font-size: 0.95rem; box-shadow: 3px 3px 0 var(--ink); z-index: 997; }
+  .review-card { background: #fff; border: 3px solid var(--ink); border-radius: 20px; padding: 25px; box-shadow: 5px 5px 0 var(--ink); transition: transform 0.3s; position: relative; }
+  .review-card:hover { transform: rotate(-2deg) scale(1.03); }
+  .review-stars { font-size: 1.2rem; margin-bottom: 15px; }
+  .review-text { font-size: 0.95rem; line-height: 1.6; margin-bottom: 15px; font-weight: 700; }
+  .review-author { font-family: 'Bangers', cursive; font-size: 1rem; color: var(--pink); letter-spacing: 1px; }
+  .review-verified { font-size: 0.75rem; color: var(--green); font-weight: 700; margin-left: 8px; }
+  .cat, .dog { position: fixed; bottom: 20px; font-size: 2.5rem; z-index: 500; pointer-events: none; transition: left 8s linear; }
+  .cat { animation: catBob 0.5s ease-in-out infinite; }
+  .dog { animation: dogBob 0.4s ease-in-out infinite; }
+  @keyframes catBob { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-5px) rotate(3deg); } }
+  @keyframes dogBob { 0%, 100% { transform: translateY(0) rotate(3deg) scale(1); } 50% { transform: translateY(-8px) rotate(-3deg) scale(1.1); } }
+  .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px); z-index: 2000; opacity: 0; visibility: hidden; transition: all 0.3s; }
+  .cart-overlay.active { opacity: 1; visibility: visible; }
+  .cart-sidebar { position: fixed; top: 0; right: 0; width: 420px; max-width: 100%; height: 100vh; background: var(--bg); border-left: 5px solid var(--ink); z-index: 2001; transform: translateX(100%); transition: transform 0.5s cubic-bezier(0.68,-0.55,0.27,1.55); display: flex; flex-direction: column; box-shadow: -10px 0 40px rgba(0,0,0,0.3); }
+  .cart-sidebar.active { transform: translateX(0); }
+  .cart-header { padding: 20px 25px; background: var(--yellow); border-bottom: 4px solid var(--ink); display: flex; justify-content: space-between; align-items: center; }
+  .cart-header h2 { font-size: 1.6rem; color: var(--ink); text-shadow: 2px 2px 0 #fff; }
+  .close-cart { width: 40px; height: 40px; background: var(--red); color: #fff; border: 3px solid var(--ink); border-radius: 50%; font-size: 1.3rem; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: all 0.15s; font-family: 'Bangers', cursive; }
+  .close-cart:hover { transform: rotate(90deg) scale(1.1); }
+  .cart-body { flex: 1; overflow-y: auto; padding: 20px; }
+  .cart-body::-webkit-scrollbar { width: 10px; }
+  .cart-body::-webkit-scrollbar-track { background: #fff; }
+  .cart-body::-webkit-scrollbar-thumb { background: var(--pink); border-radius: 10px; border: 2px solid var(--ink); }
+  .cart-empty { text-align: center; padding: 60px 20px; color: #888; }
+  .cart-empty .empty-emoji { font-size: 5rem; margin-bottom: 20px; display: inline-block; animation: emptyBounce 2s ease-in-out infinite; }
+  @keyframes emptyBounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+  .cart-empty h3 { font-size: 1.4rem; color: var(--ink); margin-bottom: 10px; }
+  .cart-empty p { font-weight: 700; }
+  .cart-item { display: flex; gap: 15px; padding: 15px; background: #fff; border: 3px solid var(--ink); border-radius: 16px; margin-bottom: 15px; box-shadow: 4px 4px 0 var(--ink); animation: itemSlide 0.4s ease; position: relative; }
+  @keyframes itemSlide { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+  .cart-item-emoji { font-size: 2.5rem; flex-shrink: 0; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; background: var(--bg); border: 2px solid var(--ink); border-radius: 12px; }
+  .cart-item-info { flex: 1; min-width: 0; }
+  .cart-item-name { font-family: 'Bangers', cursive; font-size: 1.05rem; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-right: 20px; }
+  .cart-item-price { font-size: 0.85rem; color: var(--pink); font-weight: 700; margin-bottom: 8px; }
+  .qty-controls { display: flex; align-items: center; gap: 8px; }
+  .qty-btn { width: 28px; height: 28px; border: 2px solid var(--ink); border-radius: 8px; background: var(--yellow); font-family: 'Bangers', cursive; font-size: 1rem; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: all 0.1s; display: flex; align-items: center; justify-content: center; color: var(--ink); }
+  .qty-btn:hover { background: var(--green); color: #fff; }
+  .qty-value { font-family: 'Bangers', cursive; font-size: 1.1rem; min-width: 25px; text-align: center; }
+  .remove-item { position: absolute; top: 8px; right: 8px; width: 24px; height: 24px; background: var(--red); color: #fff; border: 2px solid var(--ink); border-radius: 50%; font-size: 0.8rem; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: all 0.15s; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .remove-item:hover { transform: rotate(90deg) scale(1.2); }
+  .cart-footer { padding: 20px; background: #fff; border-top: 4px dashed var(--ink); }
+  .cart-promo { display: flex; gap: 8px; margin-bottom: 15px; }
+  .cart-promo input { flex: 1; padding: 10px 14px; border: 3px solid var(--ink); border-radius: 10px; font-family: 'Comic Neue', cursive; font-size: 0.9rem; font-weight: 700; outline: none; text-transform: uppercase; background: #fff; }
+  .cart-promo input:focus { background: var(--yellow); }
+  .promo-apply-btn { padding: 10px 16px; background: var(--purple); color: #fff; border: 3px solid var(--ink); border-radius: 10px; font-family: 'Bangers', cursive; font-size: 0.95rem; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: all 0.15s; }
+  .promo-apply-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+  .promo-applied { display: flex; justify-content: space-between; align-items: center; padding: 8px 14px; background: var(--green); color: #fff; border: 2px solid var(--ink); border-radius: 10px; font-family: 'Bangers', cursive; font-size: 0.9rem; margin-bottom: 15px; letter-spacing: 0.5px; }
+  .promo-applied button { background: var(--red); color: #fff; border: 2px solid var(--ink); border-radius: 6px; padding: 2px 8px; cursor: pointer; font-family: 'Bangers', cursive; }
+  .cart-total { display: flex; justify-content: space-between; align-items: center; font-family: 'Bangers', cursive; font-size: 1.3rem; margin-bottom: 8px; letter-spacing: 1px; }
+  .cart-total-value { color: var(--pink); font-size: 1.9rem; text-shadow: 2px 2px 0 var(--yellow); }
+  .cart-discount { display: flex; justify-content: space-between; font-family: 'Bangers', cursive; font-size: 1.05rem; color: var(--green); margin-bottom: 12px; }
+  .checkout-btn { width: 100%; padding: 15px; background: var(--green); color: #fff; border: 3px solid var(--ink); border-radius: 14px; font-family: 'Bangers', cursive; font-size: 1.3rem; cursor: pointer; box-shadow: 5px 5px 0 var(--ink); transition: all 0.15s; letter-spacing: 2px; }
+  .checkout-btn:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 3000; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; visibility: hidden; transition: all 0.3s; }
+  .modal-overlay.active { opacity: 1; visibility: visible; }
+  .checkout-modal { background: var(--bg); border: 5px solid var(--ink); border-radius: 25px; padding: 35px; max-width: 520px; width: 100%; box-shadow: 12px 12px 0 var(--ink); transform: scale(0.7) rotate(-5deg); transition: transform 0.4s cubic-bezier(0.68,-0.55,0.27,1.55); max-height: 90vh; overflow-y: auto; position: relative; }
+  .modal-overlay.active .checkout-modal { transform: scale(1) rotate(0); }
+  .modal-close { position: absolute; top: 15px; right: 15px; width: 38px; height: 38px; background: var(--red); color: #fff; border: 3px solid var(--ink); border-radius: 50%; font-size: 1.2rem; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); font-family: 'Bangers', cursive; transition: all 0.15s; z-index: 1; }
+  .modal-close:hover { transform: rotate(90deg) scale(1.1); }
+  .checkout-modal h2 { font-size: 1.9rem; text-align: center; margin-bottom: 8px; color: var(--pink); text-shadow: 2px 2px 0 var(--yellow); }
+  .checkout-modal .modal-sub { text-align: center; font-weight: 700; color: #888; margin-bottom: 25px; font-size: 0.9rem; }
+  .checkout-product { display: flex; align-items: center; gap: 15px; padding: 15px; background: #fff; border: 3px solid var(--ink); border-radius: 16px; margin-bottom: 12px; box-shadow: 4px 4px 0 var(--ink); }
+  .checkout-product .cp-emoji { font-size: 3rem; }
+  .checkout-product .cp-info { flex: 1; }
+  .checkout-product .cp-name { font-family: 'Bangers', cursive; font-size: 1.1rem; margin-bottom: 4px; }
+  .checkout-product .cp-price { font-family: 'Bangers', cursive; font-size: 1.2rem; color: var(--pink); }
+  .form-group { margin-bottom: 15px; }
+  .form-group label { display: block; font-family: 'Bangers', cursive; font-size: 0.95rem; margin-bottom: 6px; letter-spacing: 1px; color: var(--ink); }
+  .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 3px solid var(--ink); border-radius: 12px; font-family: 'Comic Neue', cursive; font-size: 0.95rem; font-weight: 700; background: #fff; outline: none; transition: all 0.15s; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { background: var(--yellow); transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+  .checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; padding: 12px; background: #fff; border: 3px solid var(--ink); border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 0.9rem; }
+  .checkbox-group input { width: 24px; height: 24px; cursor: pointer; accent-color: var(--green); }
+  .modal-total { display: flex; justify-content: space-between; align-items: center; font-family: 'Bangers', cursive; font-size: 1.3rem; padding: 15px; background: var(--yellow); border: 3px solid var(--ink); border-radius: 12px; margin: 20px 0; box-shadow: 4px 4px 0 var(--ink); color: var(--ink); }
+  .modal-total .mt-value { font-size: 1.7rem; color: var(--pink); text-shadow: 2px 2px 0 #fff; }
+  .place-order-btn { width: 100%; padding: 16px; background: var(--green); color: #fff; border: 4px solid var(--ink); border-radius: 16px; font-family: 'Bangers', cursive; font-size: 1.4rem; letter-spacing: 2px; cursor: pointer; box-shadow: 6px 6px 0 var(--ink); transition: all 0.15s; }
+  .place-order-btn:hover { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--ink); }
+  .success-screen { text-align: center; padding: 20px 0; }
+  .success-emoji { font-size: 6rem; margin-bottom: 15px; display: inline-block; animation: successSpin 1s ease; }
+  @keyframes successSpin { 0% { transform: scale(0) rotate(-360deg); } 70% { transform: scale(1.3) rotate(20deg); } 100% { transform: scale(1) rotate(0); } }
+  .success-screen h2 { color: var(--green); font-size: 2rem; margin-bottom: 10px; text-shadow: 3px 3px 0 var(--yellow); }
+  .success-screen p { font-size: 1rem; font-weight: 700; margin-bottom: 20px; color: #666; }
+  .order-id { display: inline-block; padding: 10px 20px; background: #fff; border: 3px dashed var(--ink); border-radius: 12px; font-family: 'Bangers', cursive; font-size: 1rem; margin-bottom: 25px; letter-spacing: 1px; }
+  .star-rating { display: flex; gap: 8px; justify-content: center; margin: 15px 0; font-size: 2.5rem; }
+  .star-rating span { cursor: pointer; transition: transform 0.2s; filter: grayscale(1); opacity: 0.4; }
+  .star-rating span:hover, .star-rating span.active { filter: grayscale(0); opacity: 1; transform: scale(1.2); }
+  .review-textarea { width: 100%; padding: 12px 16px; border: 3px solid var(--ink); border-radius: 12px; font-family: 'Comic Neue', cursive; font-size: 0.95rem; font-weight: 700; background: #fff; outline: none; resize: vertical; min-height: 100px; transition: all 0.15s; }
+  .review-textarea:focus { background: var(--yellow); transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--ink); }
+  .orders-list { max-width: 900px; margin: 0 auto; }
+  .order-card { background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 20px; margin-bottom: 15px; box-shadow: 5px 5px 0 var(--ink); transition: transform 0.3s; }
+  .order-card:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
+  .order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px; }
+  .order-id-badge { font-family: 'Bangers', cursive; font-size: 1.1rem; color: var(--pink); letter-spacing: 1px; }
+  .order-date { font-size: 0.85rem; color: #888; font-weight: 700; }
+  .order-items { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .order-item-tag { background: var(--bg); border: 2px solid var(--ink); border-radius: 10px; padding: 4px 10px; font-size: 0.85rem; font-weight: 700; }
+  .order-total { font-family: 'Bangers', cursive; font-size: 1.2rem; color: var(--green); text-align: right; letter-spacing: 1px; }
+  .order-tracker { display: flex; gap: 4px; margin-top: 12px; flex-wrap: wrap; }
+  .track-step { flex: 1; min-width: 80px; padding: 6px; background: #eee; border: 2px solid var(--ink); border-radius: 8px; font-size: 0.7rem; font-weight: 700; text-align: center; }
+  .track-step.done { background: var(--green); color: #fff; }
+  .empty-orders { text-align: center; padding: 60px 20px; color: #888; }
+  .empty-orders .empty-emoji { font-size: 5rem; display: inline-block; animation: emptyBounce 2s ease-in-out infinite; margin-bottom: 20px; }
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translate(-50%, 200px); padding: 16px 30px; background: var(--green); color: #fff; border: 3px solid var(--ink); border-radius: 16px; font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 1px; box-shadow: 6px 6px 0 var(--ink); z-index: 9999; transition: transform 0.5s cubic-bezier(0.68,-0.55,0.27,1.55); display: flex; align-items: center; gap: 10px; max-width: 90vw; text-align: center; }
+  .toast.show { transform: translate(-50%, 0) rotate(-2deg); }
+  .sparkle { position: fixed; pointer-events: none; z-index: 9998; font-size: 1rem; animation: sparkleFade 0.6s ease-out forwards; }
+  @keyframes sparkleFade { 0% { transform: scale(1) rotate(0deg); opacity: 1; } 100% { transform: scale(0) rotate(360deg); opacity: 0; } }
+  .reveal { opacity: 0; transform: translateY(40px); transition: all 0.6s ease; }
+  .reveal.active { opacity: 1; transform: translateY(0); }
+  .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 4px solid var(--ink); z-index: 996; padding: 8px; justify-content: space-around; box-shadow: 0 -4px 20px rgba(0,0,0,0.2); }
+  .mobile-nav button { flex: 1; padding: 10px; background: transparent; border: none; font-family: 'Bangers', cursive; font-size: 0.85rem; cursor: pointer; color: var(--ink); display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .mobile-nav button:active { background: var(--yellow); border-radius: 8px; }
+  .mobile-nav button .mn-icon { font-size: 1.3rem; }
+  .welcome-popup { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; visibility: hidden; transition: all 0.4s; }
+  .welcome-popup.show { opacity: 1; visibility: visible; }
+  .welcome-content { background: var(--bg); border: 5px solid var(--ink); border-radius: 25px; padding: 40px 30px; max-width: 400px; text-align: center; box-shadow: 12px 12px 0 var(--ink); transform: scale(0.7) rotate(-5deg); transition: transform 0.5s cubic-bezier(0.68,-0.55,0.27,1.55); }
+  .welcome-popup.show .welcome-content { transform: scale(1) rotate(0); }
+  .welcome-emoji { font-size: 4rem; margin-bottom: 15px; animation: emojiDance 1s infinite; }
+  .welcome-content h2 { font-size: 1.8rem; color: var(--pink); margin-bottom: 10px; text-shadow: 2px 2px 0 var(--yellow); }
+  .welcome-content p { font-weight: 700; margin-bottom: 20px; font-size: 1rem; }
+  .welcome-code { background: var(--yellow); padding: 12px; border: 3px dashed var(--ink); border-radius: 12px; font-family: 'Bangers', cursive; font-size: 1.3rem; margin-bottom: 20px; letter-spacing: 2px; }
+  .chat-btn { position: fixed; bottom: 100px; right: 30px; width: 60px; height: 60px; background: var(--purple); color: #fff; border: 4px solid var(--ink); border-radius: 50%; font-size: 1.8rem; cursor: pointer; box-shadow: 5px 5px 0 var(--ink); z-index: 997; transition: all 0.3s; display: flex; align-items: center; justify-content: center; animation: chatBounce 3s ease-in-out infinite; }
+  @keyframes chatBounce { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-5px) scale(1.05); } }
+  .chat-btn:hover { transform: scale(1.1); }
+  .chat-panel { position: fixed; bottom: 100px; right: 30px; width: 320px; max-width: calc(100vw - 60px); height: 450px; background: var(--bg); border: 4px solid var(--ink); border-radius: 20px; box-shadow: 8px 8px 0 var(--ink); z-index: 2000; display: flex; flex-direction: column; transform: translateY(50px) scale(0.8); opacity: 0; visibility: hidden; transition: all 0.3s; }
+  .chat-panel.active { transform: translateY(0) scale(1); opacity: 1; visibility: visible; }
+  .chat-header { padding: 15px; background: var(--purple); color: #fff; border-bottom: 3px solid var(--ink); border-radius: 16px 16px 0 0; display: flex; justify-content: space-between; align-items: center; font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 1px; }
+  .chat-header button { background: var(--red); color: #fff; border: 2px solid var(--ink); border-radius: 50%; width: 28px; height: 28px; cursor: pointer; font-family: 'Bangers', cursive; }
+  .chat-body { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 10px; background: #fff; }
+  .chat-msg { padding: 10px 14px; border-radius: 16px; max-width: 80%; font-size: 0.85rem; font-weight: 700; border: 2px solid var(--ink); animation: msgIn 0.3s ease; }
+  @keyframes msgIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .chat-msg.bot { background: var(--yellow); align-self: flex-start; border-bottom-left-radius: 4px; }
+  .chat-msg.user { background: var(--blue); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+  .chat-input { display: flex; gap: 6px; padding: 10px; background: #fff; border-top: 3px solid var(--ink); border-radius: 0 0 16px 16px; }
+  .chat-input input { flex: 1; padding: 8px 12px; border: 2px solid var(--ink); border-radius: 10px; font-family: 'Comic Neue', cursive; font-size: 0.85rem; font-weight: 700; outline: none; }
+  .chat-input button { padding: 8px 14px; background: var(--green); color: #fff; border: 2px solid var(--ink); border-radius: 10px; font-family: 'Bangers', cursive; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); }
+  .coupon-list { display: grid; gap: 12px; }
+  .coupon-card { background: linear-gradient(135deg, var(--yellow), var(--orange)); border: 3px solid var(--ink); border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 4px 4px 0 var(--ink); gap: 10px; }
+  .coupon-info .coupon-code { font-family: 'Bangers', cursive; font-size: 1.3rem; letter-spacing: 2px; color: var(--ink); }
+  .coupon-info .coupon-desc { font-size: 0.8rem; font-weight: 700; color: var(--ink); opacity: 0.8; }
+  .coupon-use-btn { padding: 8px 16px; background: var(--green); color: #fff; border: 3px solid var(--ink); border-radius: 10px; font-family: 'Bangers', cursive; font-size: 0.9rem; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: all 0.15s; white-space: nowrap; }
+  .coupon-use-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 var(--ink); }
+  .admin-panel { position: fixed; inset: 0; background: var(--bg); z-index: 5000; transform: translateY(100%); transition: transform 0.5s cubic-bezier(0.68,-0.55,0.27,1.55); overflow-y: auto; display: flex; flex-direction: column; }
+  .admin-panel.active { transform: translateY(0); }
+  .admin-header { background: var(--purple); color: #fff; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid var(--ink); position: sticky; top: 0; z-index: 10; flex-wrap: wrap; gap: 10px; }
+  .admin-header h1 { font-size: 2rem; text-shadow: 3px 3px 0 var(--ink); }
+  .admin-close { padding: 10px 20px; background: var(--red); color: #fff; border: 3px solid var(--ink); border-radius: 12px; font-family: 'Bangers', cursive; font-size: 1rem; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); letter-spacing: 1px; }
+  .admin-close:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+  .admin-tabs { display: flex; gap: 5px; flex-wrap: wrap; padding: 15px 30px; background: #fff; border-bottom: 3px solid var(--ink); position: sticky; top: 90px; z-index: 9; }
+  .admin-tab { padding: 10px 18px; background: transparent; border: 3px solid var(--ink); border-radius: 12px; font-family: 'Bangers', cursive; font-size: 0.95rem; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: all 0.15s; letter-spacing: 1px; color: var(--ink); }
+  .admin-tab:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+  .admin-tab.active { background: var(--yellow); }
+  .admin-body { flex: 1; padding: 30px; }
+  .admin-section { display: none; }
+  .admin-section.active { display: block; }
+  .admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 30px; }
+  .admin-stat { background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 20px; text-align: center; box-shadow: 5px 5px 0 var(--ink); transition: transform 0.3s; }
+  .admin-stat:hover { transform: translate(-2px, -2px); box-shadow: 7px 7px 0 var(--ink); }
+  .admin-stat-icon { font-size: 2.5rem; margin-bottom: 10px; }
+  .admin-stat-value { font-family: 'Bangers', cursive; font-size: 2rem; color: var(--pink); text-shadow: 2px 2px 0 var(--yellow); letter-spacing: 1px; }
+  .admin-stat-label { font-size: 0.85rem; font-weight: 700; color: #888; letter-spacing: 1px; margin-top: 5px; }
+  .admin-card { background: #fff; border: 3px solid var(--ink); border-radius: 16px; padding: 25px; box-shadow: 5px 5px 0 var(--ink); margin-bottom: 25px; }
+  .admin-card h2 { font-size: 1.5rem; margin-bottom: 20px; color: var(--pink); text-shadow: 2px 2px 0 var(--yellow); }
+  .admin-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  .admin-table th { background: var(--yellow); padding: 12px; text-align: left; border: 2px solid var(--ink); font-family: 'Bangers', cursive; letter-spacing: 1px; font-size: 0.95rem; }
+  .admin-table td { padding: 10px 12px; border: 2px solid var(--ink); font-weight: 700; background: #fff; }
+  .admin-table tr:hover td { background: rgba(255,217,61,0.15); }
+  .admin-action-btn { padding: 5px 10px; border: 2px solid var(--ink); border-radius: 8px; font-family: 'Bangers', cursive; font-size: 0.8rem; cursor: pointer; box-shadow: 2px 2px 0 var(--ink); transition: all 0.1s; letter-spacing: 0.5px; margin: 2px; white-space: nowrap; }
+  .admin-action-btn:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink); }
+  .aab-edit { background: var(--blue); color: #fff; }
+  .aab-delete { background: var(--red); color: #fff; }
+  .aab-add { background: var(--green); color: #fff; padding: 10px 20px; font-size: 0.95rem; margin-bottom: 15px; }
+  .aab-reset { background: var(--orange); color: #fff; padding: 10px 20px; font-size: 0.95rem; }
+  .admin-input { width: 100%; padding: 10px 14px; border: 3px solid var(--ink); border-radius: 10px; font-family: 'Comic Neue', cursive; font-size: 0.9rem; font-weight: 700; background: #fff; outline: none; margin-bottom: 10px; transition: all 0.15s; }
+  .admin-input:focus { background: var(--yellow); box-shadow: 3px 3px 0 var(--ink); }
+  .admin-empty { text-align: center; padding: 40px 20px; color: #888; font-weight: 700; }
+  .admin-login-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 6000; display: none; align-items: center; justify-content: center; padding: 20px; }
+  .admin-login-overlay.active { display: flex; }
+  .admin-login-box { background: var(--bg); border: 5px solid var(--ink); border-radius: 25px; padding: 40px 30px; max-width: 400px; width: 100%; text-align: center; box-shadow: 12px 12px 0 var(--ink); animation: adminLoginIn 0.5s ease; }
+  @keyframes adminLoginIn { from { transform: scale(0.7) rotate(-5deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
+  .admin-login-box h2 { font-size: 2rem; color: var(--pink); margin-bottom: 10px; text-shadow: 2px 2px 0 var(--yellow); }
+  .admin-login-box .lock-icon { font-size: 4rem; margin-bottom: 15px; animation: wiggle 1s ease-in-out infinite; }
+  .admin-login-box p { font-weight: 700; margin-bottom: 20px; color: #888; font-size: 0.9rem; }
+  .admin-product-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 7000; display: none; align-items: center; justify-content: center; padding: 20px; overflow-y: auto; }
+  .admin-product-modal.active { display: flex; }
+  .admin-product-box { background: var(--bg); border: 5px solid var(--ink); border-radius: 25px; padding: 30px; max-width: 550px; width: 100%; box-shadow: 12px 12px 0 var(--ink); animation: adminLoginIn 0.5s ease; max-height: 90vh; overflow-y: auto; position: relative; }
+  .admin-product-box h2 { font-size: 1.8rem; color: var(--pink); margin-bottom: 20px; text-align: center; text-shadow: 2px 2px 0 var(--yellow); }
+  .admin-product-box .modal-close { position: absolute; top: 15px; right: 15px; }
+  .admin-field { margin-bottom: 15px; }
+  .admin-field label { display: block; font-family: 'Bangers', cursive; font-size: 0.95rem; margin-bottom: 6px; letter-spacing: 1px; color: var(--ink); }
+  .admin-field input, .admin-field select, .admin-field textarea { width: 100%; padding: 12px 16px; border: 3px solid var(--ink); border-radius: 12px; font-family: 'Comic Neue', cursive; font-size: 0.95rem; font-weight: 700; background: #fff; outline: none; transition: all 0.15s; }
+  .admin-field input:focus, .admin-field select:focus, .admin-field textarea:focus { background: var(--yellow); box-shadow: 4px 4px 0 var(--ink); transform: translate(-2px, -2px); }
+  .admin-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .admin-emoji-picker { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; max-height: 120px; overflow-y: auto; padding: 8px; border: 3px solid var(--ink); border-radius: 12px; background: #fff; }
+  .admin-emoji-btn { width: 40px; height: 40px; border: 2px solid var(--ink); border-radius: 8px; background: #fff; font-size: 1.4rem; cursor: pointer; transition: all 0.15s; }
+  .admin-emoji-btn:hover { background: var(--yellow); transform: scale(1.15); }
+  .admin-emoji-btn.selected { background: var(--green); box-shadow: 0 0 0 3px var(--green); }
+  @media (max-width: 900px) { .hero { grid-template-columns: 1fr; text-align: center; padding-top: 180px; } .hero-cta { justify-content: center; } .nav-links { display: none; } .search-box { display: none; } .big-emoji { font-size: 9rem; } .emoji-ring { width: 240px; height: 240px; } .emoji-ring-2 { width: 290px; height: 290px; } body { cursor: auto; } .cart-sidebar { width: 100%; } .checkout-modal { padding: 25px; } .wheel-container { width: 260px; height: 260px; } .cat, .dog { display: none; } .slot-reel { width: 75px; height: 95px; font-size: 2.8rem; } .theme-switcher { top: auto; bottom: 80px; right: 20px; flex-direction: row; } .sound-toggle { top: auto; bottom: 80px; left: 20px; } .mobile-nav { display: flex; } .back-top { bottom: 80px; } .daily-bonus { bottom: 80px; left: 20px; padding: 10px 15px; font-size: 0.85rem; } .loyalty-badge { top: 90px; left: 10px; font-size: 0.8rem; padding: 6px 10px; } .chat-btn { bottom: 140px; right: 20px; width: 55px; height: 55px; font-size: 1.4rem; } .chat-panel { bottom: 140px; right: 20px; width: calc(100vw - 40px); } body { padding-bottom: 70px; } .admin-header h1 { font-size: 1.4rem; } .admin-body { padding: 15px; } .admin-tabs { padding: 10px 15px; top: 80px; } .admin-field-row { grid-template-columns: 1fr; } .admin-table { font-size: 0.75rem; } .admin-table th, .admin-table td { padding: 6px 8px; } }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+  <div class="loader-emoji">🛒</div>
+  <div class="loader-text">Loading LOL Mart...</div>
+</div>
+
+<!-- SOUND -->
+<button class="sound-toggle" id="soundToggle" onclick="toggleSound()" title="Sound">🔊</button>
+
+<!-- THEME -->
+<div class="theme-switcher">
+  <button class="theme-btn" id="darkBtn" onclick="toggleDark()" title="Dark">🌙</button>
+  <button class="theme-btn" onclick="openLogin()" title="Login">👤</button>
+  <button class="theme-btn" onclick="openWallet()" title="Coupons">🎫</button>
+  <button class="theme-btn" onclick="openAdmin()" title="Admin">⚙️</button>
+</div>
+
+<div class="loyalty-badge" id="loyaltyBadge">⭐ 0 pts</div>
+<button class="daily-bonus" id="dailyBonus" onclick="claimDailyBonus()">🎁 Daily Bonus</button>
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆</button>
+
+<button class="chat-btn" id="chatBtn" onclick="toggleChat()">💬</button>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">🤖 Support Bot <button onclick="toggleChat()">✕</button></div>
+  <div class="chat-body" id="chatBody">
+    <div class="chat-msg bot">Hi! I'm LOL Bot 🤖 How can I help you waste money today?</div>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="chatInput" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button onclick="sendChat()">Send</button>
+  </div>
+</div>
+
+<div class="welcome-popup" id="welcomePopup">
+  <div class="welcome-content">
+    <div class="welcome-emoji">🎉</div>
+    <h2>Welcome to LOL Mart!</h2>
+    <p>Here's a special code just for you:</p>
+    <div class="welcome-code">LOL50</div>
+    <p style="font-size:0.85rem;">Use it at checkout for 50% off!</p>
+    <button class="btn btn-yellow" style="margin-top:15px;" onclick="closeWelcome()">AWESOME! 🎉</button>
+  </div>
+</div>
+
+<div class="shipping-bar" id="shippingBar">
+  <div id="shippingText">Add $50 more for FREE shipping! 🚚</div>
+  <div class="shipping-progress"><div class="shipping-fill" id="shippingFill"></div></div>
+</div>
+
+<nav>
+  <div class="logo" onclick="location.reload()">LOL Mart</div>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search useless stuff..." oninput="filterProducts()">
+  </div>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#shop">Shop</a></li>
+    <li><a href="#wheel">Wheel</a></li>
+    <li><a href="#slots">Slots</a></li>
+    <li><button onclick="openHistory()">📦 Orders</button></li>
+  </ul>
+  <button class="icon-btn wishlist-btn" onclick="openWishlist()" title="Wishlist">
+    ❤️<span class="badge" id="wishCount">0</span>
+  </button>
+  <button class="icon-btn cart-btn" id="cartBtn" onclick="openCart()">
+    🛒 <span id="cartCount">0</span>
+  </button>
+</nav>
+
+<section class="hero" id="home">
+  <div>
+    <h1>
+      <span class="wiggle">BUY</span>
+      <span class="wiggle">USELESS</span>
+      <span class="wiggle">STUFF</span>
+      <span class="wiggle">NOW!</span>
+    </h1>
+    <p>Welcome to <span class="highlight">LOL Mart</span> — where you spend real money on things you absolutely don't need. Your wallet will cry, but you'll laugh. 😂</p>
+    <div class="hero-cta">
+      <button class="btn btn-yellow" onclick="document.getElementById('shop').scrollIntoView()">SHOP TILL BROKE 💸</button>
+      <button class="btn btn-pink" onclick="openCart()">VIEW CART 🛒</button>
+    </div>
+  </div>
+  <div class="hero-emoji">
+    <div class="emoji-ring"></div>
+    <div class="emoji-ring emoji-ring-2"></div>
+    <div class="big-emoji">🤡</div>
+  </div>
+</section>
+
+<section class="section" id="shop">
+  <h2 class="section-title">🔥 TRENDING (USELESS) PRODUCTS 🔥</h2>
+  <p class="section-sub">Handpicked by our CEO's cat 🐱</p>
+  <div class="filters" id="filterBar"></div>
+  <div class="sort-bar">
+    <label>Sort by:</label>
+    <select id="sortSelect" onchange="filterProducts()">
+      <option value="default">Default (Chaos)</option>
+      <option value="price-low">Price: Low → High</option>
+      <option value="price-high">Price: High → Low</option>
+      <option value="rating">Rating: Best First</option>
+      <option value="name">Name: A → Z</option>
+    </select>
+  </div>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<section class="wheel-section" id="wheel">
+  <h2 class="section-title">🎡 SPIN THE WHEEL 🎡</h2>
+  <p class="section-sub">Win fake discounts that might actually work!</p>
+  <div class="wheel-container">
+    <div class="wheel-pointer">▼</div>
+    <div class="wheel" id="wheelEl"></div>
+    <div class="wheel-center">SPIN</div>
+  </div>
+  <button class="spin-btn" id="spinBtn" onclick="spinWheel()">SPIN THE WHEEL! 🎰</button>
+</section>
+
+<section class="slot-section" id="slots">
+  <h2 class="section-title">🎰 LUCKY SLOTS 🎰</h2>
+  <p class="section-sub">Match 3 emojis to win... something?</p>
+  <div class="slot-machine">
+    <div class="slot-reel"><span class="slot-emoji" id="reel1">🍒</span></div>
+    <div class="slot-reel"><span class="slot-emoji" id="reel2">🍋</span></div>
+    <div class="slot-reel"><span class="slot-emoji" id="reel3">⭐</span></div>
+  </div>
+  <div style="margin-top:20px;">
+    <button class="slot-spin-btn" id="slotSpinBtn" onclick="spinSlots()">SPIN! 🎰</button>
+  </div>
+  <div class="slot-result" id="slotResult">Press SPIN to play (free spins, real disappointment)</div>
+</section>
+
+<section class="section" id="reviews">
+  <h2 class="section-title">💬 REAL(ish) REVIEWS 💬</h2>
+  <p class="section-sub">100% verified by a guy named Dave</p>
+  <div class="product-grid" id="reviewGrid"></div>
+</section>
+
+<div class="mobile-nav">
+  <button onclick="document.getElementById('home').scrollIntoView()"><span class="mn-icon">🏠</span>Home</button>
+  <button onclick="document.getElementById('shop').scrollIntoView()"><span class="mn-icon">🛍️</span>Shop</button>
+  <button onclick="openCart()"><span class="mn-icon">🛒</span>Cart</button>
+  <button onclick="openWishlist()"><span class="mn-icon">❤️</span>Wish</button>
+  <button onclick="openHistory()"><span class="mn-icon">📦</span>Orders</button>
+</div>
+
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<aside class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h2>🛒 YOUR CART</h2>
+    <button class="close-cart" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody"></div>
+  <div class="cart-footer" id="cartFooter" style="display:none;">
+    <div class="cart-promo" id="promoBox">
+      <input type="text" id="promoInput" placeholder="PROMO CODE" maxlength="20">
+      <button class="promo-apply-btn" onclick="applyPromo()">APPLY</button>
+    </div>
+    <div id="promoApplied"></div>
+    <div class="cart-discount" id="cartDiscount" style="display:none;">
+      <span>DISCOUNT:</span>
+      <span id="discountValue">-$0.00</span>
+    </div>
+    <div class="cart-total">
+      <span>TOTAL:</span>
+      <span class="cart-total-value" id="cartTotal">$0.00</span>
+    </div>
+    <button class="checkout-btn" onclick="openCheckout()">CHECKOUT 💳</button>
+  </div>
+</aside>
+
+<div class="modal-overlay" id="checkoutOverlay">
+  <div class="checkout-modal">
+    <button class="modal-close" onclick="closeCheckout()">✕</button>
+    <div id="checkoutContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="reviewOverlay">
+  <div class="checkout-modal">
+    <button class="modal-close" onclick="closeReview()">✕</button>
+    <div id="reviewContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="historyOverlay">
+  <div class="checkout-modal" style="max-width:700px;">
+    <button class="modal-close" onclick="closeHistory()">✕</button>
+    <div id="historyContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="wishlistOverlay">
+  <div class="checkout-modal" style="max-width:600px;">
+    <button class="modal-close" onclick="closeWishlist()">✕</button>
+    <div id="wishlistContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="quickViewOverlay">
+  <div class="checkout-modal">
+    <button class="modal-close" onclick="closeQuickView()">✕</button>
+    <div id="quickViewContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="loginOverlay">
+  <div class="checkout-modal" style="max-width:450px;">
+    <button class="modal-close" onclick="closeLogin()">✕</button>
+    <div id="loginContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="walletOverlay">
+  <div class="checkout-modal" style="max-width:500px;">
+    <button class="modal-close" onclick="closeWallet()">✕</button>
+    <div id="walletContent"></div>
+  </div>
+</div>
+
+<div class="admin-login-overlay" id="adminLoginOverlay">
+  <div class="admin-login-box">
+    <div class="lock-icon">🔐</div>
+    <h2>ADMIN LOGIN</h2>
+    <p>Email & Password required</p>
+    <input type="email" id="adminEmail" class="admin-input" placeholder="Admin Email" autocomplete="off">
+    <input type="password" id="adminPassword" class="admin-input" placeholder="Password" onkeydown="if(event.key==='Enter')verifyAdmin()">
+    <button class="place-order-btn" onclick="verifyAdmin()">LOGIN 🔓</button>
+    <button class="admin-close" style="width:100%;margin-top:10px;" onclick="closeAdminLogin()">CANCEL</button>
+    <p style="margin-top:15px;font-size:0.8rem;color:#888;">Default: admin@lolmart.com / Admin@123</p>
+  </div>
+</div>
+
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-header">
+    <h1>⚙️ ADMIN DASHBOARD</h1>
+    <button class="admin-close" onclick="closeAdmin()">✕ CLOSE</button>
+  </div>
+  <div class="admin-tabs">
+    <button class="admin-tab active" onclick="showAdminTab('overview', this)">📊 Overview</button>
+    <button class="admin-tab" onclick="showAdminTab('products', this)">🛍️ Products</button>
+    <button class="admin-tab" onclick="showAdminTab('orders', this)">📦 Orders</button>
+    <button class="admin-tab" onclick="showAdminTab('reviews', this)">💬 Reviews</button>
+    <button class="admin-tab" onclick="showAdminTab('settings', this)">⚙️ Settings</button>
+  </div>
+  <div class="admin-body">
+    <div class="admin-section active" id="adminOverview"></div>
+    <div class="admin-section" id="adminProducts"></div>
+    <div class="admin-section" id="adminOrders"></div>
+    <div class="admin-section" id="adminReviews"></div>
+    <div class="admin-section" id="adminSettings"></div>
+  </div>
+</div>
+
+<div class="admin-product-modal" id="adminProductModal">
+  <div class="admin-product-box">
+    <button class="modal-close" onclick="closeAdminProductModal()">✕</button>
+    <h2 id="adminProductModalTitle">➕ ADD PRODUCT</h2>
+    <input type="hidden" id="adminEditId">
+    <div class="admin-field"><label>📝 Product Name *</label><input type="text" id="adminPName" placeholder="e.g. Magical Brick"></div>
+    <div class="admin-field"><label>💬 Description</label><textarea id="adminPDesc" placeholder="What does it do?" rows="2"></textarea></div>
+    <div class="admin-field"><label>😀 Emoji *</label><input type="text" id="adminPEmoji" placeholder="Type or pick below" maxlength="10" style="text-align:center;font-size:1.5rem;"><div class="admin-emoji-picker" id="adminEmojiPicker"></div></div>
+    <div class="admin-field-row">
+      <div class="admin-field"><label>💵 Price ($) *</label><input type="number" id="adminPPrice" placeholder="49.99" step="0.01" min="0"></div>
+      <div class="admin-field"><label>🏷️ Old Price ($)</label><input type="number" id="adminPOld" placeholder="999" step="0.01" min="0"></div>
+    </div>
+    <div class="admin-field-row">
+      <div class="admin-field"><label>📦 Stock *</label><input type="number" id="adminPStock" placeholder="10" min="0" value="10"></div>
+      <div class="admin-field"><label>📂 Category *</label><select id="adminPCat"><option value="Misc">Misc</option><option value="Food">Food</option><option value="Fashion">Fashion</option><option value="Gaming">Gaming</option><option value="Audio">Audio</option><option value="Tech">Tech</option></select></div>
+    </div>
+    <div class="admin-field-row">
+      <div class="admin-field"><label>🔥 Tag *</label><select id="adminPTag"><option value="NEW">NEW</option><option value="HOT 🔥">HOT 🔥</option><option value="SALE">SALE</option><option value="RARE">RARE</option><option value="POPULAR">POPULAR</option><option value="CLEARANCE">CLEARANCE</option><option value="BESTSELLER">BESTSELLER</option><option value="SAD">SAD</option></select></div>
+      <div class="admin-field"><label>⭐ Rating (0-5)</label><input type="number" id="adminPRating" placeholder="4.5" step="0.1" min="0" max="5" value="4.5"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button class="place-order-btn" style="flex:2;" onclick="saveAdminProduct()">💾 SAVE PRODUCT</button>
+      <button class="place-order-btn" style="flex:1;background:var(--red);" onclick="closeAdminProductModal()">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ Added to cart!</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // ===== 🔴 SUPABASE CONFIG — YAHAN APNI DETAILS DAALO =====
+  const SUPABASE_URL = 'https://bfiisyiurhbqkiycugqn.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_g0tupYqD8HC3k9lilwz24g_A8vSgnef';
+  const ADMIN_EMAIL = 'shivamkeshari969@gmail.com';
+
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const DEFAULT_PRODUCTS = [
+    { id: 1, emoji: '🧱', name: 'A Brick', desc: "It's a brick.", price: 49.99, old: 999, tag: 'HOT 🔥', cat: 'Misc', rating: 4.5, stock: 3 },
+    { id: 2, emoji: '🪨', name: 'Emotional Support Rock', desc: 'For when therapy is expensive.', price: 79.99, old: 199, tag: 'SALE', cat: 'Misc', rating: 4.8, stock: 7 },
+    { id: 3, emoji: '🥒', name: 'Invisible Pickle', desc: "Trust me, it's there.", price: 29.99, old: 59, tag: 'RARE', cat: 'Food', rating: 3.2, stock: 2 },
+    { id: 4, emoji: '💨', name: 'Bottled Air', desc: 'Fresh from the Himalayas.', price: 19.99, old: 49, tag: 'NEW', cat: 'Food', rating: 4.1, stock: 15 },
+    { id: 5, emoji: '🧦', name: 'Single Sock', desc: 'The other one escaped.', price: 9.99, old: 15, tag: 'POPULAR', cat: 'Fashion', rating: 4.7, stock: 20 },
+    { id: 6, emoji: '🍌', name: 'Banana (Used)', desc: 'Slightly bruised.', price: 4.99, old: 10, tag: 'CLEARANCE', cat: 'Food', rating: 2.5, stock: 5 },
+    { id: 7, emoji: '🎈', name: 'Deflated Balloon', desc: 'Now it is sad.', price: 2.99, old: 8, tag: 'SAD', cat: 'Misc', rating: 1.8, stock: 10 },
+    { id: 8, emoji: '📦', name: 'Empty Box', desc: 'For storing your regrets.', price: 14.99, old: 29, tag: 'BESTSELLER', cat: 'Misc', rating: 4.9, stock: 8 },
+  ];
+
+  const DEFAULT_REVIEWS = [
+    { id: 'r1', name: 'Dave', text: "Bought a brick. It's a brick. 5 stars.", stars: 5 },
+    { id: 'r2', name: 'Karen', text: "Best air I've ever breathed.", stars: 5 },
+    { id: 'r3', name: 'Sleepy Steve', text: "I don't remember buying this.", stars: 5 },
+    { id: 'r4', name: 'Confused Carl', text: "Doesn't fit my cat. I don't have a cat.", stars: 1 },
+    { id: 'r5', name: 'Broke Brian', text: "10/10 would accidentally subscribe again.", stars: 5 },
+    { id: 'r6', name: 'Laughing Lisa', text: "Masterpiece of chaos.", stars: 5 },
+  ];
+
+  const promoCodes = {
+    'LOL50': { type: 'percent', value: 50, desc: '50% OFF' },
+    'FREESTUFF': { type: 'free', value: 100, desc: 'Everything FREE' },
+    'BROKE': { type: 'percent', value: 25, desc: '25% OFF' },
+    'MEME': { type: 'flat', value: 10, desc: '$10 off' },
+    'NICE': { type: 'percent', value: 69, desc: '69% OFF' },
+    'GG': { type: 'percent', value: 100, desc: 'GG WP free' },
+    'DAILY': { type: 'flat', value: 15, desc: '$15 off daily' },
+  };
+
+  let products = [...DEFAULT_PRODUCTS];
+  let reviews = [...DEFAULT_REVIEWS];
+  let cart = [];
+  let wishlist = [];
+  let buyNowItem = null;
+  let appliedPromo = null;
+  let orders = [];
+  let currentReviewProduct = null;
+  let currentRating = 0;
+  let wheelSpun = false;
+  let currentFilter = 'All';
+  let currentSearch = '';
+  let currentSort = 'default';
+  let user = null;
+  let loyaltyPoints = 0;
+  let dailyClaimed = false;
+  let savedCoupons = [];
+  let adminUnlocked = false;
+  let supabaseReady = false;
+
+  let soundEnabled = true;
+  let audioCtx = null;
+  function initAudio() { if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} } }
+  function playTone(freq, duration, type = 'sine', volume = 0.15) {
+    if (!soundEnabled) return; initAudio(); if (!audioCtx) return;
+    const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+    osc.type = type; osc.frequency.value = freq;
+    gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.start(); osc.stop(audioCtx.currentTime + duration);
+  }
+  const sounds = {
+    pop: () => { playTone(600, 0.1); setTimeout(() => playTone(900, 0.1), 50); },
+    boing: () => { playTone(200, 0.2); setTimeout(() => playTone(400, 0.15), 100); },
+    cash: () => { playTone(1200, 0.1, 'square', 0.1); setTimeout(() => playTone(1600, 0.15, 'square', 0.1), 80); },
+    error: () => { playTone(200, 0.15, 'sawtooth', 0.1); setTimeout(() => playTone(150, 0.2, 'sawtooth', 0.1), 100); },
+    win: () => { [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => playTone(f, 0.15, 'triangle', 0.15), i * 80)); },
+    spin: () => { for (let i = 0; i < 8; i++) setTimeout(() => playTone(300 + i * 50, 0.05, 'square', 0.08), i * 60); },
+    click: () => playTone(800, 0.05, 'square', 0.08),
+    roar: () => playTone(120, 0.3, 'sawtooth', 0.12),
+  };
+  function toggleSound() { soundEnabled = !soundEnabled; const btn = document.getElementById('soundToggle'); btn.textContent = soundEnabled ? '🔊' : '🔇'; btn.classList.toggle('muted', !soundEnabled); if (soundEnabled) sounds.pop(); }
+  function toggleDark() { document.body.classList.toggle('dark'); const isDark = document.body.classList.contains('dark'); document.getElementById('darkBtn').textContent = isDark ? '☀️' : '🌙'; localStorage.setItem('lolmart_dark', isDark ? '1' : '0'); sounds.click(); showToast(isDark ? '🌙 Dark ON' : '☀️ Light ON'); }
+
+  async function loadFromSupabase() {
+    try {
+      const { data: dbProducts, error } = await supabaseClient.from('products').select('*');
+      if (error) throw error;
+      if (dbProducts && dbProducts.length > 0) {
+        products = dbProducts.map(p => ({ id: p.id, emoji: p.emoji, name: p.name, desc: p.description, price: parseFloat(p.price), old: parseFloat(p.old_price), tag: p.tag, cat: p.category, rating: parseFloat(p.rating), stock: p.stock }));
+      }
+      const { data: dbOrders } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
+      if (dbOrders) orders = dbOrders.map(o => ({ id: o.order_id, date: new Date(o.created_at).toLocaleString(), items: o.items, total: parseFloat(o.total) }));
+      const { data: dbReviews } = await supabaseClient.from('reviews').select('*').order('created_at', { ascending: false });
+      if (dbReviews && dbReviews.length > 0) reviews = dbReviews.map(r => ({ id: r.id, name: r.name, text: r.text, stars: r.stars }));
+      supabaseReady = true;
+      console.log('✅ Supabase loaded:', products.length, 'products,', reviews.length, 'reviews');
+    } catch (e) {
+      console.error('❌ Supabase error:', e);
+      showToast('⚠️ Offline mode');
+      products = [...DEFAULT_PRODUCTS];
+    }
+  }
+
+  async function saveOrderToSupabase(orderData) {
+    try {
+      const { error } = await supabaseClient.from('orders').insert([orderData]);
+      if (error) throw error;
+      return true;
+    } catch (e) { console.error('❌ Order save:', e); return false; }
+  }
+
+  function saveAll() {
+    try {
+      localStorage.setItem('lolmart_cart', JSON.stringify(cart));
+      localStorage.setItem('lolmart_wishlist', JSON.stringify(wishlist));
+      localStorage.setItem('lolmart_promo', JSON.stringify(appliedPromo));
+      localStorage.setItem('lolmart_wheel', wheelSpun ? '1' : '0');
+      localStorage.setItem('lolmart_user', JSON.stringify(user));
+      localStorage.setItem('lolmart_points', loyaltyPoints.toString());
+      localStorage.setItem('lolmart_daily', dailyClaimed ? '1' : '0');
+      localStorage.setItem('lolmart_coupons', JSON.stringify(savedCoupons));
+    } catch (e) { console.error('Save error:', e); }
+  }
+  function loadLocal() {
+    try {
+      const c = localStorage.getItem('lolmart_cart'); if (c) cart = JSON.parse(c) || [];
+      const w = localStorage.getItem('lolmart_wishlist'); if (w) wishlist = JSON.parse(w) || [];
+      const p = localStorage.getItem('lolmart_promo'); if (p && p !== 'null') appliedPromo = JSON.parse(p);
+      wheelSpun = localStorage.getItem('lolmart_wheel') === '1';
+      const u = localStorage.getItem('lolmart_user'); if (u && u !== 'null') user = JSON.parse(u);
+      loyaltyPoints = parseInt(localStorage.getItem('lolmart_points') || '0') || 0;
+      dailyClaimed = localStorage.getItem('lolmart_daily') === '1';
+      const cp = localStorage.getItem('lolmart_coupons'); if (cp) savedCoupons = JSON.parse(cp) || [];
+      const d = localStorage.getItem('lolmart_dark'); if (d === '1') { document.body.classList.add('dark'); document.getElementById('darkBtn').textContent = '☀️'; }
+    } catch (e) { console.error('Load error:', e); }
+  }
+
+  function buildFilterBar() {
+    const cats = ['All', ...new Set(products.map(p => p.cat))];
+    document.getElementById('filterBar').innerHTML = cats.map(c => `<button class="filter-btn ${c === currentFilter ? 'active' : ''}" onclick="setFilter('${c}')">${c}</button>`).join('');
+  }
+  function setFilter(cat) { currentFilter = cat; buildFilterBar(); renderProducts(); sounds.click(); }
+  function renderProducts() {
+    let list = [...products];
+    if (currentFilter !== 'All') list = list.filter(p => p.cat === currentFilter);
+    if (currentSearch) { const q = currentSearch.toLowerCase(); list = list.filter(p => p.name.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q)); }
+    if (currentSort === 'price-low') list.sort((a, b) => a.price - b.price);
+    else if (currentSort === 'price-high') list.sort((a, b) => b.price - a.price);
+    else if (currentSort === 'rating') list.sort((a, b) => b.rating - a.rating);
+    else if (currentSort === 'name') list.sort((a, b) => a.name.localeCompare(b.name));
+    const grid = document.getElementById('productGrid');
+    if (list.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:#888;"><div style="font-size:4rem;">🔍</div><h3 style="font-family:'Bangers';margin-top:15px;">No products found!</h3><button onclick="resetFilters()" style="margin-top:15px;padding:10px 25px;background:var(--yellow);border:3px solid var(--ink);border-radius:12px;font-family:'Bangers';font-size:1rem;cursor:pointer;box-shadow:3px 3px 0 var(--ink);">🔄 RESET FILTERS</button></div>`;
+      return;
+    }
+    grid.innerHTML = list.map(p => `
+      <div class="product-card visible">
+        ${p.stock <= 5 ? `<div class="stock-tag">Only ${p.stock} left!</div>` : ''}
+        <div class="sale-tag">${p.tag}</div>
+        <button class="wish-btn ${wishlist.includes(p.id) ? 'active' : ''}" onclick="toggleWishlist(${p.id}, event)">${wishlist.includes(p.id) ? '❤️' : '🤍'}</button>
+        <div class="product-emoji" onclick="openQuickView(${p.id})">${p.emoji}</div>
+        <div class="product-name" onclick="openQuickView(${p.id})">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-rating">${'⭐'.repeat(Math.round(p.rating))}<span class="rating-num">${p.rating}</span></div>
+        <div class="product-price"><span class="old">$${p.old}</span>$${p.price}</div>
+        <div class="product-actions">
+          <button class="add-btn" onclick="addToCart(${p.id})">ADD TO CART 🛒</button>
+          <button class="buy-now-btn" onclick="buyNow(${p.id})">BUY NOW 💸</button>
+          <button class="quick-view-btn" onclick="openQuickView(${p.id})">👁️ Quick View</button>
+        </div>
+      </div>
+    `).join('');
+  }
+  function resetFilters() { currentFilter = 'All'; currentSearch = ''; currentSort = 'default'; document.getElementById('searchInput').value = ''; document.getElementById('sortSelect').value = 'default'; buildFilterBar(); renderProducts(); showToast('🔄 Filters reset!'); }
+  function filterProducts() { currentSearch = document.getElementById('searchInput').value; currentSort = document.getElementById('sortSelect').value; renderProducts(); }
+
+  function toggleWishlist(id, e) {
+    if (e) e.stopPropagation();
+    const idx = wishlist.indexOf(id);
+    if (idx > -1) { wishlist.splice(idx, 1); sounds.error(); showToast('💔 Removed'); }
+    else { wishlist.push(id); sounds.pop(); showToast('❤️ Wishlisted!'); }
+    saveAll(); updateBadges(); renderProducts();
+  }
+  function updateBadges() {
+    document.getElementById('wishCount').textContent = wishlist.length;
+    document.getElementById('cartCount').textContent = cart.reduce((s, i) => s + i.qty, 0);
+    document.getElementById('loyaltyBadge').textContent = `⭐ ${loyaltyPoints} pts`;
+  }
+  function openWishlist() {
+    const content = document.getElementById('wishlistContent');
+    if (wishlist.length === 0) { content.innerHTML = `<h2>❤️ WISHLIST</h2><div class="empty-orders"><div class="empty-emoji">💔</div><p style="font-size:1.2rem;font-weight:700;">Nothing here yet!</p></div>`; }
+    else {
+      const items = wishlist.map(id => products.find(p => p.id === id)).filter(Boolean);
+      content.innerHTML = `<h2>❤️ WISHLIST</h2><p class="modal-sub">${items.length} item(s)</p>${items.map(p => `<div class="checkout-product"><div class="cp-emoji">${p.emoji}</div><div class="cp-info"><div class="cp-name">${p.name}</div><div class="cp-price">$${p.price}</div></div><div style="display:flex;gap:6px;flex-direction:column;"><button class="add-btn" style="padding:8px 12px;font-size:0.85rem;" onclick="addToCart(${p.id})">🛒 Add</button><button class="remove-item" style="position:static;width:auto;padding:6px 12px;border-radius:8px;" onclick="toggleWishlist(${p.id});openWishlist();">✕</button></div></div>`).join('')}`;
+    }
+    document.getElementById('wishlistOverlay').classList.add('active'); document.body.style.overflow = 'hidden'; sounds.click();
+  }
+  function closeWishlist() { document.getElementById('wishlistOverlay').classList.remove('active'); document.body.style.overflow = ''; }
+
+  function openQuickView(id) {
+    const p = products.find(x => x.id === id); if (!p) return;
+    document.getElementById('quickViewContent').innerHTML = `<div class="quick-view-content"><div class="quick-view-emoji">${p.emoji}</div><h2 style="color:var(--pink);text-shadow:2px 2px 0 var(--yellow);">${p.name}</h2><div class="quick-view-stars">${'⭐'.repeat(Math.round(p.rating))} ${p.rating}/5</div><div class="quick-view-desc">${p.desc}</div><div class="product-price" style="font-size:2rem;margin-bottom:15px;"><span class="old">$${p.old}</span>$${p.price}</div><div style="background:var(--yellow);padding:8px;border:2px solid var(--ink);border-radius:8px;margin-bottom:15px;font-weight:700;font-size:0.85rem;">📦 ${p.stock} in stock · ${p.cat}</div><div style="display:flex;gap:8px;flex-direction:column;"><button class="add-btn" onclick="addToCart(${p.id});closeQuickView();">ADD TO CART 🛒</button><button class="buy-now-btn" onclick="buyNow(${p.id});closeQuickView();">BUY NOW 💸</button><button class="wish-btn ${wishlist.includes(p.id) ? 'active' : ''}" style="position:static;width:100%;height:auto;padding:10px;border-radius:12px;" onclick="toggleWishlist(${p.id});openQuickView(${p.id});">${wishlist.includes(p.id) ? '❤️ In Wishlist' : '🤍 Add to Wishlist'}</button><button class="review-btn" onclick="closeQuickView();openReview(${p.id});" style="width:100%;padding:10px;border:2px dashed var(--ink);border-radius:10px;background:transparent;font-family:'Comic Neue';font-weight:700;cursor:pointer;margin-top:6px;">✍️ Write Review</button></div></div>`;
+    document.getElementById('quickViewOverlay').classList.add('active'); document.body.style.overflow = 'hidden'; sounds.click();
+  }
+  function closeQuickView() { document.getElementById('quickViewOverlay').classList.remove('active'); document.body.style.overflow = ''; }
+
+  function renderReviews() {
+    document.getElementById('reviewGrid').innerHTML = reviews.map(r => `<div class="review-card"><div class="review-stars">${'⭐'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</div><p class="review-text">"${r.text}"</p><div class="review-author">— ${r.name} <span class="review-verified">✓ Verified</span></div></div>`).join('');
+  }
+
+  function addToCart(id) {
+    const existing = cart.find(item => item.id === id); if (existing) existing.qty++; else cart.push({ id, qty: 1 });
+    const product = products.find(p => p.id === id); if (!product) return;
+    showToast(`😂 ${product.name} added!`); sounds.pop(); updateAll(); bumpCartButton();
+  }
+  function buyNow(id) {
+    const product = products.find(p => p.id === id); if (!product) return;
+    buyNowItem = { ...product, qty: 1 }; sounds.cash(); openCheckout(true); showToast(`⚡ Buying ${product.name}!`);
+  }
+  function removeFromCart(id) { cart = cart.filter(item => item.id !== id); sounds.error(); updateAll(); showToast('🗑️ Removed!'); }
+  function changeQty(id, delta) { const item = cart.find(i => i.id === id); if (!item) return; item.qty += delta; if (item.qty <= 0) removeFromCart(id); else { sounds.click(); updateAll(); } }
+  function calculateTotals() {
+    const subtotal = cart.reduce((sum, item) => { const p = products.find(x => x.id === item.id); return p ? sum + p.price * item.qty : sum; }, 0);
+    let discount = 0;
+    if (appliedPromo) { if (appliedPromo.type === 'percent') discount = subtotal * (appliedPromo.value / 100); else if (appliedPromo.type === 'flat') discount = Math.min(appliedPromo.value, subtotal); else if (appliedPromo.type === 'free') discount = subtotal; }
+    return { subtotal, discount, total: Math.max(0, subtotal - discount) };
+  }
+  function updateAll() { updateCartUI(); updateShippingBar(); updateBadges(); saveAll(); }
+  function updateCartUI() {
+    const cartBody = document.getElementById('cartBody'); const cartFooter = document.getElementById('cartFooter');
+    if (cart.length === 0) { cartBody.innerHTML = `<div class="cart-empty"><div class="empty-emoji">🛒</div><h3>Cart is empty</h3><p>Go buy stuff! 😂</p></div>`; cartFooter.style.display = 'none'; return; }
+    cartBody.innerHTML = cart.map(item => { const p = products.find(x => x.id === item.id); if (!p) return ''; return `<div class="cart-item"><div class="cart-item-emoji">${p.emoji}</div><div class="cart-item-info"><div class="cart-item-name">${p.name}</div><div class="cart-item-price">$${p.price} × ${item.qty} = $${(p.price * item.qty).toFixed(2)}</div><div class="qty-controls"><button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button><span class="qty-value">${item.qty}</span><button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button></div></div><button class="remove-item" onclick="removeFromCart(${item.id})">✕</button></div>`; }).join('');
+    const { subtotal, discount, total } = calculateTotals();
+    if (appliedPromo) { document.getElementById('promoBox').style.display = 'none'; document.getElementById('promoApplied').innerHTML = `<div class="promo-applied"><span>🎟️ ${appliedPromo.desc}</span><button onclick="removePromo()">✕</button></div>`; document.getElementById('cartDiscount').style.display = 'flex'; document.getElementById('discountValue').textContent = '-$' + discount.toFixed(2); }
+    else { document.getElementById('promoBox').style.display = 'flex'; document.getElementById('promoApplied').innerHTML = ''; document.getElementById('cartDiscount').style.display = 'none'; }
+    document.getElementById('cartTotal').textContent = '$' + total.toFixed(2); cartFooter.style.display = 'block';
+  }
+  function updateShippingBar() {
+    const { subtotal } = calculateTotals(); const bar = document.getElementById('shippingBar'); const text = document.getElementById('shippingText'); const fill = document.getElementById('shippingFill');
+    if (subtotal === 0) { bar.classList.remove('show', 'free'); return; } bar.classList.add('show');
+    if (subtotal >= 50) { bar.classList.add('free'); text.textContent = '🎉 FREE SHIPPING UNLOCKED! 🎉'; fill.style.width = '100%'; }
+    else { bar.classList.remove('free'); text.textContent = `Add $${(50 - subtotal).toFixed(2)} more for FREE shipping! 🚚`; fill.style.width = Math.min(100, (subtotal / 50) * 100) + '%'; }
+  }
+  function applyPromo() {
+    const input = document.getElementById('promoInput'); const code = input.value.trim().toUpperCase(); if (!code) return;
+    if (promoCodes[code]) { appliedPromo = { code, ...promoCodes[code] }; input.value = ''; showToast(`🎟️ "${code}" applied!`); sounds.win(); updateAll(); }
+    else { showToast('❌ Invalid! Try LOL50, FREESTUFF, DAILY...'); sounds.error(); }
+  }
+  function removePromo() { appliedPromo = null; showToast('🎟️ Promo removed'); sounds.click(); updateAll(); }
+  function openCart() { document.getElementById('cartSidebar').classList.add('active'); document.getElementById('cartOverlay').classList.add('active'); document.body.style.overflow = 'hidden'; sounds.click(); }
+  function closeCart() { document.getElementById('cartSidebar').classList.remove('active'); document.getElementById('cartOverlay').classList.remove('active'); document.body.style.overflow = ''; }
+  function bumpCartButton() { const btn = document.getElementById('cartBtn'); btn.classList.remove('bump'); void btn.offsetWidth; btn.classList.add('bump'); }
+
+  function openCheckout(isBuyNow = false) {
+    const content = document.getElementById('checkoutContent'); let items, total, discount = 0;
+    if (isBuyNow && buyNowItem) { items = [{ ...buyNowItem }]; total = buyNowItem.price; }
+    else { items = cart.map(item => { const p = products.find(x => x.id === item.id); return p ? { ...p, qty: item.qty } : null; }).filter(Boolean); const totals = calculateTotals(); total = totals.total; discount = totals.discount; }
+    if (items.length === 0) return;
+    const itemsHTML = items.map(item => `<div class="checkout-product"><div class="cp-emoji">${item.emoji}</div><div class="cp-info"><div class="cp-name">${item.name} × ${item.qty}</div><div class="cp-price">$${(item.price * item.qty).toFixed(2)}</div></div></div>`).join('');
+    content.innerHTML = `<h2>💳 CHECKOUT</h2><p class="modal-sub">${isBuyNow ? '⚡ Instant!' : '🎉 Questionable choices!'}</p>${itemsHTML}<form onsubmit="placeOrder(event, ${isBuyNow})"><div class="form-group"><label>👤 Name</label><input type="text" placeholder="Broke McBrokeface" required value="${user ? user.name : ''}"></div><div class="form-group"><label>📧 Email</label><input type="email" placeholder="your@email.com" required value="${user ? user.email : ''}"></div><div class="form-group"><label>🏠 Address</label><textarea placeholder="Where should we send regrets?" rows="2" required style="min-height:60px;"></textarea></div><div class="form-group"><label>📅 Delivery</label><select required><option value="">Choose</option><option value="now">Now (impossible)</option><option value="tomorrow">Tomorrow (maybe)</option><option value="week">Next week (probably)</option><option value="never">Never (likely)</option></select></div><div class="form-group"><label>💳 Payment</label><select required><option value="">-- Choose --</option><option>💳 Credit Card</option><option>💵 Cash (LOL)</option><option>🎲 Monopoly Money</option><option>🫘 Kidney</option><option>👻 Soul</option></select></div><label class="checkbox-group"><input type="checkbox" id="giftWrap"> 🎁 Gift Wrap (+$5)</label><label class="checkbox-group"><input type="checkbox" id="tipDriver"> 💰 Tip Driver (+$3)</label>${discount > 0 ? `<div class="cart-discount" style="margin-bottom:10px;"><span>DISCOUNT:</span><span>-$' + discount.toFixed(2) + '</span></div>` : ''}<div class="modal-total"><span>TOTAL:</span><span class="mt-value" id="finalTotal">$${total.toFixed(2)}</span></div><button type="submit" class="place-order-btn">PLACE ORDER 🚀</button></form>`;
+    document.getElementById('checkoutOverlay').classList.add('active'); document.body.style.overflow = 'hidden'; sounds.click();
+    setTimeout(() => { const gw = document.getElementById('giftWrap'); const td = document.getElementById('tipDriver'); const update = () => { let extra = 0; if (gw && gw.checked) extra += 5; if (td && td.checked) extra += 3; document.getElementById('finalTotal').textContent = '$' + (total + extra).toFixed(2); }; if (gw) gw.addEventListener('change', update); if (td) td.addEventListener('change', update); }, 50);
+  }
+  function closeCheckout() { document.getElementById('checkoutOverlay').classList.remove('active'); document.body.style.overflow = ''; buyNowItem = null; }
+
+  async function placeOrder(event, isBuyNow) {
+    event.preventDefault();
+    const orderId = 'LOL-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+    const now = new Date().toLocaleString();
+    const giftWrap = document.getElementById('giftWrap')?.checked ? 5 : 0;
+    const tip = document.getElementById('tipDriver')?.checked ? 3 : 0;
+    let items, total;
+    if (isBuyNow && buyNowItem) { items = [{ id: buyNowItem.id, name: buyNowItem.name, emoji: buyNowItem.emoji, qty: 1, price: buyNowItem.price }]; total = buyNowItem.price + giftWrap + tip; }
+    else { items = cart.map(item => { const p = products.find(x => x.id === item.id); return p ? { id: p.id, name: p.name, emoji: p.emoji, qty: item.qty, price: p.price } : null; }).filter(Boolean); total = calculateTotals().total + giftWrap + tip; }
+    items.forEach(it => { const p = products.find(x => x.id === it.id); if (p) p.stock = Math.max(0, p.stock - it.qty); });
+    const pointsEarned = Math.floor(total / 10); loyaltyPoints += pointsEarned;
+    const orderData = { order_id: orderId, items, total, customer_name: user ? user.name : 'Guest', customer_email: user ? user.email : '' };
+    const saved = await saveOrderToSupabase(orderData);
+    orders.unshift({ id: orderId, date: now, items, total });
+    saveAll(); sounds.win(); for (let i = 0; i < 80; i++) setTimeout(spawnConfetti, i * 12);
+    const messages = ["Your money is gone. Item is... somewhere.", "Order placed! Ship whenever. 😴", "Success! Wallet emptied. 🤑", "Congrats! You bought garbage. 🗑️"];
+    document.getElementById('checkoutContent').innerHTML = `<div class="success-screen"><div class="success-emoji">🎉</div><h2>ORDER PLACED!</h2><p>${messages[Math.floor(Math.random() * messages.length)]}</p><div class="order-id">ORDER ID: ${orderId}</div><p style="color:var(--purple);font-weight:800;">⭐ +${pointsEarned} points!</p>${saved ? '<p style="color:var(--green);font-weight:700;font-size:0.85rem;">✅ Saved to cloud!</p>' : '<p style="color:var(--orange);font-weight:700;font-size:0.85rem;">⚠️ Saved locally (offline)</p>'}<button class="place-order-btn" onclick="finishOrder(${isBuyNow})">AWESOME! 🎊</button></div>`;
+    updateBadges(); renderProducts();
+  }
+  function finishOrder(isBuyNow) { if (!isBuyNow) { cart = []; appliedPromo = null; } buyNowItem = null; updateAll(); closeCheckout(); closeCart(); showToast('✅ Thanks! 😂'); }
+
+  function openReview(productId) {
+    currentReviewProduct = products.find(p => p.id === productId); currentRating = 0;
+    document.getElementById('reviewContent').innerHTML = `<h2>✍️ REVIEW</h2><p class="modal-sub">For: ${currentReviewProduct.emoji} ${currentReviewProduct.name}</p><div class="form-group"><label>⭐ Rate it!</label><div class="star-rating" id="starRating">${[1,2,3,4,5].map(i => `<span onclick="setRating(${i})" data-r="${i}">⭐</span>`).join('')}</div></div><div class="form-group"><label>👤 Name</label><input type="text" id="reviewName" placeholder="Honest Hank" required></div><div class="form-group"><label>💬 Review</label><textarea class="review-textarea" id="reviewText" placeholder="Be brutally honest" required></textarea></div><button class="place-order-btn" onclick="submitReview()">SUBMIT 📝</button>`;
+    document.getElementById('reviewOverlay').classList.add('active'); document.body.style.overflow = 'hidden'; sounds.click();
+  }
+  function setRating(r) { currentRating = r; document.querySelectorAll('#starRating span').forEach(s => { s.classList.toggle('active', parseInt(s.dataset.r) <= r); }); playTone(400 + r * 100, 0.1); }
+  async function submitReview() {
+    const name = document.getElementById('reviewName').value.trim(); const text = document.getElementById('reviewText').value.trim();
+    if (!name || !text || currentRating === 0) { showToast('⚠️ Fill all fields!'); sounds.error(); return; }
+    try {
+      const { error } = await supabaseClient.from('reviews').insert([{ product_id: currentReviewProduct.id, name: name, text: text, stars: currentRating }]);
+      if (error) throw error;
+      reviews.unshift({ id: 'r' + Date.now(), name, text, stars: currentRating });
+      renderReviews(); closeReview();
+      showToast('📝 Review submitted to cloud!'); sounds.win();
+      for (let i = 0; i < 30; i++) setTimeout(spawnConfetti, i * 15);
+    } catch (e) {
+      console.error('Review save error:', e);
+      reviews.unshift({ id: 'r' + Date.now(), name, text, stars: currentRating });
+      renderReviews(); closeReview();
+      showToast('⚠️ Review saved locally'); sounds.win();
+    }
+  }
+  function closeReview() { document.getElementById('reviewOverlay').classList.remove('active'); document.body.style.overflow = ''; }
+
+  function openHistory() {
+    const content = document.getElementById('historyContent');
+    if (orders.length === 0) { content.innerHTML = `<h2>📦 ORDER HISTORY</h2><div class="empty-orders"><div class="empty-emoji">📭</div><p style="font-size:1.2rem;font-weight:700;">No orders yet!</p></div>`; }
+    else { content.innerHTML = `<h2>📦 ORDER HISTORY</h2><p class="modal-sub">${orders.length} order(s)</p><div class="orders-list">${orders.map(o => `<div class="order-card"><div class="order-header"><span class="order-id-badge">#${o.id}</span><span class="order-date">${o.date}</span></div><div class="order-items">${o.items.map(it => `<span class="order-item-tag">${it.emoji} ${it.name} × ${it.qty}</span>`).join('')}</div><div class="order-tracker"><div class="track-step done">✓ Placed</div><div class="track-step done">📦 Packed</div><div class="track-step">🚚 Shipped</div><div class="track-step">🏠 Delivered</div></div><div class="order-total">TOTAL: $${o.total.toFixed(2)}</div></div>`).join('')}</div>`; }
+    document.getElementById('historyOverlay').classList.add('active'); document.body.style.overflow = 'hidden'; sounds.click();
+  }
+  function closeHistory() { document.getElementById('historyOverlay').classList.remove('active'); document.body.style.overflow = ''; }
+
+  function buildWheel() {
+    const wheel = document.getElementById('wheelEl'); const segments = ['50%', '$10', '10%', '$5', 'FREE', '$20', '25%', 'NOPE'];
+    wheel.innerHTML = '';
+    segments.forEach((text, i) => { const angle = (i * 45) + 22.5; const el = document.createElement('div'); el.className = 'wheel-segment-text'; el.textContent = text; el.style.left = '50%'; el.style.top = '50%'; el.style.transform = `rotate(${angle}deg) translate(0, -100px) rotate(${-angle}deg)`; el.style.transformOrigin = '0 0'; el.style.textAlign = 'center'; el.style.width = '60px'; el.style.marginLeft = '-30px'; wheel.appendChild(el); });
+  }
+  function spinWheel() {
+    if (wheelSpun) { showToast('🎡 Already spun! Refresh 😜'); sounds.error(); return; }
+    const wheel = document.getElementById('wheelEl'); const segments = ['50%', '$10', '10%', '$5', 'FREE', '$20', '25%', 'NOPE']; const prizeIdx = Math.floor(Math.random() * segments.length);
+    wheel.style.transform = `rotate(${360 * 5 + (360 - (prizeIdx * 45 + 22.5))}deg)`; document.getElementById('spinBtn').disabled = true; wheelSpun = true; saveAll(); sounds.spin();
+    setTimeout(() => { const prize = segments[prizeIdx]; if (prize === 'NOPE') { showToast('😂 NOPE!'); sounds.error(); } else if (prize === 'FREE') { showToast('🎉 FREE! Use FREESTUFF'); sounds.win(); } else if (prize.startsWith('$')) { showToast(`🎉 ${prize} off! Use MEME!`); sounds.win(); } else { showToast(`🎉 ${prize} OFF! Use LOL50!`); sounds.win(); } for (let i = 0; i < 50; i++) setTimeout(spawnConfetti, i * 15); }, 4100);
+  }
+  const slotEmojis = ['🍒', '🍋', '⭐', '💎', '🔔', '🍀', '💰', '🎁'];
+  function randomEmoji() { return slotEmojis[Math.floor(Math.random() * slotEmojis.length)]; }
+  function spinSlots() {
+    const btn = document.getElementById('slotSpinBtn'); const result = document.getElementById('slotResult'); btn.disabled = true;
+    const reels = [document.getElementById('reel1'), document.getElementById('reel2'), document.getElementById('reel3')]; sounds.spin();
+    const intervals = reels.map((reel, idx) => setInterval(() => { reel.textContent = randomEmoji(); }, 50 + idx * 20));
+    const final = [randomEmoji(), randomEmoji(), randomEmoji()];
+    setTimeout(() => { clearInterval(intervals[0]); reels[0].textContent = final[0]; playTone(500, 0.1, 'square'); }, 1000);
+    setTimeout(() => { clearInterval(intervals[1]); reels[1].textContent = final[1]; playTone(600, 0.1, 'square'); }, 1500);
+    setTimeout(() => { clearInterval(intervals[2]); reels[2].textContent = final[2]; playTone(700, 0.1, 'square'); const [a, b, c] = final; if (a === b && b === c) { result.innerHTML = `🎉 <span style="color:var(--green);font-size:1.4rem;">JACKPOT!</span> Use SLOT for 30% off!`; sounds.win(); for (let i = 0; i < 80; i++) setTimeout(spawnConfetti, i * 12); showToast('🎰 JACKPOT!'); } else if (a === b || b === c || a === c) { result.innerHTML = `😊 Two match! Use WHEEL for 40% off!`; sounds.cash(); for (let i = 0; i < 30; i++) setTimeout(spawnConfetti, i * 20); } else { result.innerHTML = `😢 No match.`; sounds.error(); } btn.disabled = false; }, 2000);
+  }
+  function claimDailyBonus() {
+    if (dailyClaimed) { showToast('🎁 Already claimed!'); sounds.error(); return; }
+    dailyClaimed = true; loyaltyPoints += 10; savedCoupons.push({ code: 'DAILY', desc: '$15 off — daily bonus' }); saveAll(); updateBadges();
+    document.getElementById('dailyBonus').classList.add('claimed'); document.getElementById('dailyBonus').textContent = '✅ Claimed!';
+    showToast('🎁 +10 pts & DAILY coupon!'); sounds.win(); for (let i = 0; i < 50; i++) setTimeout(spawnConfetti, i * 12);
+  }
+
+  function openLogin() {
+    document.getElementById('loginContent').innerHTML = `<h2>👤 ${user ? 'ACCOUNT' : 'LOGIN'}</h2>${user ? `<p class="modal-sub">Welcome, ${user.name}!</p><div style="text-align:center;padding:20px;"><div style="font-size:4rem;">😎</div><h3 style="font-family:'Bangers';margin:10px 0;">${user.name}</h3><p style="font-weight:700;color:#888;">${user.email}</p><p style="margin-top:10px;font-family:'Bangers';font-size:1.2rem;color:var(--purple);">⭐ ${loyaltyPoints} points</p></div><button class="place-order-btn" style="background:var(--red);" onclick="logout()">LOGOUT 👋</button>` : `<p class="modal-sub">Sign in (fake but works!)</p><div class="form-group"><label>👤 Name</label><input type="text" id="loginName" placeholder="Your name" required></div><div class="form-group"><label>📧 Email</label><input type="email" id="loginEmail" placeholder="your@email.com" required></div><button class="place-order-btn" onclick="doLogin()">LOGIN 🚀</button>`}`;
+    document.getElementById('loginOverlay').classList.add('active'); document.body.style.overflow = 'hidden'; sounds.click();
+  }
+  function doLogin() { const name = document.getElementById('loginName').value.trim(); const email = document.getElementById('loginEmail').value.trim(); if (!name || !email) { showToast('⚠️ Fill both!'); sounds.error(); return; } user = { name, email }; saveAll(); closeLogin(); showToast(`👋 Welcome, ${name}!`); sounds.win(); }
+  function logout() { user = null; saveAll(); closeLogin(); showToast('👋 Logged out!'); sounds.click(); }
+  function closeLogin() { document.getElementById('loginOverlay').classList.remove('active'); document.body.style.overflow = ''; }
+
+  function openWallet() {
+    const content = document.getElementById('walletContent'); const allCoupons = Object.entries(promoCodes).map(([code, info]) => ({ code, ...info }));
+    content.innerHTML = `<h2>🎫 WALLET</h2>${savedCoupons.length > 0 ? `<h3 style="font-family:'Bangers';font-size:1.1rem;margin:10px 0;color:var(--green);">✨ YOUR SAVED</h3><div class="coupon-list" style="margin-bottom:20px;">${savedCoupons.map(c => `<div class="coupon-card"><div class="coupon-info"><div class="coupon-code">${c.code}</div><div class="coupon-desc">${c.desc}</div></div><button class="coupon-use-btn" onclick="useCoupon('${c.code}')">USE</button></div>`).join('')}</div>` : ''}<h3 style="font-family:'Bangers';font-size:1.1rem;margin:10px 0;">🎁 ALL CODES</h3><div class="coupon-list">${allCoupons.map(c => `<div class="coupon-card" style="background:linear-gradient(135deg,var(--blue),var(--purple));"><div class="coupon-info"><div class="coupon-code" style="color:#fff;">${c.code}</div><div class="coupon-desc" style="color:#fff;">${c.desc}</div></div><button class="coupon-use-btn" onclick="useCoupon('${c.code}')">USE</button></div>`).join('')}</div>`;
+    document.getElementById('walletOverlay').classList.add('active'); document.body.style.overflow = 'hidden'; sounds.click();
+  }
+  function useCoupon(code) { if (promoCodes[code]) { appliedPromo = { code, ...promoCodes[code] }; saveAll(); updateAll(); closeWallet(); showToast(`🎟️ ${code} applied!`); sounds.win(); } }
+  function closeWallet() { document.getElementById('walletOverlay').classList.remove('active'); document.body.style.overflow = ''; }
+
+  let chatOpen = false;
+  function toggleChat() { chatOpen = !chatOpen; document.getElementById('chatPanel').classList.toggle('active', chatOpen); sounds.click(); }
+  function sendChat() {
+    const input = document.getElementById('chatInput'); const msg = input.value.trim(); if (!msg) return;
+    addChatMsg(msg, 'user'); input.value = '';
+    const replies = ["That's a great question! I have no idea. 😅", "Have you tried buying something? That helps. 💸", "Our CEO (a cat) says: meow. 🐱", "Try LOL50 for 50% off! 🎟️", "Refunds? Hahaha. No. 😂", "Buy the brick. Trust me. 🧱", "I'm just a bot. I don't get paid enough. 🤖", "Check out the slots! 🎰", "Your cart is judging you. 👀"];
+    setTimeout(() => { addChatMsg(replies[Math.floor(Math.random() * replies.length)], 'bot'); sounds.pop(); }, 600);
+  }
+  function addChatMsg(text, type) { const body = document.getElementById('chatBody'); const m = document.createElement('div'); m.className = 'chat-msg ' + type; m.textContent = text; body.appendChild(m); body.scrollTop = body.scrollHeight; }
+
+  function closeWelcome() { document.getElementById('welcomePopup').classList.remove('show'); localStorage.setItem('lolmart_welcomed', '1'); sounds.win(); }
+  function showWelcome() { if (!localStorage.getItem('lolmart_welcomed')) { setTimeout(() => document.getElementById('welcomePopup').classList.add('show'), 1500); } }
+
+  let toastTimer;
+  function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2500); }
+
+  const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active', 'visible'); }); }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal, .product-card').forEach(el => observer.observe(el));
+
+  window.addEventListener('scroll', () => { document.getElementById('backTop').classList.toggle('show', window.scrollY > 500); });
+
+  let lastSparkle = 0;
+  document.addEventListener('mousemove', (e) => { const now = Date.now(); if (now - lastSparkle < 100) return; lastSparkle = now; const s = document.createElement('div'); s.className = 'sparkle'; s.textContent = ['✨', '⭐', '💫', '🌟'][Math.floor(Math.random() * 4)]; s.style.left = e.clientX + 'px'; s.style.top = e.clientY + 'px'; document.body.appendChild(s); setTimeout(() => s.remove(), 600); });
+
+  function spawnConfetti() { const c = document.createElement('div'); c.className = 'confetti'; const colors = ['#ffd93d', '#ff6b9d', '#4dabf7', '#51cf66', '#ff922b', '#b197fc', '#ff6b6b']; c.style.background = colors[Math.floor(Math.random() * colors.length)]; c.style.left = Math.random() * 100 + 'vw'; c.style.top = '-20px'; c.style.animationDuration = (Math.random() * 4 + 4) + 's'; c.style.width = (Math.random() * 8 + 6) + 'px'; c.style.height = (Math.random() * 8 + 6) + 'px'; if (Math.random() > 0.7) c.style.borderRadius = '50%'; document.body.appendChild(c); setTimeout(() => c.remove(), 8000); }
+  setInterval(spawnConfetti, 500);
+
+  document.addEventListener('click', (e) => { if (e.target.closest('.add-btn') || e.target.closest('.buy-now-btn')) { for (let i = 0; i < 8; i++) { const em = document.createElement('div'); em.textContent = ['😂', '🎉', '💸', '🤡', '⭐'][Math.floor(Math.random() * 5)]; em.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;font-size:${Math.random()*20+20}px;pointer-events:none;z-index:9999;`; document.body.appendChild(em); const dx = (Math.random() - 0.5) * 300; const dy = (Math.random() - 0.5) * 300; em.animate([{ transform: 'translate(0,0) rotate(0) scale(1)', opacity: 1 }, { transform: `translate(${dx}px, ${dy}px) rotate(${Math.random()*720}deg) scale(0)`, opacity: 0 }], { duration: 1000, easing: 'ease-out' }).onfinish = () => em.remove(); } } });
+
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeCheckout(); closeCart(); closeReview(); closeHistory(); closeWishlist(); closeQuickView(); closeLogin(); closeWallet(); closeAdminLogin(); closeAdminProductModal(); } });
+
+  function openAdmin() {
+    if (adminUnlocked) { document.getElementById('adminPanel').classList.add('active'); renderAdmin(); document.body.style.overflow = 'hidden'; return; }
+    document.getElementById('adminLoginOverlay').classList.add('active');
+    setTimeout(() => document.getElementById('adminEmail').focus(), 100);
+    sounds.click();
+  }
+  function closeAdminLogin() { document.getElementById('adminLoginOverlay').classList.remove('active'); document.getElementById('adminEmail').value = ''; document.getElementById('adminPassword').value = ''; }
+  async function verifyAdmin() {
+    const email = document.getElementById('adminEmail').value.trim(); const pw = document.getElementById('adminPassword').value;
+    if (!email || !pw) { showToast('⚠️ Enter email & password!'); sounds.error(); return; }
+    try {
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password: pw });
+      if (error) throw error;
+      if (data.user.email !== ADMIN_EMAIL) { await supabaseClient.auth.signOut(); showToast('❌ Not an admin!'); sounds.error(); return; }
+      adminUnlocked = true; closeAdminLogin();
+      document.getElementById('adminPanel').classList.add('active');
+      document.body.style.overflow = 'hidden'; renderAdmin(); sounds.win();
+      showToast('🔓 Admin unlocked!');
+    } catch (e) { console.error('Admin login error:', e); sounds.error(); showToast('❌ ' + (e.message || 'Login failed')); document.getElementById('adminPassword').value = ''; }
+  }
+  function closeAdmin() { document.getElementById('adminPanel').classList.remove('active'); document.body.style.overflow = ''; sounds.click(); }
+  function showAdminTab(tab, btn) { document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active')); document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active')); btn.classList.add('active'); document.getElementById('admin' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active'); sounds.click(); renderAdmin(); }
+
+  function renderAdmin() {
+    const totalRevenue = orders.reduce((s, o) => s + o.total, 0);
+    document.getElementById('adminOverview').innerHTML = `<div class="admin-stats"><div class="admin-stat"><div class="admin-stat-icon">💰</div><div class="admin-stat-value">$${totalRevenue.toFixed(2)}</div><div class="admin-stat-label">REVENUE</div></div><div class="admin-stat"><div class="admin-stat-icon">📦</div><div class="admin-stat-value">${orders.length}</div><div class="admin-stat-label">ORDERS</div></div><div class="admin-stat"><div class="admin-stat-icon">🛍️</div><div class="admin-stat-value">${products.length}</div><div class="admin-stat-label">PRODUCTS</div></div><div class="admin-stat"><div class="admin-stat-icon">💬</div><div class="admin-stat-value">${reviews.length}</div><div class="admin-stat-label">REVIEWS</div></div></div><div class="admin-card"><h2>📊 Actions</h2><button class="admin-action-btn aab-reset" onclick="resetAdminData()">🔄 RESET (keeps products)</button></div>`;
+    document.getElementById('adminProducts').innerHTML = `<div class="admin-card"><h2>🛍️ Products</h2><button class="admin-action-btn aab-add" onclick="openAdminProductModal()">+ ADD PRODUCT</button><div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>Emoji</th><th>Name</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead><tbody>${products.map(p => `<tr><td style="font-size:1.5rem;">${p.emoji}</td><td>${p.name}</td><td>$${p.price}</td><td>${p.stock}</td><td><button class="admin-action-btn aab-edit" onclick="openAdminProductModal(${p.id})">✏️ Edit</button><button class="admin-action-btn aab-delete" onclick="adminDeleteProduct(${p.id})">🗑️ Del</button></td></tr>`).join('')}</tbody></table></div></div>`;
+    document.getElementById('adminOrders').innerHTML = `<div class="admin-card"><h2>📦 Orders (${orders.length})</h2>${orders.length === 0 ? '<div class="admin-empty">No orders 📭</div>' : `<div style="overflow-x:auto;"><table class="admin-table"><thead><tr><th>ID</th><th>Date</th><th>Items</th><th>Total</th></tr></thead><tbody>${orders.map(o => `<tr><td>${o.id}</td><td>${o.date}</td><td>${o.items.map(i => `${i.emoji}×${i.qty}`).join(' ')}</td><td>$${o.total.toFixed(2)}</td></tr>`).join('')}</tbody></table></div>`}</div>`;
+    document.getElementById('adminReviews').innerHTML = `<div class="admin-card"><h2>💬 Reviews (${reviews.length})</h2>${reviews.length === 0 ? '<div class="admin-empty">No reviews yet</div>' : reviews.map(r => `<div style="border:3px solid var(--ink);border-radius:12px;padding:15px;margin-bottom:10px;background:#fff;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;"><strong>${r.name}</strong><div><span>${'⭐'.repeat(r.stars)}</span> <button class="admin-action-btn aab-delete" onclick="adminDeleteReview('${r.id}')">🗑️</button></div></div><p style="font-weight:700;">${r.text}</p></div>`).join('')}</div>`;
+    document.getElementById('adminSettings').innerHTML = `<div class="admin-card"><h2>⚙️ Settings</h2><ul style="font-weight:700;line-height:2;list-style:none;"><li>🎨 Dark: ${document.body.classList.contains('dark') ? 'ON' : 'OFF'}</li><li>🔊 Sound: ${soundEnabled ? 'ON' : 'OFF'}</li><li>☁️ Supabase: ${supabaseReady ? '✅ Connected' : '❌ Offline'}</li></ul><hr style="border:2px dashed var(--ink);margin:20px 0;"><button class="admin-action-btn aab-reset" onclick="resetAdminData()">🔄 RESET (keeps products)</button></div>`;
+  }
+
+  const EMOJI_OPTIONS = ['🍕', '🍔', '🍟', '🌮', '🍣', '🍩', '🍪', '🎂', '☕', '🍺', '👕', '👖', '👟', '🧢', '🕶️', '⌚', '💍', '🎒', '💼', '👑', '📱', '💻', '🎮', '🎧', '📷', '📺', '🖥️', '⌨️', '🖱️', '🎤', '🧱', '🪨', '🥒', '💨', '🧦', '🍌', '🎈', '📦', '🗿', '🎪', '🦄', '🐉', '👽', '🤖', '💎', '🔮', '⭐', '✨', '🎁', '🏆'];
+  function buildEmojiPicker() { const picker = document.getElementById('adminEmojiPicker'); if (!picker) return; picker.innerHTML = EMOJI_OPTIONS.map(e => `<button type="button" class="admin-emoji-btn" onclick="selectEmoji('${e}')">${e}</button>`).join(''); }
+  function selectEmoji(e) { document.getElementById('adminPEmoji').value = e; document.querySelectorAll('.admin-emoji-btn').forEach(b => { b.classList.toggle('selected', b.textContent === e); }); sounds.click(); }
+
+  function openAdminProductModal(productId = null) {
+    const modal = document.getElementById('adminProductModal'); const title = document.getElementById('adminProductModalTitle');
+    document.getElementById('adminEditId').value = ''; document.getElementById('adminPName').value = ''; document.getElementById('adminPDesc').value = ''; document.getElementById('adminPEmoji').value = ''; document.getElementById('adminPPrice').value = ''; document.getElementById('adminPOld').value = ''; document.getElementById('adminPStock').value = '10'; document.getElementById('adminPCat').value = 'Misc'; document.getElementById('adminPTag').value = 'NEW'; document.getElementById('adminPRating').value = '4.5';
+    if (productId) { const p = products.find(x => x.id === productId); if (!p) return; title.textContent = '✏️ EDIT'; document.getElementById('adminEditId').value = p.id; document.getElementById('adminPName').value = p.name; document.getElementById('adminPDesc').value = p.desc; document.getElementById('adminPEmoji').value = p.emoji; document.getElementById('adminPPrice').value = p.price; document.getElementById('adminPOld').value = p.old; document.getElementById('adminPStock').value = p.stock; document.getElementById('adminPCat').value = p.cat; document.getElementById('adminPTag').value = p.tag; document.getElementById('adminPRating').value = p.rating; } else { title.textContent = '➕ ADD PRODUCT'; }
+    buildEmojiPicker(); modal.classList.add('active'); document.body.style.overflow = 'hidden'; sounds.click();
+    setTimeout(() => { const current = document.getElementById('adminPEmoji').value; document.querySelectorAll('.admin-emoji-btn').forEach(b => { b.classList.toggle('selected', b.textContent === current); }); }, 50);
+  }
+  function closeAdminProductModal() { document.getElementById('adminProductModal').classList.remove('active'); document.body.style.overflow = ''; }
+
+  async function saveAdminProduct() {
+    const editId = document.getElementById('adminEditId').value;
+    const name = document.getElementById('adminPName').value.trim(); const desc = document.getElementById('adminPDesc').value.trim() || 'No description';
+    const emoji = document.getElementById('adminPEmoji').value.trim(); const price = parseFloat(document.getElementById('adminPPrice').value);
+    const old = parseFloat(document.getElementById('adminPOld').value) || (price * 2); const stock = parseInt(document.getElementById('adminPStock').value);
+    const cat = document.getElementById('adminPCat').value; const tag = document.getElementById('adminPTag').value; const rating = parseFloat(document.getElementById('adminPRating').value) || 4.5;
+    if (!name) { showToast('⚠️ Name required!'); sounds.error(); return; }
+    if (!emoji) { showToast('⚠️ Emoji required!'); sounds.error(); return; }
+    if (isNaN(price) || price < 0) { showToast('⚠️ Valid price required!'); sounds.error(); return; }
+    if (isNaN(stock) || stock < 0) { showToast('⚠️ Valid stock required!'); sounds.error(); return; }
+    try {
+      if (editId) {
+        const { error } = await supabaseClient.from('products').update({ name, description: desc, emoji, price, old_price: old, stock, category: cat, tag, rating }).eq('id', parseInt(editId));
+        if (error) throw error;
+        const p = products.find(x => x.id === parseInt(editId)); if (p) { p.name = name; p.desc = desc; p.emoji = emoji; p.price = price; p.old = old; p.stock = stock; p.cat = cat; p.tag = tag; p.rating = rating; }
+        showToast('✅ Product updated!');
+      } else {
+        const { data, error } = await supabaseClient.from('products').insert([{ name, description: desc, emoji, price, old_price: old, stock, category: cat, tag, rating }]).select();
+        if (error) throw error;
+        if (data && data[0]) { products.push({ id: data[0].id, emoji, name, desc, price, old: old, tag, cat, rating, stock }); }
+        showToast('✅ Product added!');
+      }
+      renderAdmin(); renderProducts(); buildFilterBar(); closeAdminProductModal(); sounds.win(); for (let i = 0; i < 30; i++) setTimeout(spawnConfetti, i * 15);
+    } catch (e) { console.error('Save error:', e); showToast('❌ ' + (e.message || 'Save failed')); sounds.error(); }
+  }
+
+  async function adminDeleteProduct(id) {
+    if (!confirm('Delete this product? 😱')) return;
+    try {
+      const { error } = await supabaseClient.from('products').delete().eq('id', id);
+      if (error) throw error;
+      products = products.filter(p => p.id !== id);
+      renderAdmin(); renderProducts(); buildFilterBar(); showToast('🗑️ Deleted!'); sounds.error();
+    } catch (e) { showToast('❌ ' + (e.message || 'Delete failed')); sounds.error(); }
+  }
+
+  async function adminDeleteReview(id) {
+    if (!confirm('Delete this review?')) return;
+    try {
+      const { error } = await supabaseClient.from('reviews').delete().eq('id', id);
+      if (error) throw error;
+      reviews = reviews.filter(r => r.id !== id);
+      renderAdmin(); renderReviews(); showToast('🗑️ Review deleted!'); sounds.error();
+    } catch (e) { showToast('❌ ' + (e.message || 'Delete failed')); sounds.error(); }
+  }
+
+  function resetAdminData() {
+    if (!confirm('⚠️ RESET? Cart, orders, reviews delete, products safe!')) return;
+    if (!confirm('⚠️ Sure?')) return;
+    ['lolmart_cart', 'lolmart_wishlist', 'lolmart_orders', 'lolmart_reviews', 'lolmart_promo', 'lolmart_wheel', 'lolmart_user', 'lolmart_points', 'lolmart_daily', 'lolmart_coupons'].forEach(k => localStorage.removeItem(k));
+    showToast('🔄 Reset complete! Reloading...'); setTimeout(() => location.reload(), 800);
+  }
+
+  async function init() {
+    loadLocal();
+    try { await loadFromSupabase(); } catch (e) { console.warn('Supabase failed:', e); products = [...DEFAULT_PRODUCTS]; }
+    buildFilterBar(); renderProducts(); buildWheel(); renderReviews(); updateAll();
+    if (dailyClaimed) { document.getElementById('dailyBonus').classList.add('claimed'); document.getElementById('dailyBonus').textContent = '✅ Claimed!'; }
+    showWelcome();
+    setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1200);
+  }
+  init();
+</script>
+
+</body>
+</html>
